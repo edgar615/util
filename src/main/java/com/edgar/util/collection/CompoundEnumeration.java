@@ -4,18 +4,20 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 /**
- * @author ypujante@linkedin.com
- */ /*
-* A useful utility class that will enumerate over an array of
-* enumerations.
+ * 将Enumerration数组组合在一起.
+ *
+ * 借鉴自linkedin的代码
+ *
+ * @author ypujante@linkedin.com, Edgar
 */
 public class CompoundEnumeration<E> implements Enumeration<E> {
-  private final Enumeration<E>[] _enums;
+
+  private Enumeration<E>[] enums;
 
   private int index = 0;
 
   public CompoundEnumeration(Enumeration<E>[] enums) {
-    _enums = enums;
+    this.enums = enums;
   }
 
   @Override
@@ -25,18 +27,18 @@ public class CompoundEnumeration<E> implements Enumeration<E> {
 
   @Override
   public E nextElement() {
-    if (!next()) {
-      throw new NoSuchElementException();
+    if (next()) {
+      return enums[index].nextElement();
     }
-    return _enums[index].nextElement();
+    throw new NoSuchElementException();
   }
 
   private boolean next() {
-    while (index < _enums.length) {
-      if (_enums[index] != null && _enums[index].hasMoreElements()) {
+    while (index < enums.length) {
+      if (enums[index] != null && enums[index].hasMoreElements()) {
         return true;
       }
-      index++;
+      index ++;
     }
     return false;
   }

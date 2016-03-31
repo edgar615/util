@@ -12,7 +12,8 @@ public class RandomsTest {
 
   @Test
   public void generateRandomString() {
-    String s1 = Randoms.randomString(10, "abcd");
-    Assertions.assertThat(s1).hasSize(10);
+    String s1 = Randoms.randomString(10, "abc");
+    Assertions.assertThat(s1).hasSize(10).doesNotContain("d").doesNotContain("e");
+
   }
 }

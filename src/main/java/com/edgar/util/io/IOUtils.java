@@ -3,6 +3,9 @@ package com.edgar.util.io;
 import java.io.*;
 
 public class IOUtils {
+  private IOUtils() {
+  }
+
   /**
    * Deletes the file provided. If it is a directory, recursively deletes a directory and its content.
    *
@@ -253,10 +256,26 @@ public class IOUtils {
     }
   }
 
-
   /**
-   * Constructor
+   * 递归删除文件.
+   *
+   * @param path 需要删除的文件
+   * @return 如果文件被删除，返回true
    */
-  protected IOUtils() {
+  public static boolean forceDeletePath(File path) {
+    if (path == null) {
+      return false;
+    }
+    if (path.exists() && path.isDirectory()) {
+      File[] files = path.listFiles();
+      for (File file : files) {
+        if (file.isDirectory()) {
+          forceDeletePath(file);
+        } else {
+          file.delete();
+        }
+      }
+    }
+    return path.delete();
   }
 }

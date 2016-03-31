@@ -13,6 +13,21 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Randoms {
 
+
+  private static final String NUM = "123456789";
+
+  private static final String LOWER_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
+  private static final String UPPER_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  private static final String ALPHABET = LOWER_ALPHABET + UPPER_ALPHABET;
+
+  private static final String ALPHABET_AND_NUM = LOWER_ALPHABET + UPPER_ALPHABET + NUM;
+
+  private Randoms() {
+    throw new AssertionError("Not instantiable: " + Randoms.class);
+  }
+
   /**
    * 生成一个随机字符串.
    * 该方法会随机选择<code>base</code>里的字符来填充字符串。
@@ -30,5 +45,55 @@ public class Randoms {
       sb.append(base.charAt(random.nextInt(range)));
     }
     return sb.toString();
+  }
+
+  /**
+   * 使用数字生成一个随机字符串.
+   *
+   * @param len 需要生成的字符串长度
+   * @return 随机字符串
+   */
+  public static String randomNumber(int len) {
+    return randomString(len, NUM);
+  }
+
+  /**
+   * 使用小写字母生成一个随机字符串.
+   *
+   * @param len 需要生成的字符串长度
+   * @return 随机字符串
+   */
+  public static String randomLowerAlphabet(int len) {
+    return randomString(len, LOWER_ALPHABET);
+  }
+
+  /**
+   * 使用大写字母生成一个随机字符串.
+   *
+   * @param len 需要生成的字符串长度
+   * @return 随机字符串
+   */
+  public static String randomUpperAlphabet(int len) {
+    return randomString(len, UPPER_ALPHABET);
+  }
+
+  /**
+   * 使用字母生成一个随机字符串.
+   *
+   * @param len 需要生成的字符串长度
+   * @return 随机字符串
+   */
+  public static String randomAlphabet(int len) {
+    return randomString(len, ALPHABET);
+  }
+
+  /**
+   * 使用字母和数字生成一个随机字符串.
+   *
+   * @param len 需要生成的字符串长度
+   * @return 随机字符串
+   */
+  public static String randomAlphabetAndNum(int len) {
+    return randomString(len, ALPHABET_AND_NUM);
   }
 }

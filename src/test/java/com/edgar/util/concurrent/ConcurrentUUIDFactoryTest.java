@@ -1,5 +1,6 @@
 package com.edgar.util.concurrent;
 
+import com.edgar.util.uuid.UUIDFactory;
 import org.junit.Test;
 
 /**
@@ -11,6 +12,6 @@ public class ConcurrentUUIDFactoryTest {
 
   @Test
   public void testUUID() {
-      System.out.println(new ConcurrentUUIDFactory().generateRandomUuid());
+      System.out.println(UUIDFactory.concurrentUUIDFactory().generateRandomUuid());
   }
 }

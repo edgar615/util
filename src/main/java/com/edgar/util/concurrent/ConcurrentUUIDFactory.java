@@ -10,6 +10,15 @@ import java.util.concurrent.ThreadLocalRandom;
  * UUIDFactory implementation that will perform reasonably when used by multiple threads under load.
  */
 public class ConcurrentUUIDFactory implements UUIDFactory {
+
+  private ConcurrentUUIDFactory() {
+
+  }
+
+  public static ConcurrentUUIDFactory create() {
+    return new ConcurrentUUIDFactory();
+  }
+
   @Override
   public UUID generateRandomUuid() {
     final Random rnd = ThreadLocalRandom.current();

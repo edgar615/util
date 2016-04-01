@@ -1,5 +1,7 @@
 package com.edgar.util.base;
 
+import com.google.common.collect.ImmutableList;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -7,6 +9,14 @@ import org.junit.Test;
  * Created by edgar on 16-3-31.
  */
 public class MorePreconditionsTest {
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNullOrEmpty() {
+    MorePreconditions.checkNotEmpty(ImmutableList.of(1));
+    MorePreconditions.checkNotEmpty(ImmutableList.of());
+    Assert.fail();
+  }
 
   @Test(expected = IllegalArgumentException.class)
   public void testIntRange() {

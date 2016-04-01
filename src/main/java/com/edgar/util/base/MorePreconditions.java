@@ -2,6 +2,8 @@ package com.edgar.util.base;
 
 import com.google.common.base.Preconditions;
 
+import java.util.Collection;
+
 /**
  * Guava Preconditions的扩展.
  * <p>
@@ -10,6 +12,29 @@ import com.google.common.base.Preconditions;
  * @author Edgar
  */
 public class MorePreconditions {
+
+
+  /**
+   * 检查输入的集合是否为{@code null}，或者为空
+   *
+   * @param collection 集合
+   * @param <E>        集合的泛型
+   */
+  public static <E> void checkNotEmpty(Collection<E> collection) {
+    checkNotEmpty(collection, "the collection can not be null or empty");
+  }
+
+  /**
+   * 检查输入的集合是否为{@code null}，或者为空
+   *
+   * @param collection 集合
+   * @param message    错误消息
+   * @param <E>        集合的泛型
+   */
+  public static <E> void checkNotEmpty(Collection<E> collection, String message) {
+    Preconditions.checkNotNull(collection, message);
+    Preconditions.checkArgument(!collection.isEmpty(), message);
+  }
 
   /**
    * 检查输入的整数参数是否在某个范围内.
@@ -21,8 +46,8 @@ public class MorePreconditions {
    * @throws IllegalArgumentException 参数不在[minmum,maximum]的范围内.
    */
   public static int checkArgumentRange(int argument, int minimum, int maximum) {
-    Preconditions.checkArgument(minimum <= argument, "%s不能小于" + minimum, argument);
-    Preconditions.checkArgument(argument <= maximum, "%s不能大于" + maximum, argument);
+    Preconditions.checkArgument(minimum <= argument, "%s must >=" + minimum, argument);
+    Preconditions.checkArgument(argument <= maximum, "%s must <=" + maximum, argument);
     return argument;
   }
 
@@ -53,8 +78,8 @@ public class MorePreconditions {
    * @throws IllegalArgumentException 参数不在[minmum,maximum]的范围内.
    */
   public static double checkArgumentRange(double argument, double minimum, double maximum) {
-    Preconditions.checkArgument(minimum <= argument, "%s不能小于" + minimum, argument);
-    Preconditions.checkArgument(argument <= maximum, "%s不能大于" + maximum, argument);
+    Preconditions.checkArgument(minimum <= argument, "%s must >=" + minimum, argument);
+    Preconditions.checkArgument(argument <= maximum, "%s must <=" + maximum, argument);
     return argument;
   }
 

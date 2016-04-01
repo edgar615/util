@@ -5,5 +5,5 @@ package com.edgar.util.serialization;
  *
  * @param <T>
  */
-public interface Codec<T> extends Serializer<T>, Deserializer<T> {
+public interface SerDe<T> extends Serializer<T>, Deserializer<T> {
 }

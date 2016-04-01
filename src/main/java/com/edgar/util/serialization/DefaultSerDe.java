@@ -11,7 +11,7 @@ import java.io.OutputStream;
  *
  * @author Edgar
  */
-public class DefaultCodec<T> implements Codec {
+public class DefaultSerDe<T> implements SerDe {
   @Override
   public T deserialize(InputStream in) throws SerDeException {
     try {

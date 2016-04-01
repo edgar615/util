@@ -1,13 +1,11 @@
 package com.edgar.util.serialization;
 
-import java.io.DataOutput;
+import java.io.OutputStream;
 
 /**
- * interface that takes an instance of T and typically will end up with a stream of bytes being
- * produced, depending on what DataInput is backed by.Implementations are often nested static
- * classes
- * of Class\<T\> in order to have access to private data
+ * 将对象序列化到流.
+ * @author Edgar
  */
 public interface Serializer<T> {
-  void serialize(T value, DataOutput out) throws SerDeException;
+  void serialize(T value, OutputStream out) throws SerDeException;
 }

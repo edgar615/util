@@ -1,6 +1,11 @@
 package com.edgar.util.serialization;
 
-public class SerDeException extends Exception {
+/**
+ * 序列化，反序列化的异常.
+ *
+ * @author Edgar.
+ */
+public class SerDeException extends RuntimeException {
   public SerDeException() {
   }
 

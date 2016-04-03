@@ -8,23 +8,28 @@ package com.edgar.util.id;
  */
 public interface IdFactory {
 
+  /**
+   * 分片id=1,创建一个IdFactory.
+   * @return IdFactory
+   */
   static IdFactory defaultFactory() {
-    return DefaultIdFactory.instance();
+    return DefaultIdFactory.create(0);
+  }
+
+  /**
+   * 创建一个IdFactory
+   * @param serverId 分片id
+   * @return IdFactory
+   */
+  static IdFactory defaultFactory(int serverId) {
+    return DefaultIdFactory.create(serverId);
   }
 
   /**
    * 主键生成方法
    *
-   * @param serverId 服务器id
    * @return 主键
    */
-  long generateId(int serverId);
+  long generateId();
 
-  /**
-   * 从主键中提取服务器ID
-   *
-   * @param id 主键
-   * @return 服务器id
-   */
-  long calServerId(long id);
 }

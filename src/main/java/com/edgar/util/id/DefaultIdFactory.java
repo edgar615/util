@@ -3,13 +3,19 @@ package com.edgar.util.id;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 主键生成类.
+ * 参考twitter, instagram的实现
+ * 使用41 bit来存放时间，精确到毫秒，可以使用41年。
+ * 使用10 bit来存放逻辑分片ID,可以分1024个片。
+ * 使用13 bit来存放自增长ID，意味着每台机器，每毫秒最多可以生成8192个ID
+ * <p>
+ * <b>分片和自增id的位数可以根据服务调整，因为我们不会有太多的分片，所以只用了10位</b>
+ *
+ * 在分布式环境下，多个服务需要保证serverId的唯一性，否则各个服务可能会生成重复的主键.
+ *
+ * @author Edgar
  */
 public class DefaultIdFactory implements IdFactory, IdExtracter {
   private static final ConcurrentMap<Integer, DefaultIdFactory> FACTORY_HOLDER = new ConcurrentHashMap<>();

@@ -13,20 +13,30 @@ public interface Cache<K, V> {
    * @param key 缓存的键值，不能为 {@code null}.
    * @return 缓存值，如果缓存不存在，返回{@code null}.
    */
-  public V get(K key);
+  V get(K key);
 
   /**
    * 将键值对放入缓存.
    *
-   * @param key 缓存的键值，不能为 {@code null}.
+   * @param key   缓存的键值，不能为 {@code null}.
    * @param value 缓存值，如果缓存不存在，返回{@code null}.
    */
-  public void put(K key, V value);
+  void put(K key, V value);
+
+  void put(K key, V value, long  expires);
 
   /**
    * 根据键删除缓存值.
    *
    * @param key 缓存的键值，不能为 {@code null}.
    */
-  public void delete(K key);
+  void delete(K key);
+
+  /**
+   * 增加监听器，当从缓存中删除值的时候触发.
+   *
+   * @param listener 监听器
+   */
+  void addEvictionListener(EvictionListener<K, V> listener);
+
 }

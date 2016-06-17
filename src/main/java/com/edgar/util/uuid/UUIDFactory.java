@@ -1,5 +1,6 @@
 package com.edgar.util.uuid;
 
+
 import com.edgar.util.concurrent.ConcurrentUUIDFactory;
 
 import java.util.UUID;
@@ -17,6 +18,10 @@ public interface UUIDFactory {
    * @return the newly generated UUID
    */
   UUID generateRandomUuid();
+
+  static UUIDFactory defaultUUIDFactory() {
+    return new DefaultUUIDFactory();
+  }
 
 
   /**

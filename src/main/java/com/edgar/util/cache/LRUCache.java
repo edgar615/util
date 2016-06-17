@@ -3,6 +3,7 @@ package com.edgar.util.cache;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * LRU缓存.
@@ -12,9 +13,28 @@ import java.util.Map;
  */
 public class LRUCache<K, V> implements Cache<K, V> {
 
+  /**
+   * 缓存名
+   */
   private final String name;
 
+  /**
+   * 存放数据的map
+   */
   private final Map<K, V> map;
+
+  /**
+   * 统计请求数率
+   */
+  private final AtomicLong accesses = new AtomicLong(0);
+
+  /**
+   * 统计未命中率
+   */
+  private final AtomicLong misses = new AtomicLong(0);
+
+  private EvictionListener<K, V> listener = (k, v) -> {
+  };
 
   public LRUCache(String name, int maxSize, float loadFactor, boolean makeSynchronized) {
     this.name = name;
@@ -25,6 +45,8 @@ public class LRUCache<K, V> implements Cache<K, V> {
       protected boolean removeEldestEntry(Map.Entry eldest) {
         return size() > maxSize;
       }
+
+
     };
     if (makeSynchronized) {
       map = Collections.synchronizedMap(_map);
@@ -39,7 +61,13 @@ public class LRUCache<K, V> implements Cache<K, V> {
 
   @Override
   public V get(K key) {
-    return map.get(key);
+    accesses.incrementAndGet();
+    V value = map.get(key);
+    if (value == null) {
+      misses.incrementAndGet();
+    }
+    return value;
+
   }
 
   @Override
@@ -48,8 +76,44 @@ public class LRUCache<K, V> implements Cache<K, V> {
   }
 
   @Override
+  public void put(K key, V value, long expires) {
+      throw new UnsupportedOperationException();
+  }
+
+  @Override
   public void delete(K key) {
-    map.remove(key);
+    V value = map.remove(key);
+    if (value != null) {
+      listener.evicted(key, value);
+    }
+  }
+
+  @Override
+  public void addEvictionListener(EvictionListener<K, V> listener) {
+    if (listener != null) {
+      this.listener = listener;
+    }
+  }
+
+  @Override
+  public String toString() {
+    return String.format("size: %d, accesses: %s, misses: %s",
+                         map.size(),
+                         accesses,
+                         misses);
+  }
+
+  public long getAccesses() {
+    return accesses.longValue();
+  }
+
+  public long getMisses() {
+    return misses.longValue();
+  }
+
+  public double getHitRate() {
+    double numAccesses = accesses.longValue();
+    return numAccesses == 0 ? 0 : (numAccesses - misses.longValue()) / numAccesses;
   }
 
   public static class Builder<K, V> {

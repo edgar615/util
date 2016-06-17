@@ -14,14 +14,14 @@ public interface IdExtracter {
    */
   long fetchTime(long id);
 
-  /**
-   * 从主键中提取serverId.
-   * 原ID与毫秒数左移异或得到分片ID和自增主键,然后右移10位得到分片ID
-   *
-   * @param id 主键
-   * @return 自增ID
-   */
-  long fetchServerId(long id);
+//  /**
+//   * 从主键中提取serverId.
+//   * 原ID与毫秒数左移异或得到分片ID和自增主键,然后右移10位得到分片ID
+//   *
+//   * @param id 主键
+//   * @return 自增ID
+//   */
+//  long fetchServerId(long id);
 
   /**
    * 从主键中提取自增ID.

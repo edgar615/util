@@ -18,7 +18,7 @@ public class DefaultIdFactoryTest {
     public void testFactorySingleton() throws InterruptedException {
         System.out.println(System.currentTimeMillis() << 22);
         System.out.println(System.currentTimeMillis() << 23);
-        System.out.println(-1 ^ (-1 << 5));
+        System.out.println(-1 ^ (-1 << 13));
         System.out.println(23 & 4194303);
         ExecutorService executorService = Executors.newCachedThreadPool();
         Set<IdFactory> idFactories = new CopyOnWriteArraySet<>();

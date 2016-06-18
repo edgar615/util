@@ -13,7 +13,7 @@ public interface IdFactory {
    *
    * @return 主键
    */
-  long generateId();
+  long nextId();
 
 //  /**
 //   * 创建一个IdFactory
@@ -25,7 +25,7 @@ public interface IdFactory {
 //  }
 
   /**
-   * 分片id=1,创建一个IdFactory.
+   * 创建一个默认的IdFactory.
    *
    * @return IdFactory
    */

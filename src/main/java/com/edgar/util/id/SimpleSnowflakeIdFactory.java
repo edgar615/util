@@ -9,7 +9,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * 参考twitter, instagram的实现，但是并没有使用workerId
  * 使用41 bit来存放时间，精确到毫秒，可以使用41年。
  * 使用10 bit来存放逻辑分片ID,可以分1024个片。<b>这里其实应该有一个中心服务器来统一分配分片ID</b>
- * 使用13 bit来存放自增长ID，意味着每台机器，每秒最多可以生成8192个ID
+ * 使用12 bit来存放自增长ID，意味着每台机器，每秒最多可以生成4096个ID
+ *
+ * <b>注意:第一个bit并没有使用,实际上也可以作为long的符号位</b>
  * <p>
  * <b>分片和自增id的位数可以根据服务调整，因为我们不会有太多的分片，所以只用了10位</b>
  *
@@ -67,7 +69,7 @@ public class SimpleSnowflakeIdFactory implements IdFactory, IdExtracter {
    * @return
    */
   @Override
-  public long generateId() {
+  public long nextId() {
     long time = System.currentTimeMillis();
     long seqId = seq.getAndIncrement();
     long id = time << 22;

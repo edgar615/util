@@ -41,7 +41,7 @@ public class IdFactoryTest {
 //  @Test
 //  public void testIdServer0() {
 //    IdFactory idFactory = IdFactory.defaultFactory();
-//    long id = idFactory.generateId();
+//    long id = idFactory.nextId();
 //
 //    Assert.assertEquals(0, IdExtracter.class.cast(idFactory).fetchServerId(id));
 //  }
@@ -50,7 +50,7 @@ public class IdFactoryTest {
 //  public void testIdServer10() {
 //    int serverId = 10;
 //    IdFactory idFactory = IdFactory.defaultFactory(serverId);
-//    long id = idFactory.generateId();
+//    long id = idFactory.nextId();
 //
 //    Assert.assertEquals(serverId, IdExtracter.class.cast(idFactory).fetchServerId(id));
 //  }
@@ -59,7 +59,7 @@ public class IdFactoryTest {
 //  public void testIdServer1024() {
 //    int serverId = 1024;
 //    IdFactory idFactory = IdFactory.defaultFactory(serverId);
-//    long id = idFactory.generateId();
+//    long id = idFactory.nextId();
 //
 //    Assert.assertEquals(0, IdExtracter.class.cast(idFactory).fetchServerId(id));
 //  }

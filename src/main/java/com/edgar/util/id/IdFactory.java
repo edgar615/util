@@ -15,15 +15,6 @@ public interface IdFactory {
    */
   long nextId();
 
-//  /**
-//   * 创建一个IdFactory
-//   * @param serverId 分片id
-//   * @return IdFactory
-//   */
-//  static IdFactory defaultFactory(int serverId) {
-//    return DefaultIdFactory.create(serverId);
-//  }
-
   /**
    * 创建一个默认的IdFactory.
    *
@@ -31,6 +22,28 @@ public interface IdFactory {
    */
   static IdFactory defaultFactory() {
     return DefaultIdFactory.instance();
+  }
+
+  static IdFactory simpleSnowflake(int serverId) {
+    return SimpleSnowflakeIdFactory.create(serverId);
+  }
+
+  /**
+   * 循环直到下一个毫秒
+   *
+   * @param lastTime 原毫秒数
+   * @return
+   */
+  default long tilNextMillis(long lastTime) {
+    long timestamp = currentTime();
+    while (timestamp <= lastTime) {
+      timestamp = currentTime();
+    }
+    return timestamp;
+  }
+
+  default long currentTime() {
+    return System.currentTimeMillis();
   }
 
 }

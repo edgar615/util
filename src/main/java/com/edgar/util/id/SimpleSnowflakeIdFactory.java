@@ -2,7 +2,6 @@ package com.edgar.util.id;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * ID生成类.
@@ -22,104 +21,149 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>
  * instagram对他做来一点改造，直接在数据库的实现，通过触发器实现
  * 使用41 bit来存放时间，精确到毫秒.
- * 使用13 bit来存放逻辑分片ID,可以分8192个片。
+ * 使用12 bit来存放逻辑分片ID,可以分4096个片。
  * 使用10 bit来存放自增长ID，意味着每台机器，每秒最多可以生成1024个ID
  * <p>
+ * <p>
+ * 该类采用instagram的方案，但是将分片ID作为了serverId，在程序中指定。足够满足一般的项目需求。
  * 在分布式环境下，多个服务需要保证serverId的唯一性，否则各个服务可能会生成重复的主键.
  *
  * @author Edgar
  */
-public class SimpleSnowflakeIdFactory implements IdFactory, IdExtracter {
+class SimpleSnowflakeIdFactory implements IdFactory, TimeExtracter, SeqExtracter, ServerExtracter {
+
+  /**
+   * 自增序列的位数
+   */
+  private static final int SEQ_BIT = 10;
+
+  /**
+   * 节点标识的位数
+   */
+  private static final int SERVER_BIT = 12;
+
+  /**
+   * 最大序列号
+   */
+  private static final int SEQ_MASK = -1 ^ (-1 << SEQ_BIT);
+
+  /**
+   * 最大server
+   */
+  private static final int SERVER_MASK = -1 ^ (-1 << SERVER_BIT);
 
 
-    private static final ConcurrentMap<Integer, SimpleSnowflakeIdFactory> FACTORY_HOLDER = new ConcurrentHashMap<>();
+  /**
+   * 时间的左移位数
+   */
+  private static final int TIME_LEFT_BIT = SEQ_BIT + SERVER_BIT;
 
-    /**
-     * 自增序列
-     */
-    private static final AtomicLong seq = new AtomicLong(1);
+  /**
+   * SERVER的左移位数
+   */
+  private static final int SERVER_LEFT_BIT = SEQ_BIT;
 
-    /**
-     * 服务器id
-     */
-    private final int serverId;
+  /**
+   * 每次初始化对序列值.
+   */
+  private static final int INIT_SEQ = 0;
 
-    private SimpleSnowflakeIdFactory(int serverId) {
-        this.serverId = serverId % 1024;
+  /**
+   * 用来保存每个服务节点的ID生成类，保证每个节点只有一个实例.
+   */
+  private static final ConcurrentMap<Integer, SimpleSnowflakeIdFactory> FACTORY_HOLDER =
+          new ConcurrentHashMap<>();
+
+  /**
+   * 服务器id
+   */
+  private final int serverId;
+
+  /**
+   * 上次时间戳
+   */
+  private volatile long lastTime = -1l;
+
+  /**
+   * 自增序列
+   */
+  private volatile long seqId = INIT_SEQ;
+
+  private SimpleSnowflakeIdFactory(int serverId) {
+    this.serverId = serverId & SERVER_MASK;
+  }
+
+  /**
+   * 参考twitter, instagram的实现
+   * 使用41 bit来存放时间，精确到毫秒，可以使用41年。
+   * 使用10 bit来存放逻辑分片ID,可以分1024个片。
+   * 使用13 bit来存放自增长ID，意味着每台机器，每毫秒最多可以生成8192个ID
+   * <p>
+   * <b>分片和自增id的位数可以根据服务调整，因为我们不会有太多的分片，所以只用了10位</b>
+   *
+   * @return
+   */
+  @Override
+  public synchronized long nextId() {
+    long time = currentTime();
+    if (time < lastTime) {//当前时间小于上次时间，说明时钟不对
+      throw new IllegalStateException("Clock moved backwards.");
     }
-
-    /**
-     * 使用服务器id创建一个IdFactory,每个服务器id始终只有一个实例，避免同一个服务器id生成重复的id.
-     * <p>
-     * <b>在分布式环境下，必须保证每个分布式服务使用的serverId不同，否则还是可能生成重复的id</b>
-     *
-     * @param serverId 服务器id
-     * @return IdFactory
-     */
-    public static SimpleSnowflakeIdFactory create(int serverId) {
-        SimpleSnowflakeIdFactory idFactory = FACTORY_HOLDER.get(serverId);
-        if (idFactory != null) {
-            return idFactory;
-        }
-        idFactory = FACTORY_HOLDER.putIfAbsent(serverId, new SimpleSnowflakeIdFactory(serverId));
-        if (idFactory != null) {
-            return idFactory;
-        } else {
-            return FACTORY_HOLDER.get(serverId);
-        }
+    if (time == lastTime) {
+      seqId = (seqId + 1) & SEQ_MASK;
+      if (seqId == 0) {//说明该毫秒下对序列已经自增完毕，等待下一个毫秒
+        tilNextMillis(lastTime);
+      }
+    } else {
+      seqId = INIT_SEQ;
     }
+    lastTime = time;
+    long id = time << TIME_LEFT_BIT;
+    id |= serverId << SERVER_LEFT_BIT;
+    id |= seqId & SEQ_MASK;
+    return id;
+  }
 
-    /**
-     * 参考twitter, instagram的实现
-     * 使用41 bit来存放时间，精确到毫秒，可以使用41年。
-     * 使用10 bit来存放逻辑分片ID,可以分1024个片。
-     * 使用13 bit来存放自增长ID，意味着每台机器，每毫秒最多可以生成8192个ID
-     * <p>
-     * <b>分片和自增id的位数可以根据服务调整，因为我们不会有太多的分片，所以只用了10位</b>
-     *
-     * @return
-     */
-    @Override
-    public long nextId() {
-        long time = System.currentTimeMillis();
-        long seqId = seq.getAndIncrement();
-        long id = time << 22;
-        id |= serverId << 12;
-        id |= (seqId % 8192);
-        return id;
+  /**
+   * 使用服务器id创建一个IdFactory,每个服务器id始终只有一个实例，避免同一个服务器id生成重复的id.
+   * <p>
+   * <b>在分布式环境下，必须保证每个分布式服务使用的serverId不同，否则还是可能生成重复的id</b>
+   *
+   * @param serverId 服务器id
+   * @return IdFactory
+   */
+  static SimpleSnowflakeIdFactory create(int serverId) {
+    SimpleSnowflakeIdFactory idFactory = FACTORY_HOLDER.get(serverId);
+    if (idFactory != null) {
+      return idFactory;
     }
+    idFactory = FACTORY_HOLDER.putIfAbsent(serverId, new SimpleSnowflakeIdFactory(serverId));
+    if (idFactory != null) {
+      return idFactory;
+    } else {
+      return FACTORY_HOLDER.get(serverId);
+    }
+  }
 
-    /**
-     * 从主键中提取时间.
-     * 将ID左移23位，提取出时间
-     *
-     * @param id 主键
-     * @return 时间
-     */
-    @Override
-    public long fetchTime(long id) {
-        return id >> 22;
-    }
+  /**
+   * 从主键中提取时间.
+   * 将ID左移22位，提取出时间
+   *
+   * @param id 主键
+   * @return 时间
+   */
+  @Override
+  public long fetchTime(long id) {
+    return id >> TIME_LEFT_BIT;
+  }
 
-    /**
-     * 从主键中提取serverId.
-     * 原ID与毫秒数左移异或得到分片ID和自增主键,然后右移10位得到分片ID
-     *
-     * @param id 主键
-     * @return 自增ID
-     */
-    public long fetchServerId(long id) {
-        return (id ^ (fetchTime(id) << 22)) >> 12;
-    }
+  @Override
+  public long fetchServer(long id) {
+    return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) >> SERVER_LEFT_BIT;
+  }
 
-    /**
-     * 从主键中提取自增ID.
-     *
-     * @param id 主键
-     * @return 自增ID
-     */
-    @Override
-    public long fetchSeqId(long id) {
-        return (id ^ (fetchTime(id) << 22)) ^ (fetchServerId(id) << 12);
-    }
+  @Override
+  public long fetchSeq(long id) {
+    return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) ^ (fetchServer(id) << SERVER_LEFT_BIT);
+  }
 }

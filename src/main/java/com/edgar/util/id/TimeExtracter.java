@@ -3,7 +3,7 @@ package com.edgar.util.id;
 /**
  * 从ID中提取出时间.
  */
-public interface TimeExtracter {
+public interface TimeExtracter<T> {
 
   /**
    * 从ID中提取时间.
@@ -11,5 +11,5 @@ public interface TimeExtracter {
    * @param id ID
    * @return 时间
    */
-  long fetchTime(long id);
+  long fetchTime(T id);
 }

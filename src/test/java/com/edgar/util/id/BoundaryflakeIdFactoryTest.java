@@ -1,5 +1,8 @@
 package com.edgar.util.id;
 
+import com.google.common.base.Joiner;
+
+import com.edgar.util.net.GetNetworkAddress;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,14 +15,9 @@ import java.util.concurrent.Executors;
 /**
  * Created by edgar on 16-4-2.
  */
-public class DefaultIdFactoryTest {
-
+public class BoundaryflakeIdFactoryTest {
   @Test
   public void testFactorySingleton() throws InterruptedException {
-    System.out.println(System.currentTimeMillis() << 22);
-    System.out.println(System.currentTimeMillis() << 23);
-    System.out.println(-1 ^ (-1 << 12));
-    System.out.println(23 & 4194303);
     ExecutorService executorService = Executors.newCachedThreadPool();
     Set<IdFactory> idFactories = new CopyOnWriteArraySet<>();
     int count = 100;
@@ -34,7 +32,7 @@ public class DefaultIdFactoryTest {
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          idFactories.add(IdFactory.defaultFactory());
+          idFactories.add(IdFactory.boundaryflake());
           countDownLatch2.countDown();
         }
       });
@@ -46,25 +44,28 @@ public class DefaultIdFactoryTest {
 
   @Test
   public void fetchTime() {
-    IdFactory<Long> idFactory = IdFactory.defaultFactory();
-    long id = idFactory.nextId();
+    System.out.println(Long.parseLong(GetNetworkAddress.getMac(), 16));
+    IdFactory<String> idFactory = IdFactory.boundaryflake();
+    String id ="27055360264773117879689960947719";// idFactory.nextId();
     TimeExtracter timeExtracter = (TimeExtracter) idFactory;
     System.out.println(timeExtracter.fetchTime(id));
+    ServerExtracter serverExtracter = (ServerExtracter) idFactory;
+    System.out.println(serverExtracter.fetchServer(id));
     SeqExtracter seqExtracter = (SeqExtracter) idFactory;
     System.out.println(seqExtracter.fetchSeq(id));
   }
 
   @Test
   public void testUniqueId() throws InterruptedException {
-    IdFactory<Long> idFactory = IdFactory.defaultFactory();
     ExecutorService executorService = Executors.newCachedThreadPool();
     int threadNum = 100;
     int loopNum = 500;
-    Set<Long> ids = new CopyOnWriteArraySet<>();
+    Set<String> ids = new CopyOnWriteArraySet<>();
     for (int j = 0; j < loopNum; j++) {
       CountDownLatch countDownLatch = new CountDownLatch(1);
       CountDownLatch countDownLatch2 = new CountDownLatch(threadNum);
       for (int i = 0; i < threadNum; i++) {
+        IdFactory<String> idFactory = IdFactory.boundaryflake();
         executorService.execute(new Runnable() {
           @Override
           public void run() {
@@ -83,6 +84,7 @@ public class DefaultIdFactoryTest {
     }
 
     Assert.assertEquals(threadNum * loopNum, ids.size());
+    System.out.println(Joiner.on("\n").join(ids));
 
   }
 

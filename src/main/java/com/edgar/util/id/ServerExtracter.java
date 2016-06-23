@@ -5,7 +5,7 @@ package com.edgar.util.id;
  *
  * @author Edgar  Date 2016/6/20
  */
-public interface ServerExtracter {
+public interface ServerExtracter<T> {
 
   /**
    * 从ID中提取服务器ID
@@ -13,5 +13,5 @@ public interface ServerExtracter {
    * @param id ID
    * @return 服务器ID
    */
-  long fetchServer(long id);
+  long fetchServer(T id);
 }

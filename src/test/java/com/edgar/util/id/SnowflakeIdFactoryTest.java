@@ -1,5 +1,7 @@
 package com.edgar.util.id;
 
+import com.google.common.base.Joiner;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,8 +40,9 @@ public class SnowflakeIdFactoryTest {
 
   @Test
   public void fetchTime() {
-    IdFactory idFactory = IdFactory.simpleSnowflake(10);
-    long id = idFactory.nextId();
+    IdFactory<Long> idFactory = IdFactory.simpleSnowflake(100);
+    Long id = idFactory.nextId();
+    System.out.println(Long.toBinaryString(id).length());
     TimeExtracter timeExtracter = (TimeExtracter) idFactory;
     System.out.println(timeExtracter.fetchTime(id));
     ServerExtracter serverExtracter = (ServerExtracter) idFactory;
@@ -58,7 +61,7 @@ public class SnowflakeIdFactoryTest {
       CountDownLatch countDownLatch = new CountDownLatch(1);
       CountDownLatch countDownLatch2 = new CountDownLatch(threadNum);
       for (int i = 0; i < threadNum; i++) {
-        IdFactory idFactory = IdFactory.simpleSnowflake(i);
+        IdFactory<Long> idFactory = IdFactory.simpleSnowflake(i);
         executorService.execute(new Runnable() {
           @Override
           public void run() {
@@ -77,6 +80,7 @@ public class SnowflakeIdFactoryTest {
     }
 
     Assert.assertEquals(threadNum * loopNum, ids.size());
+    System.out.println(Joiner.on("\n").join(ids));
 
   }
 

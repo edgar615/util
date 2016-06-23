@@ -3,7 +3,7 @@ package com.edgar.util.id;
 /**
  * 从ID中提取出自增序列.
  */
-public interface SeqExtracter {
+public interface SeqExtracter<T> {
 
   /**
    * 从ID中提取自增序列.
@@ -11,5 +11,5 @@ public interface SeqExtracter {
    * @param id ID
    * @return 自增序列
    */
-  long fetchSeq(long id);
+  long fetchSeq(T id);
 }

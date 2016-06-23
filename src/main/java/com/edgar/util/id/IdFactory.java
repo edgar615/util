@@ -6,26 +6,41 @@ package com.edgar.util.id;
  *
  * @author Edgar
  */
-public interface IdFactory {
+public interface IdFactory<T> {
 
   /**
    * 主键生成方法
    *
    * @return 主键
    */
-  long nextId();
+  T nextId();
 
   /**
    * 创建一个默认的IdFactory.
    *
    * @return IdFactory
    */
-  static IdFactory defaultFactory() {
+  static IdFactory<Long> defaultFactory() {
     return DefaultIdFactory.instance();
   }
 
-  static IdFactory simpleSnowflake(int serverId) {
+  /**
+   * 根据serverId创建一个IdFacory,每个serverId只会创建一个IdFactory
+   *
+   * @param serverId 服务器ID
+   * @return IdFactory
+   */
+  static IdFactory<Long> simpleSnowflake(int serverId) {
     return SimpleSnowflakeIdFactory.create(serverId);
+  }
+
+  /**
+   * 创建一个Boundary Flake的IdFactory
+   *
+   * @return IdFactory
+   */
+  static IdFactory<String> boundaryflake() {
+    return BoundaryFlakeIdFactory.instance();
   }
 
   /**

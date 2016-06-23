@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentMap;
  * <p>
  * snowflake是来自于Twitter的一个开源算法
  * 0    00000.....000 00000 00000 000000000000
- * |    |___________| |___| |___| |__________|
- * |         |         |     |         |
- * 1bit     41bit      5bit  5bit     12bit
+ * |    |___________|  |_____| |______| |______________|
+ * |         |                  |          |            |
+ * 1bit     41bit      5bit    5bit     12bit
  * </p>
  * 核心代码就是毫秒级时间41位+机器ID 10位+毫秒内序列12位
  * 第一段:1bit 预留 实际上是作为long的符号位
@@ -30,7 +30,8 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author Edgar
  */
-class SimpleSnowflakeIdFactory implements IdFactory, TimeExtracter, SeqExtracter, ServerExtracter {
+class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, SeqExtracter<Long>,
+        ServerExtracter<Long> {
 
   /**
    * 自增序列的位数
@@ -104,7 +105,7 @@ class SimpleSnowflakeIdFactory implements IdFactory, TimeExtracter, SeqExtracter
    * @return
    */
   @Override
-  public synchronized long nextId() {
+  public synchronized Long nextId() {
     long time = currentTime();
     if (time < lastTime) {//当前时间小于上次时间，说明时钟不对
       throw new IllegalStateException("Clock moved backwards.");
@@ -120,7 +121,7 @@ class SimpleSnowflakeIdFactory implements IdFactory, TimeExtracter, SeqExtracter
     lastTime = time;
     long id = time << TIME_LEFT_BIT;
     id |= serverId << SERVER_LEFT_BIT;
-    id |= seqId & SEQ_MASK;
+    id |= seqId;// & SEQ_MASK;
     return id;
   }
 
@@ -153,17 +154,17 @@ class SimpleSnowflakeIdFactory implements IdFactory, TimeExtracter, SeqExtracter
    * @return 时间
    */
   @Override
-  public long fetchTime(long id) {
+  public long fetchTime(Long id) {
     return id >> TIME_LEFT_BIT;
   }
 
   @Override
-  public long fetchServer(long id) {
+  public long fetchServer(Long id) {
     return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) >> SERVER_LEFT_BIT;
   }
 
   @Override
-  public long fetchSeq(long id) {
+  public long fetchSeq(Long id) {
     return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) ^ (fetchServer(id) << SERVER_LEFT_BIT);
   }
 }

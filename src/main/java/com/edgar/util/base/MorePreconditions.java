@@ -12,7 +12,9 @@ import java.util.Collection;
  * @author Edgar
  */
 public class MorePreconditions {
-
+  private MorePreconditions() {
+    throw new AssertionError("Not instantiable: " + MorePreconditions.class);
+  }
 
   /**
    * 检查输入的集合是否为{@code null}，或者为空

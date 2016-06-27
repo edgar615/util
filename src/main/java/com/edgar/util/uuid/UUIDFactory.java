@@ -17,7 +17,7 @@ public interface UUIDFactory {
    *
    * @return the newly generated UUID
    */
-  UUID generateRandomUuid();
+  UUID uuid();
 
   static UUIDFactory defaultUUIDFactory() {
     return new DefaultUUIDFactory();

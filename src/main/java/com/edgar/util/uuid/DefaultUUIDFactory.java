@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 public class DefaultUUIDFactory implements UUIDFactory {
   @Override
-  public UUID generateRandomUuid() {
+  public UUID uuid() {
     return UUID.randomUUID();
   }
 }

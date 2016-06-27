@@ -4,17 +4,18 @@ import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 任务失败后，重试的任务.
+ * 重试任务.
+ * 如果任务返回false,将重试
  */
-public class RetryRunnnable<E extends Exception> implements Runnable {
+public class RetryFutureTask<T, E extends Exception> extends FutureTask<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RetryRunnnable.class);
-
-    private final Runnable runnable;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RetryFutureTask.class);
 
     private final ScheduledExecutorService executorService;
 
@@ -38,12 +39,18 @@ public class RetryRunnnable<E extends Exception> implements Runnable {
     private final TimeUnit unit;
 
     /**
+     * 托管的任务.
+     */
+    private final Callable<T> callable;
+    /**
      * 重试的次数
      */
     private int numRetries = 0;
 
-    public RetryRunnnable(Runnable runnable, ScheduledExecutorService executorService, int maxRetries, Class<E> exceptionClass, int delay, TimeUnit unit) {
-        this.runnable = Preconditions.checkNotNull(runnable);
+
+    public RetryFutureTask(Callable<T> callable, ScheduledExecutorService executorService, int maxRetries, Class<E> exceptionClass, int delay, TimeUnit unit) {
+        super(callable);
+        this.callable = Preconditions.checkNotNull(callable);
         this.executorService = Preconditions.checkNotNull(executorService);
         this.maxRetries = maxRetries;
         this.exceptionClass = Preconditions.checkNotNull(exceptionClass);
@@ -51,26 +58,28 @@ public class RetryRunnnable<E extends Exception> implements Runnable {
         this.unit = Preconditions.checkNotNull(unit);
     }
 
-
     @Override
     public void run() {
+        T result = null;
         try {
-            runnable.run();
+            result = callable.call();
         } catch (Exception e) {
             LOGGER.warn("Exception while executing task.", e);
             if (e.getClass().isAssignableFrom(exceptionClass)) {
                 numRetries++;
                 if (numRetries > maxRetries) {
                     LOGGER.debug("Task did not complete after " + maxRetries + " retries, giving up.");
+                    set(null);
                 } else {
                     LOGGER.debug("Task was not successful, resubmitting (num retries: " + numRetries + ")");
                     retry();
                 }
             } else {
                 LOGGER.debug("Giving up on task: due to unhandled exception ");
+                set(null);
             }
         }
-
+        set(result);
     }
 
     /**

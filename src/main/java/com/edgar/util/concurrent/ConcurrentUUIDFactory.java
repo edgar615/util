@@ -20,7 +20,7 @@ public class ConcurrentUUIDFactory implements UUIDFactory {
   }
 
   @Override
-  public UUID generateRandomUuid() {
+  public UUID uuid() {
     final Random rnd = ThreadLocalRandom.current();
     long mostSig = rnd.nextLong();
     long leastSig = rnd.nextLong();

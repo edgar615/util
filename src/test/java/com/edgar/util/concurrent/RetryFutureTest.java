@@ -26,7 +26,7 @@ public class RetryFutureTest {
         };
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         RetryFutureTask<Integer, NullPointerException> retryRunnnable = new RetryFutureTask<>(callable, executorService, 5, NullPointerException.class, 100, TimeUnit.MICROSECONDS);
-        executorService.execute(retryRunnnable);
+        retryRunnnable.execute();
         TimeUnit.SECONDS.sleep(3);
         executorService.shutdown();
         Assertions.assertThat(retryNum.get()).isEqualTo(6);
@@ -47,7 +47,7 @@ public class RetryFutureTest {
         };
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         RetryFutureTask<Integer, IllegalArgumentException> retryRunnnable = new RetryFutureTask<>(callable, executorService, 5, IllegalArgumentException.class, 100, TimeUnit.MICROSECONDS);
-        executorService.execute(retryRunnnable);
+        retryRunnnable.execute();
         TimeUnit.SECONDS.sleep(3);
         executorService.shutdown();
         Assertions.assertThat(retryNum.get()).isEqualTo(1);
@@ -67,7 +67,7 @@ public class RetryFutureTest {
         };
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         RetryFutureTask<Integer, IllegalArgumentException> retryRunnnable = new RetryFutureTask<>(callable, executorService, 5, IllegalArgumentException.class, 100, TimeUnit.MICROSECONDS);
-        executorService.execute(retryRunnnable);
+        retryRunnnable.execute();
         TimeUnit.SECONDS.sleep(3);
         executorService.shutdown();
         Assertions.assertThat(retryNum.get()).isEqualTo(1);

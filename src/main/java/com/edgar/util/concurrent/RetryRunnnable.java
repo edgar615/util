@@ -79,4 +79,12 @@ public class RetryRunnnable<E extends Exception> implements Runnable {
     private void retry() {
         executorService.schedule(this, delay, unit);
     }
+
+
+    /**
+     * 运行任务
+     */
+    public void execute() {
+        executorService.execute(this);
+    }
 }

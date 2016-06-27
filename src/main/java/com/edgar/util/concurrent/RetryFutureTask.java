@@ -88,4 +88,11 @@ public class RetryFutureTask<T, E extends Exception> extends FutureTask<T> {
     private void retry() {
         executorService.schedule(this, delay, unit);
     }
+
+    /**
+     * 运行任务
+     */
+    public void execute() {
+        executorService.execute(this);
+    }
 }

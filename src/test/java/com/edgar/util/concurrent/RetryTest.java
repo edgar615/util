@@ -30,7 +30,7 @@ public class RetryTest {
         };
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         RetryRunnnable<NullPointerException> retryRunnnable = new RetryRunnnable<>(runnable, executorService, 5, NullPointerException.class, 100, TimeUnit.MICROSECONDS);
-        executorService.execute(retryRunnnable);
+        retryRunnnable.execute();
         TimeUnit.SECONDS.sleep(3);
         executorService.shutdown();
         Assertions.assertThat(retryNum.get()).isEqualTo(6);
@@ -50,7 +50,7 @@ public class RetryTest {
         };
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         RetryRunnnable<IllegalArgumentException> retryRunnnable = new RetryRunnnable<>(runnable, executorService, 5, IllegalArgumentException.class, 100, TimeUnit.MICROSECONDS);
-        executorService.execute(retryRunnnable);
+        retryRunnnable.execute();
         TimeUnit.SECONDS.sleep(3);
         executorService.shutdown();
         Assertions.assertThat(retryNum.get()).isEqualTo(1);
@@ -68,7 +68,7 @@ public class RetryTest {
         };
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         RetryRunnnable<IllegalArgumentException> retryRunnnable = new RetryRunnnable<>(runnable, executorService, 5, IllegalArgumentException.class, 100, TimeUnit.MICROSECONDS);
-        executorService.execute(retryRunnnable);
+        retryRunnnable.execute();
         TimeUnit.SECONDS.sleep(3);
         executorService.shutdown();
         Assertions.assertThat(retryNum.get()).isEqualTo(1);

@@ -7,7 +7,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Edgar on 2016/5/12.
+ * 带过期时间的缓存.
  *
  * @author Edgar  Date 2016/5/12
  */
@@ -51,6 +51,9 @@ public class ExpiringCache<K, V> implements Cache<K, V> {
     this.cache.addEvictionListener(listener);
   }
 
+  /**
+   * 清除过期的缓存.
+   */
   public void cleanup() {
     ExpiringKey<K> delayedKey = delayQueue.poll();
     while (delayedKey != null) {

@@ -1,6 +1,7 @@
 package com.edgar.util.cache;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +10,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ExpiringCacheTest {
 
-  public static void main(String[] args) {
+  @Test
+  public void testCache() {
     ExpiringCache<String, String> cache = new ExpiringCache<>(LRUCache.<String, String>builder().setMaxSize(2).build());
 
     cache.put("a", "a", 1000);

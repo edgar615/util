@@ -13,7 +13,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Randoms {
 
-
   private static final String NUM = "123456789";
 
   private static final String LOWER_ALPHABET = "abcdefghijklmnopqrstuvwxyz";

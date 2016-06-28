@@ -1,13 +1,13 @@
 package com.edgar.util.lifecycle;
 
 /**
- * Defines an entity that can be started.
+ * 表明这个类是可以启动的类.
  *
  * @author ypujante@linkedin.com
  */
 public interface Startable {
   /**
-   * This method must NOT block and should start the entity and return right away.
+   * 启动方法，尽量不要阻塞该方法.
    */
   void start();
 }

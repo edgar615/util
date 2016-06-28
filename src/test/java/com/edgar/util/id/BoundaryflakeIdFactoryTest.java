@@ -2,7 +2,7 @@ package com.edgar.util.id;
 
 import com.google.common.base.Joiner;
 
-import com.edgar.util.net.GetNetworkAddress;
+import com.edgar.util.net.NetUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class BoundaryflakeIdFactoryTest {
 
   @Test
   public void fetchTime() {
-    System.out.println(Long.parseLong(GetNetworkAddress.getMac(), 16));
+    System.out.println(Long.parseLong(NetUtils.getMac(), 16));
     IdFactory<String> idFactory = IdFactory.boundaryflake();
     String id ="27055360264773117879689960947719";// idFactory.nextId();
     TimeExtracter timeExtracter = (TimeExtracter) idFactory;

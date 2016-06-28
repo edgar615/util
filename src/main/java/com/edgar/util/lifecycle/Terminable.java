@@ -1,10 +1,10 @@
 package com.edgar.util.lifecycle;
 
 /**
- * This is simply a marker interface that defines the fact that an entity can
- * be terminated (shutdown, destroy)
+ * 表明这个类是可以终止的类.
  *
  * @author ypujante@linkedin.com
  */
 public interface Terminable {
+
 }

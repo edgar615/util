@@ -1,6 +1,6 @@
 package com.edgar.util.id;
 
-import com.edgar.util.net.GetNetworkAddress;
+import com.edgar.util.net.NetUtils;
 
 import java.math.BigInteger;
 
@@ -51,7 +51,7 @@ public class BoundaryFlakeIdFactory implements IdFactory<String>, TimeExtracter<
   /**
    * 将mac地址作为节点ID
    */
-  private static final long SERVER_ID = Long.parseLong(GetNetworkAddress.getMac(), 16);
+  private static final long SERVER_ID = Long.parseLong(NetUtils.getMac(), 16);
 
   /**
    * 单例对象

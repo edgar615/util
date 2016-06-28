@@ -2,6 +2,7 @@ package com.edgar.util.service;
 
 import java.util.ServiceLoader;
 
+@Deprecated
 public class ServiceHelper {
 
   public static <T> T loadFactory(Class<T> clazz) {

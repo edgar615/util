@@ -1,9 +1,11 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 可选值的校验.
@@ -34,7 +36,12 @@ class OptionalRule implements Rule {
     return true;
   }
 
-  @Override
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("optional", value);
+    }
+
+    @Override
   public String toString() {
     return MoreObjects.toStringHelper("OptionalRule")
             .add("value", value)

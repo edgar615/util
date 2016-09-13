@@ -1,7 +1,9 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,6 +55,11 @@ class IntRule implements Rule {
             }
         }
         return false;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("integer", true);
     }
 
     @Override

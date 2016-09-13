@@ -2,6 +2,9 @@ package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 /**
  * 必填项校验.如果字符串为null或者为""，非法.
@@ -34,7 +37,12 @@ class RequiredRule implements Rule {
     return true;
   }
 
-  @Override
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("required", true);
+    }
+
+    @Override
   public String toString() {
     return MoreObjects.toStringHelper("RequiredRule")
             .toString();

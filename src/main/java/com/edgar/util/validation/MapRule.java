@@ -1,6 +1,7 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,11 @@ class MapRule implements Rule {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("map", true);
     }
 
     @Override

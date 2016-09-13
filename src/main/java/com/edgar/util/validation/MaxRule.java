@@ -1,8 +1,10 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * 数值最大值的校验.
@@ -57,7 +59,12 @@ class MaxRule implements Rule {
     return true;
   }
 
-  @Override
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("max", value);
+    }
+
+    @Override
   public String toString() {
     return MoreObjects.toStringHelper("MaxRule")
             .add("value", value)

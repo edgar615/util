@@ -2,8 +2,10 @@ package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 
 import java.net.IDN;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +82,11 @@ class EmailRule implements Rule {
         }
         return true;
 
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("email", true);
     }
 
     private boolean matchPart(String part, Pattern pattern) {

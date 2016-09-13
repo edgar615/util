@@ -1,8 +1,10 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 校验是否是list.
@@ -34,6 +36,11 @@ class ListRule implements Rule {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("list", true);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +43,12 @@ class RegexRule implements Rule {
     return true;
   }
 
-  @Override
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("regex", value);
+    }
+
+    @Override
   public String toString() {
     return MoreObjects.toStringHelper("RegexRule")
             .add("value", value)

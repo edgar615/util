@@ -1,6 +1,9 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 /**
  * 参数值等于某个值的校验.
@@ -35,6 +38,11 @@ class EqualsRule implements Rule {
             return true;
         }
         return value.equalsIgnoreCase(property.toString());
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("equals", value);
     }
 
     @Override

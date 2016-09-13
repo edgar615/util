@@ -1,6 +1,9 @@
 package com.edgar.util.validation;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
 
 /**
  * 字符串最大长度的校验.
@@ -40,7 +43,12 @@ class MaxLengthRule implements Rule {
     return true;
   }
 
-  @Override
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("max_length", value);
+    }
+
+    @Override
   public String toString() {
     return MoreObjects.toStringHelper("MaxLengthRule")
             .add("value", value)

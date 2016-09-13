@@ -131,7 +131,12 @@ public enum DefaultErrorCode implements ErrorCode {
     /**
      * 请求过期.
      */
-    EXPIRE(1023, "过期的请求", 403);
+    EXPIRE(1023, "过期的请求", 403),
+
+    /**
+     * 非法的JSON.
+     */
+    INVALID_JSON(1024, "错误的JSON格式", 403);
 
     /**
      * 异常编码.

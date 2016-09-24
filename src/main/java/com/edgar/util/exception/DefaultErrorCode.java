@@ -176,7 +176,7 @@ public enum DefaultErrorCode implements ErrorCode {
 
     @Override
     public String toString() {
-        return "AppErrorCode{"
+        return "DefaultErrorCode{"
                 + "number=" + number
                 + ", message='" + message + '\''
                 + ", statusCode='" + statusCode + '\''

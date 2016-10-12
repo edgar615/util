@@ -57,7 +57,7 @@ public class RuleTest {
 
         assertTrue(rule.message(), rule.isValid(new Object()));
 
-        rule = Rule.max(5.0);
+        rule = Rule.max(5);
         assertTrue(rule.isValid(1));
         assertTrue(rule.isValid(5));
         assertFalse(rule.message(), rule.isValid(15));
@@ -66,7 +66,7 @@ public class RuleTest {
         assertTrue(rule.isValid("5"));
         assertFalse(rule.message(), rule.isValid("15"));
 
-        rule = Rule.max(5.0);
+        rule = Rule.max(5);
         assertTrue(rule.isValid(1.0));
         assertTrue(rule.isValid(5.0));
         assertFalse(rule.message(), rule.isValid(15.0));
@@ -89,7 +89,7 @@ public class RuleTest {
 
         assertTrue(rule.message(), rule.isValid(new Object()));
 
-        rule = Rule.min(5.0);
+        rule = Rule.min(5);
         assertTrue(rule.isValid(10));
         assertTrue(rule.isValid(5));
         assertFalse(rule.message(), rule.isValid(1));
@@ -98,7 +98,7 @@ public class RuleTest {
         assertTrue(rule.isValid("5"));
         assertFalse(rule.message(), rule.isValid("1"));
 
-        rule = Rule.min(5.0);
+        rule = Rule.min(5);
         assertTrue(rule.isValid(10.0));
         assertTrue(rule.isValid(5.0));
         assertFalse(rule.message(), rule.isValid(1.0));

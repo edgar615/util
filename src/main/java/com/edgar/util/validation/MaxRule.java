@@ -18,11 +18,11 @@ class MaxRule implements Rule {
   /**
    * 最大值.
    */
-  private final double value;
+  private final int value;
 
-  private MaxRule(double value) {this.value = value;}
+  private MaxRule(int value) {this.value = value;}
 
-  static Rule create(double value) {
+  static Rule create(int value) {
     return new MaxRule(value);
   }
 

@@ -18,11 +18,11 @@ class MinRule implements Rule {
   /**
    * 最小值.
    */
-  private final double value;
+  private final int value;
 
-  private MinRule(double value) {this.value = value;}
+  private MinRule(int value) {this.value = value;}
 
-  static Rule create(double value) {
+  static Rule create(int value) {
     return new MinRule(value);
   }
 

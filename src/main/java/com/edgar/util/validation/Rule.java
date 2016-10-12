@@ -62,7 +62,7 @@ public interface Rule {
      * @param max 最大值
      * @return Rule
      */
-    static Rule max(double max) {
+    static Rule max(int max) {
         return MaxRule.create(max);
     }
 
@@ -72,7 +72,7 @@ public interface Rule {
      * @param min 最小值.
      * @return Rule
      */
-    static Rule min(double min) {
+    static Rule min(int min) {
         return MinRule.create(min);
     }
 

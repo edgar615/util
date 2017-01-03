@@ -24,8 +24,7 @@ public class WaitableCounter {
   public synchronized void dec() {
     _counter--;
 
-    if (_counter == 0)
-      notifyAll();
+    if (_counter == 0) { notifyAll(); }
   }
 
   public synchronized void inc() {
@@ -37,8 +36,7 @@ public class WaitableCounter {
   }
 
   public synchronized void waitForCounter() throws InterruptedException {
-    while (_counter > 0)
-      wait();
+    while (_counter > 0) { wait(); }
   }
 
   public synchronized void waitForCounter(long time, TimeUnit unit)
@@ -56,9 +54,10 @@ public class WaitableCounter {
       wait();
     } else {
       long now = System.currentTimeMillis();
-      if (now >= endTime)
+      if (now >= endTime) {
         throw new TimeoutException("timeout reached while waiting on the lock: "
-                + this);
+                                   + this);
+      }
       wait(endTime - now);
     }
   }

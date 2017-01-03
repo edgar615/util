@@ -5,11 +5,11 @@ import java.util.NoSuchElementException;
 
 /**
  * 将Enumerration数组组合在一起.
- *
+ * <p>
  * 借鉴自linkedin的代码
  *
  * @author ypujante@linkedin.com, Edgar
-*/
+ */
 public class CompoundEnumeration<E> implements Enumeration<E> {
 
   private Enumeration<E>[] enums;
@@ -38,7 +38,7 @@ public class CompoundEnumeration<E> implements Enumeration<E> {
       if (enums[index] != null && enums[index].hasMoreElements()) {
         return true;
       }
-      index ++;
+      index++;
     }
     return false;
   }

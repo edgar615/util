@@ -9,12 +9,12 @@ import java.io.InputStream;
  * @author Edgar
  */
 public interface Deserializer<T> {
-    /**
-     * 反序列化方法
-     *
-     * @param in 输入流
-     * @return 反序列化的对象
-     * @throws SerDeException
-     */
-    T deserialize(InputStream in) throws SerDeException;
+  /**
+   * 反序列化方法
+   *
+   * @param in 输入流
+   * @return 反序列化的对象
+   * @throws SerDeException
+   */
+  T deserialize(InputStream in) throws SerDeException;
 }

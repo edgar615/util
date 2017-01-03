@@ -22,7 +22,7 @@ public class ReflectUtils {
    * Constructor
    */
   private ReflectUtils() {
-      throw new AssertionError("Not instantiable: " + ReflectUtils.class);
+    throw new AssertionError("Not instantiable: " + ReflectUtils.class);
   }
 
   /**

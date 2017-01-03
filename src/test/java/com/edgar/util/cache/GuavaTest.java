@@ -1,7 +1,7 @@
 package com.edgar.util.cache;
 
 import com.google.common.base.Ticker;
-import com.google.common.cache.*;
+import com.google.common.cache.CacheBuilder;
 
 import java.util.concurrent.TimeUnit;
 

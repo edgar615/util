@@ -43,12 +43,12 @@ class RegexRule implements Rule {
     return true;
   }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("regex", value);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("regex", value);
+  }
 
-    @Override
+  @Override
   public String toString() {
     return MoreObjects.toStringHelper("RegexRule")
             .add("value", value)

@@ -6,7 +6,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by edgar on 16-4-2.

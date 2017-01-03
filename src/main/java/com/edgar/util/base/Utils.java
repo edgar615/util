@@ -10,16 +10,16 @@ public class Utils {
     throw new AssertionError("Not instantiable: " + Utils.class);
   }
 
-  static {
-    String os = System.getProperty("os.name").toLowerCase();
-    isWindows = os.contains("win");
-  }
-
   /**
    * @return true, if running on Windows
    */
   public static boolean isWindows() {
     return isWindows;
+  }
+
+  static {
+    String os = System.getProperty("os.name").toLowerCase();
+    isWindows = os.contains("win");
   }
 
 }

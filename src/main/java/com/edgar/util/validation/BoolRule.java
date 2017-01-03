@@ -16,55 +16,55 @@ import java.util.regex.Pattern;
  */
 class BoolRule implements Rule {
 
-    /**
-     * 正则表达式
-     */
-    private final String regex = "(true)|(false)";
+  /**
+   * 正则表达式
+   */
+  private final String regex = "(true)|(false)";
 
-    private BoolRule() {
+  private BoolRule() {
+  }
+
+  static Rule create() {
+    return new BoolRule();
+  }
+
+  @Override
+  public String message() {
+    return "Bool Required";
+  }
+
+  @Override
+  public boolean isValid(Object property) {
+    if (property == null) {
+      return true;
     }
-
-    static Rule create() {
-        return new BoolRule();
+    if (property instanceof Boolean) {
+      return true;
     }
-
-    @Override
-    public String message() {
-        return "Bool Required";
-    }
-
-    @Override
-    public boolean isValid(Object property) {
-        if (property == null) {
-            return true;
+    if (property != null && (property instanceof String)) {
+      String str = String.class.cast(property);
+      Pattern pattern = Pattern.compile(regex);
+      Matcher matcher = pattern.matcher(str);
+      if (matcher.matches()) {
+        try {
+          Boolean.parseBoolean(str);
+          return true;
+        } catch (Exception e) {
+          return false;
         }
-        if (property instanceof Boolean) {
-            return true;
-        }
-        if (property != null && (property instanceof String)) {
-            String str = String.class.cast(property);
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(str);
-            if (matcher.matches()) {
-                try {
-                    Boolean.parseBoolean(str);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-        }
-        return false;
+      }
     }
+    return false;
+  }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("bool", true);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("bool", true);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper("BoolRule")
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("BoolRule")
+            .toString();
+  }
 }

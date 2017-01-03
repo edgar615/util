@@ -2,8 +2,6 @@ package com.edgar.util.reflect;
 
 import org.junit.Test;
 
-import java.lang.reflect.InvocationHandler;
-
 /**
  * Created by Edgar on 2016/2/19.
  *

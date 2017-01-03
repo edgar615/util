@@ -16,55 +16,55 @@ import java.util.regex.Pattern;
  */
 class IntRule implements Rule {
 
-    /**
-     * 正则表达式
-     */
-    private final String regex = "[0-9]*";
+  /**
+   * 正则表达式
+   */
+  private final String regex = "[0-9]*";
 
-    private IntRule() {
+  private IntRule() {
+  }
+
+  static Rule create() {
+    return new IntRule();
+  }
+
+  @Override
+  public String message() {
+    return "Int Required";
+  }
+
+  @Override
+  public boolean isValid(Object property) {
+    if (property == null) {
+      return true;
     }
-
-    static Rule create() {
-        return new IntRule();
+    if (property instanceof Integer) {
+      return true;
     }
-
-    @Override
-    public String message() {
-        return "Int Required";
-    }
-
-    @Override
-    public boolean isValid(Object property) {
-        if (property == null) {
-            return true;
+    if (property != null && (property instanceof String)) {
+      String str = String.class.cast(property);
+      Pattern pattern = Pattern.compile(regex);
+      Matcher matcher = pattern.matcher(str);
+      if (matcher.matches()) {
+        try {
+          Integer.parseInt(str);
+          return true;
+        } catch (NumberFormatException e) {
+          return false;
         }
-        if (property instanceof Integer) {
-            return true;
-        }
-        if (property != null && (property instanceof String)) {
-            String str = String.class.cast(property);
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(str);
-            if (matcher.matches()) {
-                try {
-                    Integer.parseInt(str);
-                    return true;
-                } catch (NumberFormatException e) {
-                    return false;
-                }
-            }
-        }
-        return false;
+      }
     }
+    return false;
+  }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("integer", true);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("integer", true);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper("IntRule")
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("IntRule")
+            .toString();
+  }
 }

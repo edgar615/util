@@ -37,12 +37,12 @@ class RequiredRule implements Rule {
     return true;
   }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("required", true);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("required", true);
+  }
 
-    @Override
+  @Override
   public String toString() {
     return MoreObjects.toStringHelper("RequiredRule")
             .toString();

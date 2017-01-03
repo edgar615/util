@@ -20,14 +20,14 @@ public class MorePreconditionsTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testIntRange() {
-    MorePreconditions.checkArgumentRange(3, 1,3);
+    MorePreconditions.checkArgumentRange(3, 1, 3);
     MorePreconditions.checkArgumentRange(3, 4, 40, "%s必须在4和40之间");
     Assert.fail();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testDoubleRange() {
-    MorePreconditions.checkArgumentRange(3.0, 1,3);
+    MorePreconditions.checkArgumentRange(3.0, 1, 3);
     MorePreconditions.checkArgumentRange(3.0, 4, 40, "%s必须在4和40之间");
     Assert.fail();
   }

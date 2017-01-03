@@ -59,12 +59,12 @@ class MinRule implements Rule {
     return true;
   }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("min", value);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("min", value);
+  }
 
-    @Override
+  @Override
   public String toString() {
     return MoreObjects.toStringHelper("MinRule")
             .add("value", value)

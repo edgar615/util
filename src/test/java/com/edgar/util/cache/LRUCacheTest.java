@@ -1,10 +1,6 @@
 package com.edgar.util.cache;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Created by edgar on 16-4-1.

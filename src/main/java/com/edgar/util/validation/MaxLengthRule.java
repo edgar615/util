@@ -43,12 +43,12 @@ class MaxLengthRule implements Rule {
     return true;
   }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("max_length", value);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("maxLength", value);
+  }
 
-    @Override
+  @Override
   public String toString() {
     return MoreObjects.toStringHelper("MaxLengthRule")
             .add("value", value)

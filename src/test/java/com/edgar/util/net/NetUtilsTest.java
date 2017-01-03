@@ -2,6 +2,7 @@ package com.edgar.util.net;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+
 import org.junit.Test;
 
 /**
@@ -18,7 +19,8 @@ public class NetUtilsTest {
     System.out.println(Integer.toBinaryString(255));
     StringBuilder hexIp = new StringBuilder();
     Splitter.on(".").omitEmptyStrings().trimResults().split(ip)
-        .forEach(s -> hexIp.append(Strings.padStart(Integer.toBinaryString(Integer.parseInt(s)), 8, '0')));
+            .forEach(s -> hexIp
+                    .append(Strings.padStart(Integer.toBinaryString(Integer.parseInt(s)), 8, '0')));
 
     System.out.println(hexIp.substring(22));
     System.out.println(Integer.parseInt(hexIp.substring(22), 2));

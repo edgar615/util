@@ -12,6 +12,6 @@ public class ConcurrentUUIDFactoryTest {
 
   @Test
   public void testUUID() {
-      System.out.println(UUIDFactory.concurrentUUIDFactory().uuid());
+    System.out.println(UUIDFactory.concurrentUUIDFactory().uuid());
   }
 }

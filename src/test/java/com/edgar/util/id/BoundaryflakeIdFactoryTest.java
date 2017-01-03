@@ -46,7 +46,7 @@ public class BoundaryflakeIdFactoryTest {
   public void fetchTime() {
     System.out.println(Long.parseLong(NetUtils.getMac(), 16));
     IdFactory<String> idFactory = IdFactory.boundaryflake();
-    String id ="27055360264773117879689960947719";// idFactory.nextId();
+    String id = "27055360264773117879689960947719";// idFactory.nextId();
     TimeExtracter timeExtracter = (TimeExtracter) idFactory;
     System.out.println(timeExtracter.fetchTime(id));
     ServerExtracter serverExtracter = (ServerExtracter) idFactory;

@@ -31,12 +31,12 @@ public class ProhibitedRule implements Rule {
     return false;
   }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("prohibited", true);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("prohibited", true);
+  }
 
-    @Override
+  @Override
   public String toString() {
     return MoreObjects.toStringHelper("ProhibitedRule")
             .toString();

@@ -36,12 +36,12 @@ class OptionalRule implements Rule {
     return true;
   }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("optional", value);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("optional", value);
+  }
 
-    @Override
+  @Override
   public String toString() {
     return MoreObjects.toStringHelper("OptionalRule")
             .add("value", value)

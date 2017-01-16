@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
  * Created by edgar on 16-4-2.
  */
 public class SnowflakeIdFactoryTest {
+
   @Test
   public void testFactorySingleton() throws InterruptedException {
     ExecutorService executorService = Executors.newCachedThreadPool();

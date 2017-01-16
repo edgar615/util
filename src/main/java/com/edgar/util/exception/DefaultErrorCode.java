@@ -167,10 +167,24 @@ public enum DefaultErrorCode implements ErrorCode {
    */
   private final int statusCode;
 
-  private DefaultErrorCode(int number, String message, int statusCode) {
+  DefaultErrorCode(int number, String message, int statusCode) {
     this.number = number;
     this.message = message;
     this.statusCode = statusCode;
+  }
+
+  /**
+   * 根据code返回对应的枚举，如果未找到对应的枚举，返回null
+   * @param code 异常编码
+   * @return 异常码
+   */
+  public static DefaultErrorCode getCode(int code) {
+    for (DefaultErrorCode errorCode : DefaultErrorCode.values()) {
+      if (errorCode.getNumber() == code) {
+        return errorCode;
+      }
+    }
+    return null;
   }
 
   @Override

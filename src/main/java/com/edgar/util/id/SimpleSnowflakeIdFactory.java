@@ -36,12 +36,12 @@ class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, 
   /**
    * 自增序列的位数
    */
-  private static final int SEQ_BIT = 10;
+  private static final int SEQ_BIT = 12;
 
   /**
    * 节点标识的位数
    */
-  private static final int SERVER_BIT = 12;
+  private static final int SERVER_BIT = 10;
 
   /**
    * 最大序列号
@@ -94,16 +94,6 @@ class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, 
     this.serverId = serverId & SERVER_MASK;
   }
 
-  /**
-   * 参考twitter, instagram的实现
-   * 使用41 bit来存放时间，精确到毫秒，可以使用41年。
-   * 使用10 bit来存放逻辑分片ID,可以分1024个片。
-   * 使用13 bit来存放自增长ID，意味着每台机器，每毫秒最多可以生成8192个ID
-   * <p>
-   * <b>分片和自增id的位数可以根据服务调整，因为我们不会有太多的分片，所以只用了10位</b>
-   *
-   * @return
-   */
   @Override
   public synchronized Long nextId() {
     long time = currentTime();

@@ -33,11 +33,6 @@ public interface EventHead {
   long timestamp();
 
   /**
-   * @return 分片消息序列号（可选）分片中第一条序列号为0，最后一条为-1
-   */
-  int sequence();
-
-  /**
    * @return 消息活动，用于区分不同的消息类型
    */
   String action();

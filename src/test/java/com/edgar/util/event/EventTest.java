@@ -25,7 +25,6 @@ public class EventTest {
     Assert.assertEquals(from, event.head().from());
     Assert.assertEquals(to, event.head().to());
     Assert.assertEquals(group, event.head().group());
-    Assert.assertEquals(0, event.head().sequence());
     Assert.assertNotNull(event.head().timestamp());
     Assert.assertNotNull(event.head().id());
   }
@@ -42,7 +41,6 @@ public class EventTest {
     Assert.assertEquals(from, event.head().from());
     Assert.assertEquals(to, event.head().to());
     Assert.assertEquals(group, event.head().group());
-    Assert.assertEquals(0, event.head().sequence());
     Assert.assertNotNull(event.head().timestamp());
     Assert.assertNotNull(event.head().id());
   }
@@ -59,7 +57,6 @@ public class EventTest {
     Assert.assertEquals(from, event.head().from());
     Assert.assertEquals(to, event.head().to());
     Assert.assertEquals(group, event.head().group());
-    Assert.assertEquals(0, event.head().sequence());
     Assert.assertNotNull(event.head().timestamp());
     Assert.assertNotNull(event.head().id());
   }

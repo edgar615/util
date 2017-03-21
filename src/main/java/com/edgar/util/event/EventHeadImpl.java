@@ -42,11 +42,6 @@ class EventHeadImpl implements EventHead {
    */
   private String group;
 
-  /**
-   * 分片消息序列号, 分片中第一条序列号为0，最后一条为-1
-   */
-  private Integer sequence;
-
   EventHeadImpl(String from, String to, String group, String action) {
     Preconditions.checkNotNull(from, "from can not be null");
     Preconditions.checkNotNull(to, "to can not be null");
@@ -55,7 +50,6 @@ class EventHeadImpl implements EventHead {
     this.to = to;
     this.group = group;
     this.action = action;
-    this.sequence = 0;
     this.id = UUID.randomUUID().toString();
     this.timestamp = Instant.now().getEpochSecond();
   }
@@ -69,7 +63,6 @@ class EventHeadImpl implements EventHead {
             .add("action", action)
             .add("id", id)
             .add("timestamp", timestamp)
-            .add("sequence", sequence)
             .toString();
   }
 
@@ -96,11 +89,6 @@ class EventHeadImpl implements EventHead {
   @Override
   public long timestamp() {
     return timestamp;
-  }
-
-  @Override
-  public int sequence() {
-    return sequence;
   }
 
   @Override

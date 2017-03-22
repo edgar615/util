@@ -1,5 +1,8 @@
 package com.edgar.util.event;
 
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * 消息头字段定义了消息的ID，发送信道，接收信道，组信道，消息活动等各种信息。消息头字段是消息的关键内容.
  *
@@ -8,14 +11,18 @@ package com.edgar.util.event;
 public interface EventHead {
 
   /**
+   * 增加额外属性
+   *
+   * @param name  属性名
+   * @param value 属性值
+   * @return
+   */
+  EventHead addExt(String name, String value);
+
+  /**
    * @return 消息ID
    */
   String id();
-
-  /**
-   * @return 消息发送者私有信道
-   */
-  String from();
 
   /**
    * @return 消息接收者信道
@@ -23,12 +30,7 @@ public interface EventHead {
   String to();
 
   /**
-   * @return 消息发送者组信道
-   */
-  String group();
-
-  /**
-   * @return 消息生成时间
+   * @return 消息生成时间，单位秒
    */
   long timestamp();
 
@@ -38,14 +40,70 @@ public interface EventHead {
   String action();
 
   /**
-   * 创建EventHead对象
-   * @param from 消息发送者私有信道
-   * @param to 消息接收者信道
-   * @param group 消息发送者组信道
+   * @return 多长时间内有效，单位秒
+   */
+  long duration();
+
+  /**
+   * 额外属性
+   *
+   * @return 不可变map
+   */
+  Map<String, String> ext();
+
+  /**
+   * 根据名称查询额外属性
+   *
+   * @param name 属性名
+   * @return 属性值
+   */
+  String ext(String name);
+
+  /**
+   * 创建EventHead对象，消息ID使用UUID自动生成
+   *
+   * @param to     消息接收者信道
    * @param action 消息活动
    * @return
    */
-  static  EventHead create(String from, String to, String group, String action) {
-    return new EventHeadImpl(from, to, group, action);
+  static EventHead create(String to, String action) {
+    return create(UUID.randomUUID().toString(), to, action, -1);
+  }
+
+  /**
+   * 创建EventHead对象，消息ID使用UUID自动生成
+   *
+   * @param to       消息接收者信道
+   * @param action   消息活动
+   * @param duration 多长时间有效，单位秒，小于0为永不过期
+   * @return
+   */
+  static EventHead create(String to, String action, long duration) {
+    return create(UUID.randomUUID().toString(), to, action, duration);
+  }
+
+  /**
+   * 创建EventHead对象
+   *
+   * @param id     消息ID，消息ID请使用唯一的ID
+   * @param to     消息接收者信道
+   * @param action 消息活动
+   * @return
+   */
+  static EventHead create(String id, String to, String action) {
+    return create(id, to, action, -1);
+  }
+
+  /**
+   * 创建EventHead对象
+   *
+   * @param id       消息ID，消息ID请使用唯一的ID
+   * @param to       消息接收者信道
+   * @param action   消息活动
+   * @param duration 多长时间有效，单位秒，小于0为永不过期
+   * @return
+   */
+  static EventHead create(String id, String to, String action, long duration) {
+    return new EventHeadImpl(id, to, action, duration);
   }
 }

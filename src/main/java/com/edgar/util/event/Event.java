@@ -33,15 +33,56 @@ public interface Event {
   /**
    * 创建一个Event对象
    *
-   * @param from   消息发送者私有信道
    * @param to     消息接收者信道
-   * @param group  消息发送者组信道
    * @param action 消息活动
    * @return Event对象
    */
-  static Event create(String from, String to, String group, EventAction action) {
+  static Event create(String to, EventAction action) {
     Preconditions.checkNotNull(action, "action cannot be null");
-    EventHead head = EventHead.create(from, to, group, action.name());
+    EventHead head = EventHead.create(to, action.name());
+    return create(head, action);
+  }
+
+  /**
+   * 创建一个Event对象
+   *
+   * @param to     消息接收者信道
+   * @param action 消息活动
+   * @return Event对象
+   */
+  static Event create(String to, EventAction action, long duration) {
+    Preconditions.checkNotNull(action, "action cannot be null");
+    EventHead head = EventHead.create(to, action.name(), duration);
+    return create(head, action);
+  }
+
+  /**
+   * 创建一个Event对象
+   *
+   * @param id     消息ID，消息ID请使用唯一的ID
+   * @param to     消息接收者信道
+   * @param action 消息活动
+   * @return Event对象
+   */
+  static Event create(String id, String to, EventAction action) {
+    Preconditions.checkNotNull(action, "action cannot be null");
+    EventHead head = EventHead.create(id, to, action.name());
+    return create(head, action);
+  }
+
+  /**
+   * 创建一个Event对象
+   *
+   * @param id       消息ID，消息ID请使用唯一的ID
+   * @param to       消息接收者信道
+   * @param action   消息活动
+   * @param duration 多长时间有效，单位秒，小于0为永不过期
+   * @return
+   */
+  static Event create(String id, String to, EventAction action,
+                      long duration) {
+    Preconditions.checkNotNull(action, "action cannot be null");
+    EventHead head = EventHead.create(id, to, action.name(), duration);
     return create(head, action);
   }
 }

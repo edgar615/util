@@ -2,8 +2,11 @@ package com.edgar.util.event;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,37 +36,45 @@ class EventHeadImpl implements EventHead {
   private final long timestamp;
 
   /**
-   * 消息发送者私有信道
+   * 扩展头，用于增加额外的消息头
    */
-  private String from;
+  private final Map<String, String> ext = new HashMap<>();
 
   /**
-   * 消息发送者组信道
+   * 多长时间有效，单位秒，小于0为永不过期
    */
-  private String group;
+  private final long duration;
 
-  EventHeadImpl(String from, String to, String group, String action) {
-    Preconditions.checkNotNull(from, "from can not be null");
+  EventHeadImpl(String id, String to, String action, long duration) {
+    Preconditions.checkNotNull(id, "id can not be null");
     Preconditions.checkNotNull(to, "to can not be null");
     Preconditions.checkNotNull(action, "action cannot be null");
-    this.from = from;
+    this.id = id;
     this.to = to;
-    this.group = group;
     this.action = action;
-    this.id = UUID.randomUUID().toString();
     this.timestamp = Instant.now().getEpochSecond();
+    this.duration = duration;
+  }
+
+  @Override
+  public EventHead addExt(String name, String value) {
+    Preconditions.checkNotNull(name, "id can not be null");
+    Preconditions.checkNotNull(value, "from can not be null");
+    this.ext.put(name, value);
+    return this;
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper("header")
-            .add("from", from)
+    MoreObjects.ToStringHelper helper
+            = MoreObjects.toStringHelper("header")
             .add("to", to)
-            .add("group", group)
             .add("action", action)
             .add("id", id)
             .add("timestamp", timestamp)
-            .toString();
+            .add("duration", duration);
+    ext.forEach((k, v) -> helper.add(k, v));
+    return helper.toString();
   }
 
   @Override
@@ -72,18 +83,8 @@ class EventHeadImpl implements EventHead {
   }
 
   @Override
-  public String from() {
-    return from;
-  }
-
-  @Override
   public String to() {
     return to;
-  }
-
-  @Override
-  public String group() {
-    return group;
   }
 
   @Override
@@ -94,5 +95,20 @@ class EventHeadImpl implements EventHead {
   @Override
   public String action() {
     return action;
+  }
+
+  @Override
+  public long duration() {
+    return duration;
+  }
+
+  @Override
+  public Map<String, String> ext() {
+    return ImmutableMap.copyOf(ext);
+  }
+
+  @Override
+  public String ext(String name) {
+    return ext.get(name);
   }
 }

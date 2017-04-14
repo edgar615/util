@@ -1,13 +1,8 @@
 package com.edgar.util.command;
 
-public class ChainGetSysUser implements Command, ChainCommand {
+public class ChainGetSysUser implements Command {
 
     private int userId;
-
-    @Override
-    public Command nextCommand() {
-        return new GetSysUser(userId);
-    }
 
     public ChainGetSysUser(int userId) {
         this.userId = userId;

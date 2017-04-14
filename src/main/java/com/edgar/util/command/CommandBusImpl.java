@@ -18,60 +18,53 @@ import java.util.Map;
  */
 public class CommandBusImpl implements CommandBus {
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(CommandBusImpl.class);
+  private static final Logger LOGGER = LoggerFactory
+          .getLogger(CommandBusImpl.class);
 
-    /**
-     * Spring的上下文
-     */
-    private final Map<String, CommandHandler> map = new HashMap<>();
+  /**
+   * Spring的上下文
+   */
+  private final Map<String, CommandHandler> map = new HashMap<>();
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    public <T> CommandResult<T> executeCommand(Command command) {
-        CommandHandler commandHandler;
-        commandHandler = getCommandHandler(command);
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @Override
+  public <T> CommandResult<T> executeCommand(Command command) {
+    CommandHandler commandHandler;
+    commandHandler = getCommandHandler(command);
 //        LOGGER.debug("request command is {}", ToStringBuilder
 //                .reflectionToString(command, ToStringStyle.SHORT_PREFIX_STYLE));
-        if (command instanceof ChainCommand) {
-            ChainCommand chainCommand = (ChainCommand) command;
-            CommandResult<T> result = commandHandler.execute(command);
-            Command nextCommand = chainCommand.nextCommand();
-            if (nextCommand == null || nextCommand instanceof UnResolvedCommand) {
-                return result;
-            }
-//            LOGGER.debug("command in chain，next command is {}", ToStringBuilder
-//                    .reflectionToString(nextCommand,
-//                            ToStringStyle.SHORT_PREFIX_STYLE));
-            return executeCommand(nextCommand);
-        }
-        return commandHandler.execute(command);
-    }
+    return commandHandler.execute(command);
+  }
 
-    @Override
-    public List<CommandResult> executeCommands(List<Command> commands) {
-        LOGGER.debug("batch execute {} commands", commands.size());
-        List<CommandResult> results = new ArrayList<CommandResult>(commands.size());
-        for (Command command : commands) {
-            results.add(executeCommand(command));
-        }
-        return results;
+  @Override
+  public List<CommandResult> executeCommands(List<Command> commands) {
+    LOGGER.debug("batch execute {} commands", commands.size());
+    List<CommandResult> results = new ArrayList<CommandResult>(commands.size());
+    for (Command command : commands) {
+      results.add(executeCommand(command));
     }
+    return results;
+  }
 
-    /**
-     * 根据命令对象获取处理类
-     *
-     * @param command 命令对象
-     * @return 命令处理类
-     */
-    @SuppressWarnings("rawtypes")
-    private CommandHandler getCommandHandler(Command command) {
-        Preconditions.checkNotNull(command, "command cannot be null");
-        Preconditions.checkNotNull(!(command instanceof UnResolvedCommand),
-                "UnResolvedCommand donot has hander");
-        String handlerId = command.getClass().getSimpleName() + "Handler";
+  /**
+   * 根据命令对象获取处理类
+   *
+   * @param command 命令对象
+   * @return 命令处理类
+   */
+  @SuppressWarnings("rawtypes")
+  private CommandHandler getCommandHandler(Command command) {
+    Preconditions.checkNotNull(command, "command cannot be null");
+    Preconditions.checkNotNull(!(command instanceof UnResolvedCommand),
+                               "UnResolvedCommand donot has hander");
+    String handlerId = command.getClass().getSimpleName() + "Handler";
 //        handlerId = StringUtils.uncapitalize(handlerId);
-        return map.get(command.getClass().getName());
-    }
+    return map.get(command.getClass().getName());
+  }
+
+  @Override
+  public void registerHandler(Class<? extends Command> clazz, CommandHandler handler) {
+        map.put(clazz.getName(), handler);
+  }
 
 }

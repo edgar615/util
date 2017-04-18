@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.concurrent.Executor;
 
 /**
- * Created by Edgar on 2017/4/14.
+ * 这个队列中的任务会被顺序执行.
  *
  * @author Edgar  Date 2017/4/14
  */
@@ -51,4 +51,17 @@ public class OrderQueue {
     }
   }
 
+  public boolean running() {
+    return running;
+  }
+
+  protected void add(Runnable task) {
+    synchronized (tasks) {
+      tasks.add(task);
+    }
+  }
+
+  public int size() {
+    return tasks.size();
+  }
 }

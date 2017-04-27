@@ -11,7 +11,7 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 空指针异常.
    */
-  UNKOWN(999, "Unknown Error", 400),
+  UNKOWN(999, "Unknown Error", 500),
 
   /**
    * 空指针异常.
@@ -21,12 +21,12 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 未知用户.
    */
-  UNKOWN_ACCOUNT(1001, "Unkonwn User", 403),
+  UNKOWN_ACCOUNT(1001, "Unkonwn User", 401),
 
   /**
    * 未登录用户.
    */
-  UNKOWN_LOGIN(1002, "User Not Log In", 403),
+  UNKOWN_LOGIN(1002, "User Not Log In", 401),
 
   /**
    * 用户名或密码错误.
@@ -36,12 +36,12 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 权限不足.
    */
-  NO_AUTHORITY(1004, "Insufficient Authority", 403),
+  PERMISSION_DENIED(1004, "Permission Denied", 403),
 
   /**
    * Token过期.
    */
-  EXPIRE_TOKEN(1005, "Token Expired", 403),
+  EXPIRE_TOKEN(1005, "Token Expired", 401),
 
   /**
    * 资源不存在，GET请求是数据不存在.
@@ -84,9 +84,9 @@ public enum DefaultErrorCode implements ErrorCode {
   UPLOAD_FILE_FAILED(1013, "Upload Failed", 400),
 
   /**
-   * 用户名重复.
+   * 资源、数据已存在.
    */
-  USERNAME_DUPLICATE(1014, "Username Already Taken", 400),
+  ALREADY_EXISTS(1014, "Already exists", 400),
 
   /**
    * 超时.
@@ -96,7 +96,7 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 未找到远程服务器.
    */
-  UNKOWN_REMOTE(1016, "Remote Server Not Found", 400),
+  SERVICE_UNAVAILABLE(1016, "Service Unavailable", 503),
 
   /**
    * 参数类型错误.
@@ -116,12 +116,12 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 服务调用异常.
    */
-  REMOTE_EX(1020, "Service Exception", 400),
+  SERVICE_EX(1020, "Service Exception", 400),
 
   /**
    * TOKEN失效.
    */
-  INVALID_TOKEN(1021, "Token Invalid", 403),
+  INVALID_TOKEN(1021, "Token Invalid", 401),
 
   /**
    * 非法请求.
@@ -136,21 +136,42 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 非法的JSON.
    */
-  INVALID_JSON(1024, "Wrong JSON Format", 400),
+  INVALID_JSON(1024, "Problems Parsing JSON", 400),
+
+  /**
+   * 并发错误.
+   */
+  CONCURRENT_CONFLICT(1025, "Concurrent Conflict", 409),
+
+  /**
+   * 服务到期.
+   */
+  SERVICE_EXPIRED(1026, "Service Expired", 403),
+
+  /**
+   * 账户被锁定.
+   */
+  ACCOUNT_BLOCKED(1027, "Account Blocked", 403),
+
+  /**
+   * 缺少必要的头信息.
+   */
+  MISSING_HEADER(1028, "Incomplete Header", 428),
+
   /**
    * 事件超时.
    */
-  EVENTBUS_TIMOUT(1025, "Eventbus: Timeout", 400),
+  EVENTBUS_TIMOUT(1101, "Eventbus: Timeout", 400),
 
   /**
    * 事件被拒绝.
    */
-  EVENTBUS_REJECTED(1026, "Eventbus: Rejected", 400),
+  EVENTBUS_REJECTED(1102, "Eventbus: Rejected", 400),
 
   /**
    * 未定义事件.
    */
-  EVENTBUS_NO_HANDLERS(1027, "Eventbus: Undefined Event", 400);
+  EVENTBUS_NO_HANDLERS(1103, "Eventbus: Undefined Event", 400);
 
   /**
    * 异常编码.

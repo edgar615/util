@@ -1,8 +1,10 @@
 package com.edgar.util.base;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Guava Preconditions的扩展.
@@ -17,17 +19,37 @@ public class MorePreconditions {
   }
 
   /**
-   * 检查输入的集合是否为{@code null}，或者为空
+   * 检查输入的字符串是否为null或者空.
+   *
+   * @param string 字符串
+   */
+  public static void checkNotNullOrEmpty(final String string) {
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(string),
+                                "The validated string can not be null or empty");
+  }
+
+  /**
+   * 检查输入的字符串是否为null或者空.
+   *
+   * @param string  字符串
+   * @param message 错误消息
+   */
+  public static void checkNotNullOrEmpty(final String string, final String message) {
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(string), message);
+  }
+
+  /**
+   * 检查输入的集合是否为{@code null}，或者为空.
    *
    * @param collection 集合
    * @param <E>        集合的泛型
    */
   public static <E> void checkNotEmpty(Collection<E> collection) {
-    checkNotEmpty(collection, "the collection can not be null or empty");
+    checkNotEmpty(collection, "The validated collection can not be null or empty");
   }
 
   /**
-   * 检查输入的集合是否为{@code null}，或者为空
+   * 检查输入的集合是否为{@code null}，或者为空.
    *
    * @param collection 集合
    * @param message    错误消息
@@ -37,6 +59,69 @@ public class MorePreconditions {
     Preconditions.checkNotNull(collection, message);
     Preconditions.checkArgument(!collection.isEmpty(), message);
   }
+
+  /**
+   * 检查输入的集合是否包含{@code null}.
+   *
+   * @param iterable 集合
+   * @param <E>集合泛型
+   */
+  public static <E extends Iterable<?>> void checkNoNullElements(final E iterable) {
+    checkNoNullElements(iterable, "The validated collection contains null element at index: %s");
+  }
+
+  /**
+   * 检查输入的集合是否包含{@code null}.
+   *
+   * @param iterable 集合
+   * @param message  错误消息
+   * @param <E>集合泛型
+   */
+  public static <E extends Iterable<?>> void checkNoNullElements(final E iterable,
+                                                                 final String message) {
+    Preconditions.checkNotNull(iterable);
+    int i = 0;
+    for (final Iterator<?> it = iterable.iterator(); it.hasNext(); i++) {
+      Object val = it.next();
+      Preconditions.checkNotNull(val, message, i);
+    }
+  }
+
+  /**
+   * 检查输入的集合与索引是否合法.
+   *
+   * @param collection 集合
+   * @param index      索引
+   * @param <E>        集合泛型
+   * @return
+   */
+  public static <E> void checkIndex(final Collection<E> collection,
+                                    final int index) {
+    Preconditions.checkNotNull(collection);
+    if (index < 0 || index >= collection.size()) {
+      throw new IndexOutOfBoundsException(
+              String.format("The validated collection index is invalid: %d", index));
+    }
+  }
+
+
+  /**
+   * 检查输入的集合与索引是否合法.
+   *
+   * @param collection 集合
+   * @param index      索引
+   * @param message    错误消息
+   * @param <E>        集合泛型
+   * @return
+   */
+  public static <E> void checkIndex(final Collection<E> collection,
+                                    final int index, final String message) {
+    Preconditions.checkNotNull(collection);
+    if (index < 0 || index >= collection.size()) {
+      throw new IndexOutOfBoundsException(String.format(message, index));
+    }
+  }
+
 
   /**
    * 检查输入的整数参数是否在某个范围内.
@@ -138,5 +223,33 @@ public class MorePreconditions {
       }
     }
     throw new IllegalArgumentException(message);
+  }
+
+  /**
+   * 检查对象是否是某个类的子类.
+   *
+   * @param type 类
+   * @param obj  对象
+   */
+  public static void checkInstanceOf(final Class<?> type, final Object obj) {
+    if (type.isInstance(obj) == false) {
+      throw new IllegalArgumentException(
+              String.format("Expected type: %s, actual: %s",
+                            type.getName(),
+                            obj == null ? "null" : obj.getClass().getName()));
+    }
+  }
+
+  /**
+   * 检查对象是否是某个类的子类.
+   *
+   * @param type    类
+   * @param obj     对象
+   * @param message 错误消息
+   */
+  public static void checkInstanceOf(final Class<?> type, final Object obj, final String message) {
+    if (type.isInstance(obj) == false) {
+      throw new IllegalArgumentException(message);
+    }
   }
 }

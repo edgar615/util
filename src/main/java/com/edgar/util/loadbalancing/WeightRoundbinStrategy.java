@@ -1,11 +1,12 @@
 package com.edgar.util.loadbalancing;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 /**
  * 基于权重的随机轮询策略.
@@ -61,10 +62,29 @@ class WeightRoundbinStrategy implements ServiceProviderStrategy {
 
   @Override
   public ServiceInstance get(List<ServiceInstance> instances) {
-    int total = instances.stream()
-        .map(i -> (WeightServiceInstance) i)
-        .map(i -> i.weight())
-        .reduce(0, (i1, i2) -> i1 + i2);
+    int total = totalWeight(instances);
+    final Map.Entry<String, Integer> entry = findAndUpdateWeight(instances, total);
+    return instances.stream()
+        .filter(i -> i.id().equals(entry.getKey()))
+        .findFirst()
+        .get();
+  }
+
+  private synchronized Map.Entry<String, Integer> findAndUpdateWeight(List<ServiceInstance> instances, int total) {
+    Set<String> exists =
+        currentWeightHolder.keySet()
+            .stream()
+            .filter(id -> instances.stream()
+                .filter(i -> i.id().equals(id))
+                .count() > 0)
+            .collect(Collectors.toSet());
+
+    Set<String> notExists = currentWeightHolder.keySet()
+        .stream()
+        .filter(id -> !exists.contains(id))
+        .collect(Collectors.toSet());
+
+    notExists.forEach(id -> currentWeightHolder.remove(id));
 
     instances.stream()
         .map(i -> (WeightServiceInstance) i)
@@ -85,11 +105,13 @@ class WeightRoundbinStrategy implements ServiceProviderStrategy {
 
     //重新计算weight
     currentWeightHolder.put(entry.getKey(), entry.getValue() - total);
+    return entry;
+  }
 
-    final Map.Entry<String, Integer> finalEntry = entry;
+  private int totalWeight(List<ServiceInstance> instances) {
     return instances.stream()
-        .filter(i -> i.id().equals(finalEntry.getKey()))
-        .findFirst()
-        .get();
+        .map(i -> (WeightServiceInstance) i)
+        .map(i -> i.weight())
+        .reduce(0, (i1, i2) -> i1 + i2);
   }
 }

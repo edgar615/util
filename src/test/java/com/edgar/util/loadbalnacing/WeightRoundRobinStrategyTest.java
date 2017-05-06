@@ -48,6 +48,42 @@ public class WeightRoundRobinStrategyTest {
     Assert.assertEquals(cSize, 1000);
   }
 
+  @Test
+  public void testSmoothWeight() {
+    ServiceProviderStrategy selectStrategy = ServiceProviderStrategy.weightRoundRobin();
+    List<String> selected = select7(selectStrategy);
+    Assert.assertEquals(3, new HashSet<>(selected).size());
+    long aSize = selected.stream()
+        .filter(i -> "a".equals(i))
+        .count();
+    long bSize = selected.stream()
+        .filter(i -> "b".equals(i))
+        .count();
+    long cSize = selected.stream()
+        .filter(i -> "c".equals(i))
+        .count();
+    Assert.assertEquals(aSize, 5);
+    Assert.assertEquals(bSize, 1);
+    Assert.assertEquals(cSize, 1);
+
+    Assert.assertEquals("a", selected.get(0));
+    Assert.assertEquals("a", selected.get(1));
+    Assert.assertEquals("b", selected.get(2));
+    Assert.assertEquals("a", selected.get(3));
+    Assert.assertEquals("c", selected.get(4));
+    Assert.assertEquals("a", selected.get(5));
+    Assert.assertEquals("a", selected.get(6));
+  }
+
+  private  List<String> select7(ServiceProviderStrategy strategy) {
+    List<String> selected = new ArrayList<>();
+    for (int i = 0; i < 7; i++) {
+      ServiceInstance instance = strategy.get(instances);
+      selected.add(instance.id());
+    }
+    return selected;
+  }
+
   private  List<String> select(ServiceProviderStrategy strategy) {
     List<String> selected = new ArrayList<>();
     for (int i = 0; i < 7000; i++) {

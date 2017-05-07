@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +57,7 @@ import java.util.stream.Collectors;
  */
 class WeightRoundbinStrategy implements ServiceProviderStrategy {
 
-  private ConcurrentMap<String, Integer> currentWeightHolder = new ConcurrentHashMap<>();
+  private Map<String, Integer> currentWeightHolder = new ConcurrentHashMap<>();
 
   @Override
   public ServiceInstance get(List<ServiceInstance> instances) {
@@ -71,17 +70,11 @@ class WeightRoundbinStrategy implements ServiceProviderStrategy {
   }
 
   private synchronized Map.Entry<String, Integer> findAndUpdateWeight(List<ServiceInstance> instances, int total) {
-    Set<String> exists =
-        currentWeightHolder.keySet()
-            .stream()
-            .filter(id -> instances.stream()
-                .filter(i -> i.id().equals(id))
-                .count() > 0)
-            .collect(Collectors.toSet());
 
     Set<String> notExists = currentWeightHolder.keySet()
         .stream()
-        .filter(id -> !exists.contains(id))
+        .filter(id -> instances.stream()
+            .filter(i -> i.id().equals(id)).count() == 0)
         .collect(Collectors.toSet());
 
     notExists.forEach(id -> currentWeightHolder.remove(id));
@@ -89,8 +82,7 @@ class WeightRoundbinStrategy implements ServiceProviderStrategy {
     instances.stream()
         .map(i -> (WeightServiceInstance) i)
         .forEach(i -> {
-          int currentWeight = currentWeightHolder.getOrDefault(i.id(), 0);
-          currentWeightHolder.put(i.id(), currentWeight + i.weight());
+          currentWeightHolder.compute(i.id(), (k, v) -> v == null ? 0 + i.weight() : v + i.weight());
         });
 
     //找到最大值
@@ -102,7 +94,6 @@ class WeightRoundbinStrategy implements ServiceProviderStrategy {
         entry = tmp;
       }
     }
-
     //重新计算weight
     currentWeightHolder.put(entry.getKey(), entry.getValue() - total);
     return entry;

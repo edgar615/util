@@ -53,6 +53,7 @@ public class WeightRoundRobinStrategyTest {
     ServiceProviderStrategy selectStrategy = ServiceProviderStrategy.weightRoundRobin();
     List<String> selected = select7(selectStrategy);
     Assert.assertEquals(3, new HashSet<>(selected).size());
+    System.out.println(selected);
     long aSize = selected.stream()
         .filter(i -> "a".equals(i))
         .count();

@@ -14,9 +14,9 @@ import java.util.Map;
  *
  * @author Edgar  Date 2017/5/15
  */
-public class SearchHelper {
+class SearchHelper {
 
-  public static List<Criteria> fromStr(String queryString) {
+  static List<Criteria> fromStr(String queryString) {
     List<Map.Entry<String, String>> params = checkAndCreateParams(queryString);
     return params.stream()
             .map(entry -> criterias(entry.getKey(), entry.getValue()))

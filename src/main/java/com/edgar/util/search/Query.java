@@ -13,6 +13,8 @@ import java.util.Map;
 
 /**
  * 查询定义，目前仅支持and查询，不支持or
+ *
+ * @author Edgar
  */
 public class Query {
 

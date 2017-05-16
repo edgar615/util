@@ -11,38 +11,35 @@ public class Criteria {
   /**
    * 查询字段.
    */
-  private String field;
+  private final String field;
 
   /**
    * 查询运算符
    */
-  private Op op;
+  private final Op op;
 
   /**
    * 查询参数
    */
-  private Object value;
+  private final Object value;
 
   /**
    * 查询参数，用于between的第二个参数
    */
-  private Object secondValue;
+  private final Object secondValue;
 
   public Criteria(String field, Op op, Object value) {
-    super();
-    this.field = field;
-    this.op = op;
-    this.value = value;
+    this(field, op, value, null);
   }
 
   public Criteria(String field, Op op) {
-    super();
-    this.field = field;
-    this.op = op;
+    this(field, op, null, null);
   }
 
   public Criteria(String field, Op op, Object value, Object secondValue) {
-    this(field, op, value);
+    this.field = field;
+    this.op = op;
+    this.value = value;
     this.secondValue = secondValue;
   }
 
@@ -70,35 +67,20 @@ public class Criteria {
     return result;
   }
 
-  public String getField() {
+  public String field() {
     return field;
   }
 
-  public void setField(String field) {
-    this.field = field;
-  }
-
-  public Op getOp() {
+  public Op op() {
     return op;
   }
 
-  public void setOp(Op op) {
-    this.op = op;
-  }
-
-  public Object getValue() {
+  public Object value() {
     return value;
   }
 
-  public void setValue(Object value) {
-    this.value = value;
-  }
-
-  public Object getSecondValue() {
+  public Object secondValue() {
     return secondValue;
   }
 
-  public void setSecondValue(Object secondValue) {
-    this.secondValue = secondValue;
-  }
 }

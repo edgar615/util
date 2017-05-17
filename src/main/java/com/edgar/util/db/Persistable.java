@@ -1,0 +1,33 @@
+package com.edgar.util.db;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * Simple interface for entities.
+ *
+ * @param <ID> the type of the identifier
+ */
+public interface Persistable<ID> extends Serializable {
+
+  /**
+   * Returns the id of the entity.
+   *
+   * @return the id
+   */
+  ID id();
+
+  void setId(ID id);
+
+  /**
+   * @return 属性集合
+   */
+  List<String> fields();
+
+  /**
+   *
+   * @return 主键属性
+   */
+  String primaryKey();
+
+}

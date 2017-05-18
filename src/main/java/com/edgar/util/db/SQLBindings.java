@@ -1,4 +1,4 @@
-package com.edgar.util.search;
+package com.edgar.util.db;
 
 import com.google.common.collect.ImmutableList;
 
@@ -24,11 +24,11 @@ public class SQLBindings {
     return new SQLBindings(sql, bindings);
   }
 
-  public String getSQL() {
+  public String sql() {
     return sql;
   }
 
-  public List<Object> getBindings() {
+  public List<Object> bindings() {
     return bindings;
   }
 

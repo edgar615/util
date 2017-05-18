@@ -2,6 +2,7 @@ package com.edgar.util.db;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simple interface for entities.
@@ -28,6 +29,7 @@ public interface Persistable<ID> extends Serializable {
    *
    * @return 主键属性
    */
-  String primaryKey();
+  String primaryField();
 
+  Map<String, Object> toMap();
 }

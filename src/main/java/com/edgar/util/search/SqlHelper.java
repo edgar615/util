@@ -2,6 +2,8 @@ package com.edgar.util.search;
 
 import com.google.common.base.Joiner;
 
+import com.edgar.util.db.SQLBindings;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

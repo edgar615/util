@@ -7,8 +7,8 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-public interface CriteriaCreator {
+public interface CriterionCreator {
 
-  List<Criteria> create(String field, String opValue, boolean negation);
+  List<Criterion> create(String field, String opValue, boolean negation);
 
 }

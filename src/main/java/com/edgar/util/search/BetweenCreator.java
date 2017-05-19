@@ -11,9 +11,9 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class BetweenCreator implements CriteriaCreator {
+class BetweenCreator implements CriterionCreator {
   @Override
-  public List<Criteria> create(String field, String opValue, boolean negation) {
+  public List<Criterion> create(String field, String opValue, boolean negation) {
     if (opValue.contains("..")) {
       List<String> rangeList = Splitter.on("..")
               .limit(2)
@@ -31,20 +31,20 @@ class BetweenCreator implements CriteriaCreator {
                                     negation ? "-" + field : field + ":" + opValue);
       } else if ("*".equals(start)) {
         if (negation) {
-          return Lists.newArrayList(new Criteria(field, Op.GT, end));
+          return Lists.newArrayList(new Criterion(field, Op.GT, end));
         }
-        return Lists.newArrayList(new Criteria(field, Op.LOE, end));
+        return Lists.newArrayList(new Criterion(field, Op.LOE, end));
       } else if ("*".equals(end)) {
         if (negation) {
-          return Lists.newArrayList(new Criteria(field, Op.LT, start));
+          return Lists.newArrayList(new Criterion(field, Op.LT, start));
         }
-        return Lists.newArrayList(new Criteria(field, Op.GOE, start));
+        return Lists.newArrayList(new Criterion(field, Op.GOE, start));
       } else {
         if (negation) {
-          return Lists.newArrayList(new Criteria(field, Op.LT, start),
-                                    new Criteria(field, Op.GT, end));
+          return Lists.newArrayList(new Criterion(field, Op.LT, start),
+                                    new Criterion(field, Op.GT, end));
         }
-        return Lists.newArrayList(new Criteria(field, Op.BETWEEN, start, end));
+        return Lists.newArrayList(new Criterion(field, Op.BETWEEN, start, end));
       }
     }
     return null;

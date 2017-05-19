@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @param <ID> the type of the identifier
  */
-public interface Persistable<ID> extends Serializable {
+public interface Persistent<ID> extends Serializable {
 
   /**
    * Returns the id of the entity.

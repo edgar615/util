@@ -11,13 +11,13 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/18
  */
-public class DbTest {
+public class SqlBuilderTest {
   @Test
   public void testInsert() {
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);
-    SQLBindings sqlBindings = Db.insert(device);
+    SQLBindings sqlBindings = SqlBuilder.insert(device);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("insert into device(barcode,company_code) values(?,?)", sqlBindings.sql());
@@ -27,7 +27,7 @@ public class DbTest {
 
   @Test
   public void testDeleteById() {
-    SQLBindings sqlBindings = Db.deleteById(Device.class, 1);
+    SQLBindings sqlBindings = SqlBuilder.deleteById(Device.class, 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("delete from device where device_id = ?", sqlBindings.sql());
@@ -39,7 +39,7 @@ public class DbTest {
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);
-    SQLBindings sqlBindings = Db.updateById(device, 1);
+    SQLBindings sqlBindings = SqlBuilder.updateById(device, 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("update device set barcode = ?,company_code = ? where device_id = ?",
@@ -52,13 +52,13 @@ public class DbTest {
   @Test(expected = IllegalArgumentException.class)
   public void testUpdateEmptyShouldFailed() {
     Device device = new Device();
-    Db.updateById(device, 1);
+    SqlBuilder.updateById(device, 1);
     Assert.fail();
   }
 
   @Test
   public void testFindById() {
-    SQLBindings sqlBindings = Db.findById(Device.class, 1);
+    SQLBindings sqlBindings = SqlBuilder.findById(Device.class, 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("select * from device where device_id = ?", sqlBindings.sql());
@@ -70,7 +70,7 @@ public class DbTest {
     List<String> fields = new ArrayList<>();
     fields.add("deviceId");
     fields.add("companyCode");
-    SQLBindings sqlBindings = Db.findById(Device.class, 1, fields);
+    SQLBindings sqlBindings = SqlBuilder.findById(Device.class, 1, fields);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("select device_id,company_code from device where device_id = ?",
@@ -83,7 +83,7 @@ public class DbTest {
     List<String> fields = new ArrayList<>();
     fields.add("device_id");
     fields.add("companyCode");
-    Db.findById(Device.class, 1, fields);
+    SqlBuilder.findById(Device.class, 1, fields);
     Assert.fail();
   }
 }

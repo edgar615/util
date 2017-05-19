@@ -16,7 +16,7 @@ import java.util.Map;
  */
 class SearchHelper {
 
-  static List<Criteria> fromStr(String queryString) {
+  static List<Criterion> fromStr(String queryString) {
     List<Map.Entry<String, String>> params = checkAndCreateParams(queryString);
     return params.stream()
             .map(entry -> criterias(entry.getKey(), entry.getValue()))
@@ -53,7 +53,7 @@ class SearchHelper {
     return params;
   }
 
-  private static List<Criteria> criterias(String key, String opValue) {
+  private static List<Criterion> criterias(String key, String opValue) {
     //大于等于
     String field = key;
     boolean negation = false;
@@ -63,7 +63,7 @@ class SearchHelper {
       field = field.substring(1);
       negation = true;
     }
-    List<Criteria> criterias = new LoeCreator().create(field, opValue, negation);
+    List<Criterion> criterias = new LoeCreator().create(field, opValue, negation);
     if (criterias == null) {
       criterias = new GoeCreator().create(field, opValue, negation);
     }

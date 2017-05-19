@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  *
  * @author Edgar  Date 2017/5/18
  */
-public class Db {
+public class SqlBuilder {
 
   /**
    * 根据主键查询.
@@ -28,7 +28,7 @@ public class Db {
    * @param <ID>  主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings findById(Class<? extends Persistable<ID>> clazz, ID id) {
+  public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> clazz, ID id) {
     return findById(clazz, id, Lists.newArrayList());
   }
 
@@ -41,9 +41,9 @@ public class Db {
    * @param <ID>   主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings findById(Class<? extends Persistable<ID>> clazz,
+  public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> clazz,
                                           ID id, List<String> fields) {
-    Persistable<ID> domain = newDomain(clazz);
+    Persistent<ID> domain = newDomain(clazz);
     String selectedField = "*";
     if (!fields.isEmpty()) {
       List<String> domainFields = domain.fields();
@@ -75,8 +75,8 @@ public class Db {
    * @param <ID>  主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings deleteById(Class<? extends Persistable<ID>> clazz, ID id) {
-    Persistable<ID> domain = newDomain(clazz);
+  public static <ID> SQLBindings deleteById(Class<? extends Persistent<ID>> clazz, ID id) {
+    Persistent<ID> domain = newDomain(clazz);
     StringBuilder s = new StringBuilder();
     s.append("delete from ")
             .append(StringUtils.underscoreName(clazz.getSimpleName()))
@@ -89,13 +89,13 @@ public class Db {
   /**
    * 根据主键更新.
    *
-   * @param persistable 领域对象
+   * @param persistent 领域对象
    * @param id          主键
    * @param <ID>        主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings updateById(Persistable<ID> persistable, ID id) {
-    Map<String, Object> map = persistable.toMap();
+  public static <ID> SQLBindings updateById(Persistent<ID> persistent, ID id) {
+    Map<String, Object> map = persistent.toMap();
     List<String> columns = new ArrayList<>();
     List<Object> params = new ArrayList<>();
     map.forEach((k, v) -> {
@@ -106,14 +106,14 @@ public class Db {
     });
     MorePreconditions.checkNotEmpty(columns, "no update field");
 
-    String tableName = StringUtils.underscoreName(persistable.getClass().getSimpleName());
+    String tableName = StringUtils.underscoreName(persistent.getClass().getSimpleName());
     StringBuilder s = new StringBuilder();
     s.append("update ")
             .append(tableName)
             .append(" set ")
             .append(Joiner.on(",").join(columns))
             .append(" where ")
-            .append(StringUtils.underscoreName(persistable.primaryField()))
+            .append(StringUtils.underscoreName(persistent.primaryField()))
             .append(" = ?");
     params.add(id);
     return SQLBindings.create(s.toString(), params);
@@ -122,12 +122,12 @@ public class Db {
   /**
    * insert.
    *
-   * @param persistable 领域对象
+   * @param persistent 领域对象
    * @param <ID>        主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings insert(Persistable<ID> persistable) {
-    Map<String, Object> map = persistable.toMap();
+  public static <ID> SQLBindings insert(Persistent<ID> persistent) {
+    Map<String, Object> map = persistent.toMap();
     List<String> columns = new ArrayList<>();
     List<String> prepare = new ArrayList<>();
     List<Object> params = new ArrayList<>();
@@ -139,7 +139,7 @@ public class Db {
       }
     });
 
-    String tableName = StringUtils.underscoreName(persistable.getClass().getSimpleName());
+    String tableName = StringUtils.underscoreName(persistent.getClass().getSimpleName());
     StringBuilder s = new StringBuilder();
     s.append("insert into ")
             .append(tableName)
@@ -151,7 +151,7 @@ public class Db {
     return SQLBindings.create(s.toString(), params);
   }
 
-  private static <ID> Persistable newDomain(Class<? extends Persistable<ID>> clazz) {
+  private static <ID> Persistent newDomain(Class<? extends Persistent<ID>> clazz) {
     try {
       return clazz.newInstance();
     } catch (Exception e) {

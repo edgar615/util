@@ -10,9 +10,9 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class LikeCreator implements CriteriaCreator {
+class LikeCreator implements CriterionCreator {
   @Override
-  public List<Criteria> create(String field, String opValue, boolean negation) {
+  public List<Criterion> create(String field, String opValue, boolean negation) {
     if (opValue.startsWith("*") && opValue.endsWith("*")) {
       Preconditions.checkArgument(opValue.length() > 2,
                                   "Problems parsing queryString: %s", field + ":" + opValue);
@@ -20,7 +20,7 @@ class LikeCreator implements CriteriaCreator {
                                   "Problems parsing queryString: %s",
                                   negation ? "-" + field : field + ":" + opValue);
       return Lists
-              .newArrayList(new Criteria(field, Op.CN, opValue.substring(1, opValue.length() - 1)));
+              .newArrayList(new Criterion(field, Op.CN, opValue.substring(1, opValue.length() - 1)));
     }
     if (opValue.startsWith("*") && !opValue.endsWith("*")) {
       Preconditions.checkArgument(!negation,
@@ -28,7 +28,7 @@ class LikeCreator implements CriteriaCreator {
       Preconditions.checkArgument(!negation,
                                   "Problems parsing queryString: %s",
                                   negation ? "-" + field : field + ":" + opValue);
-      return Lists.newArrayList(new Criteria(field, Op.EW, opValue.substring(1, opValue.length())));
+      return Lists.newArrayList(new Criterion(field, Op.EW, opValue.substring(1, opValue.length())));
     }
     if (!opValue.startsWith("*") && opValue.endsWith("*")) {
       Preconditions.checkArgument(!negation,
@@ -37,7 +37,7 @@ class LikeCreator implements CriteriaCreator {
       Preconditions.checkArgument(!negation,
                                   "Problems parsing queryString: %s", field + ":" + opValue);
       return Lists
-              .newArrayList(new Criteria(field, Op.SW, opValue.substring(0, opValue.length() - 1)));
+              .newArrayList(new Criterion(field, Op.SW, opValue.substring(0, opValue.length() - 1)));
     }
     return null;
   }

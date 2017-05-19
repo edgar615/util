@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
  * @author Edgar  Date 2017/5/16
  */
 public class SqlHelper {
-  public static SQLBindings getSQL(Query query) {
+  public static SQLBindings getSQL(Criteria criteria) {
     List<String> sql = new ArrayList<>();
     List<Object> bindings = new ArrayList<>();
-    query.criterias()
+    criteria.criteria()
             .forEach(c -> {
               if (c.op() == Op.IS_NULL) {
                 sql.add(underscoreName(c.field()) + " is null");

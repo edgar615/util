@@ -11,16 +11,16 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class EqCreator implements CriteriaCreator {
+class EqCreator implements CriterionCreator {
   @Override
-  public List<Criteria> create(String field, String opValue, boolean negation) {
+  public List<Criterion> create(String field, String opValue, boolean negation) {
     //相等
     Preconditions.checkArgument(!Strings.isNullOrEmpty(opValue),
                                 "Problems parsing queryString: %s",
                                 negation ? "-" + field : field + ":" + opValue);
     if (negation) {
-      return Lists.newArrayList(new Criteria(field, Op.NE, opValue));
+      return Lists.newArrayList(new Criterion(field, Op.NE, opValue));
     }
-    return Lists.newArrayList(new Criteria(field, Op.EQ, opValue));
+    return Lists.newArrayList(new Criterion(field, Op.EQ, opValue));
   }
 }

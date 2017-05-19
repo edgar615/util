@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
  * @author Edgar  Date 2017/5/16
  */
 public class SqlHelper {
-  public static SQLBindings getSQL(Criteria criteria) {
+  public static SQLBindings getSQL(List<Criterion> criteria) {
     List<String> sql = new ArrayList<>();
     List<Object> bindings = new ArrayList<>();
-    criteria.criteria()
+    criteria
             .forEach(c -> {
               if (c.op() == Op.IS_NULL) {
                 sql.add(underscoreName(c.field()) + " is null");
@@ -37,7 +37,7 @@ public class SqlHelper {
                 sql.add(underscoreName(c.field()) + " > ?");
                 bindings.add(c.value());
               }
-              if (c.op() == Op.GOE) {
+              if (c.op() == Op.GE) {
                 sql.add(underscoreName(c.field()) + " >= ?");
                 bindings.add(c.value());
               }
@@ -45,7 +45,7 @@ public class SqlHelper {
                 sql.add(underscoreName(c.field()) + " < ?");
                 bindings.add(c.value());
               }
-              if (c.op() == Op.LOE) {
+              if (c.op() == Op.LE) {
                 sql.add(underscoreName(c.field()) + " <= ?");
                 bindings.add(c.value());
               }

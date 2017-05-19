@@ -33,12 +33,12 @@ class BetweenCreator implements CriterionCreator {
         if (negation) {
           return Lists.newArrayList(new Criterion(field, Op.GT, end));
         }
-        return Lists.newArrayList(new Criterion(field, Op.LOE, end));
+        return Lists.newArrayList(new Criterion(field, Op.LE, end));
       } else if ("*".equals(end)) {
         if (negation) {
           return Lists.newArrayList(new Criterion(field, Op.LT, start));
         }
-        return Lists.newArrayList(new Criterion(field, Op.GOE, start));
+        return Lists.newArrayList(new Criterion(field, Op.GE, start));
       } else {
         if (negation) {
           return Lists.newArrayList(new Criterion(field, Op.LT, start),

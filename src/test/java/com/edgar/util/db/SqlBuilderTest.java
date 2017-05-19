@@ -14,6 +14,7 @@ import java.util.List;
 public class SqlBuilderTest {
   @Test
   public void testInsert() {
+
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);

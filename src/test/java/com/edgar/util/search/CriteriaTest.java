@@ -32,10 +32,10 @@ public class CriteriaTest {
     Criteria criteria = Criteria.fromStr(data);
     Assert.assertTrue(criteria.criteria().contains(new Criterion("foo", Op.EQ, "bar")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("stars", Op.GT, "10")));
-    Assert.assertTrue(criteria.criteria().contains(new Criterion("created_on", Op.GOE, "13435454")));
+    Assert.assertTrue(criteria.criteria().contains(new Criterion("created_on", Op.GE, "13435454")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("deleted_on", Op.LT, "13435454")));
-    Assert.assertTrue(criteria.criteria().contains(new Criterion("applyNum", Op.LOE, "100")));
-    Assert.assertTrue(criteria.criteria().contains(new Criterion("availableNum", Op.GOE, "100")));
+    Assert.assertTrue(criteria.criteria().contains(new Criterion("applyNum", Op.LE, "100")));
+    Assert.assertTrue(criteria.criteria().contains(new Criterion("availableNum", Op.GE, "100")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("addOn", Op.BETWEEN, "1", "10")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("username", Op.SW, "edgar")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("fullname", Op.EW, "edgar")));
@@ -43,9 +43,9 @@ public class CriteriaTest {
 
 
     Assert.assertTrue(criteria.criteria().contains(new Criterion("foo", Op.NE, "bar2")));
-    Assert.assertTrue(criteria.criteria().contains(new Criterion("stars", Op.LOE, "100")));
+    Assert.assertTrue(criteria.criteria().contains(new Criterion("stars", Op.LE, "100")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("created_on", Op.LT, "23435454")));
-    Assert.assertTrue(criteria.criteria().contains(new Criterion("deleted_on", Op.GOE, "23435454")));
+    Assert.assertTrue(criteria.criteria().contains(new Criterion("deleted_on", Op.GE, "23435454")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("applyNum", Op.GT, "200")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("availableNum", Op.LT, "200")));
     Assert.assertTrue(criteria.criteria().contains(new Criterion("addOn", Op.LT, "20")));

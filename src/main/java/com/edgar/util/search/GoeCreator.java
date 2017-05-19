@@ -20,7 +20,7 @@ class GoeCreator implements CriterionCreator {
                                   negation ? "-" + field : field + ":" + opValue);
       String value = opValue.substring(1);
       if (negation) {
-        return Lists.newArrayList(new Criterion(field, Op.GOE, value));
+        return Lists.newArrayList(new Criterion(field, Op.GE, value));
       }
       return Lists.newArrayList(new Criterion(field, Op.LT, value));
     }
@@ -32,7 +32,7 @@ class GoeCreator implements CriterionCreator {
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.GT, value));
       }
-      return Lists.newArrayList(new Criterion(field, Op.LOE, value));
+      return Lists.newArrayList(new Criterion(field, Op.LE, value));
     }
     return null;
   }

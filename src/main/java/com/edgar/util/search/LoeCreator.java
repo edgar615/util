@@ -21,7 +21,7 @@ class LoeCreator implements CriterionCreator {
                                   negation ? "-" + field : field + ":" + opValue);
       String value = opValue.substring(1);
       if (negation) {
-        return Lists.newArrayList(new Criterion(field, Op.LOE, value));
+        return Lists.newArrayList(new Criterion(field, Op.LE, value));
       }
       return Lists.newArrayList(new Criterion(field, Op.GT, value));
     }
@@ -33,7 +33,7 @@ class LoeCreator implements CriterionCreator {
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.LT, value));
       }
-      return Lists.newArrayList(new Criterion(field, Op.GOE, value));
+      return Lists.newArrayList(new Criterion(field, Op.GE, value));
     }
     return null;
   }

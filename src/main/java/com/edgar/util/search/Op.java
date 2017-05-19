@@ -25,7 +25,7 @@ public enum Op {
   /**
    * >=
    */
-  GOE,
+  GE,
   /**
    * 小于
    */
@@ -33,7 +33,7 @@ public enum Op {
   /**
    * <=
    */
-  LOE,
+  LE,
 
   /**
    * start with

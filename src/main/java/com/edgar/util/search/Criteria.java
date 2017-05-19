@@ -109,7 +109,7 @@ public class Criteria {
    */
   public Criteria greaterThanOrEqualTo(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.GOE, value);
+    return addCriteria(field, Op.GE, value);
   }
 
   /**
@@ -133,7 +133,7 @@ public class Criteria {
    */
   public Criteria lessThanOrEqualTo(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.LOE, value);
+    return addCriteria(field, Op.LE, value);
   }
 
   /**

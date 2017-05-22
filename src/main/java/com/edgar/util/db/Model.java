@@ -165,37 +165,6 @@ public interface Model {
   }
 
   /**
-   * 根据条件查找.
-   *
-   * @param persistent 领域对象, <b>这个对象不需要设置任何属性，实现类需要通过这个对象获得对应的数据库属性</b>
-   * @param criteria   条件集合
-   * @param fields     返回的属性列表
-   * @param <ID>       主键类型
-   * @param <T>        领域对象
-   * @return
-   */
-  default <ID, T extends Persistent<ID>> List<T> findByCriteria(T persistent,
-                                                                List<Criterion> criteria,
-                                                                List<String> fields) {
-    Example example = Example.create().addCriteria(criteria).addFields(fields);
-    return findByExample(persistent, example);
-  }
-
-  /**
-   * 根据条件查找.
-   *
-   * @param persistent 领域对象, <b>这个对象不需要设置任何属性，实现类需要通过这个对象获得对应的数据库属性</b>
-   * @param criteria   条件集合
-   * @param <ID>       主键类型
-   * @param <T>        领域对象
-   * @return
-   */
-  default <ID, T extends Persistent<ID>> List<T> findByCriteria(T persistent,
-                                                                List<Criterion> criteria) {
-    return findByCriteria(persistent, criteria, Lists.newArrayList());
-  }
-
-  /**
    * 根据主键查找.
    *
    * @param persistent 领域对象, <b>这个对象不需要设置任何属性，实现类需要通过这个对象获得对应的数据库属性</b>

@@ -43,7 +43,19 @@ public class SqlBuilder {
    */
   public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> clazz,
                                           ID id, List<String> fields) {
-    Persistent<ID> domain = newDomain(clazz);
+    return findById(newDomain(clazz), id, fields);
+  }
+
+  /**
+   * 根据主键查询.
+   *
+   * @param domain 领域对象
+   * @param id     主键
+   * @param fields 返回的属性列表
+   * @param <ID>   主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings findById(Persistent<ID> domain, ID id, List<String> fields) {
     String selectedField = "*";
     if (!fields.isEmpty()) {
       List<String> domainFields = domain.fields();
@@ -60,7 +72,7 @@ public class SqlBuilder {
     s.append("select ")
             .append(selectedField)
             .append(" from ")
-            .append(StringUtils.underscoreName(clazz.getSimpleName()))
+            .append(StringUtils.underscoreName(domain.getClass().getSimpleName()))
             .append(" where ")
             .append(StringUtils.underscoreName(domain.primaryField()))
             .append(" = ?");
@@ -77,9 +89,21 @@ public class SqlBuilder {
    */
   public static <ID> SQLBindings deleteById(Class<? extends Persistent<ID>> clazz, ID id) {
     Persistent<ID> domain = newDomain(clazz);
+    return deleteById(domain, id);
+  }
+
+  /**
+   * 根据主键删除.
+   *
+   * @param domain 领域对象
+   * @param id     主键
+   * @param <ID>   主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings deleteById(Persistent<ID> domain, ID id) {
     StringBuilder s = new StringBuilder();
     s.append("delete from ")
-            .append(StringUtils.underscoreName(clazz.getSimpleName()))
+            .append(StringUtils.underscoreName(domain.getClass().getSimpleName()))
             .append(" where ")
             .append(StringUtils.underscoreName(domain.primaryField()))
             .append(" = ?");
@@ -90,8 +114,8 @@ public class SqlBuilder {
    * 根据主键更新.
    *
    * @param persistent 领域对象
-   * @param id          主键
-   * @param <ID>        主键类型
+   * @param id         主键
+   * @param <ID>       主键类型
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings updateById(Persistent<ID> persistent, ID id) {
@@ -123,7 +147,7 @@ public class SqlBuilder {
    * insert.
    *
    * @param persistent 领域对象
-   * @param <ID>        主键类型
+   * @param <ID>       主键类型
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings insert(Persistent<ID> persistent) {

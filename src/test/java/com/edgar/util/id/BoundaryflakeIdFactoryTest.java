@@ -49,8 +49,8 @@ public class BoundaryflakeIdFactoryTest {
     String id = "27055360264773117879689960947719";// idFactory.nextId();
     TimeExtracter timeExtracter = (TimeExtracter) idFactory;
     System.out.println(timeExtracter.fetchTime(id));
-    ServerExtracter serverExtracter = (ServerExtracter) idFactory;
-    System.out.println(serverExtracter.fetchServer(id));
+    ShardingExtracter shardingExtracter = (ShardingExtracter) idFactory;
+    System.out.println(shardingExtracter.fetchSharding(id));
     SeqExtracter seqExtracter = (SeqExtracter) idFactory;
     System.out.println(seqExtracter.fetchSeq(id));
   }

@@ -16,7 +16,7 @@ import java.math.BigInteger;
  * @author Edgar  Date 2016/6/21
  */
 public class BoundaryFlakeIdFactory implements IdFactory<String>, TimeExtracter<String>,
-        ServerExtracter<String>, SeqExtracter<String> {
+    ShardingExtracter<String>, SeqExtracter<String> {
 
   /**
    * 自增序列的位数
@@ -111,7 +111,7 @@ public class BoundaryFlakeIdFactory implements IdFactory<String>, TimeExtracter<
   }
 
   @Override
-  public long fetchServer(String id) {
+  public long fetchSharding(String id) {
     BigInteger newId = new BigInteger(id);
     return newId.xor(newId.shiftRight(TIME_LEFT_BIT).shiftLeft(TIME_LEFT_BIT))
             .shiftRight(SERVER_LEFT_BIT).longValue();

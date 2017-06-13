@@ -82,6 +82,7 @@ public class Validations {
   private static boolean checkParameter(Object value) {
     return value == null
            || value instanceof String
+           || value instanceof Boolean
            || value instanceof Short
            || value instanceof Byte
            || value instanceof Character

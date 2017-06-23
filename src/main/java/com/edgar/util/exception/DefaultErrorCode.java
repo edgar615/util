@@ -159,6 +159,10 @@ public enum DefaultErrorCode implements ErrorCode {
   MISSING_HEADER(1028, "Incomplete Header", 428),
 
   /**
+   * 过多的请求.
+   */
+  TOO_MANY_REQ(1029, "Too Many Requests", 429),
+  /**
    * 事件超时.
    */
   EVENTBUS_TIMOUT(1101, "Eventbus: Timeout", 400),

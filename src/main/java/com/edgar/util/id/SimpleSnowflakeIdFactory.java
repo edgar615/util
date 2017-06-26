@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentMap;
  * @author Edgar
  */
 class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, SeqExtracter<Long>,
-        ServerExtracter<Long> {
+    ShardingExtracter<Long> {
 
   /**
    * 自增序列的位数
@@ -149,12 +149,12 @@ class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, 
   }
 
   @Override
-  public long fetchServer(Long id) {
+  public long fetchSharding(Long id) {
     return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) >> SERVER_LEFT_BIT;
   }
 
   @Override
   public long fetchSeq(Long id) {
-    return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) ^ (fetchServer(id) << SERVER_LEFT_BIT);
+    return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) ^ (fetchSharding(id) << SERVER_LEFT_BIT);
   }
 }

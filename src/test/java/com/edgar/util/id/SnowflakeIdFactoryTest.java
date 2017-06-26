@@ -49,8 +49,8 @@ public class SnowflakeIdFactoryTest {
     System.out.println(Long.toBinaryString(id).length());
     TimeExtracter timeExtracter = (TimeExtracter) idFactory;
     System.out.println(timeExtracter.fetchTime(id));
-    ServerExtracter serverExtracter = (ServerExtracter) idFactory;
-    System.out.println(serverExtracter.fetchServer(id));
+    ShardingExtracter shardingExtracter = (ShardingExtracter) idFactory;
+    System.out.println(shardingExtracter.fetchSharding(id));
     SeqExtracter seqExtracter = (SeqExtracter) idFactory;
     System.out.println(seqExtracter.fetchSeq(id));
   }

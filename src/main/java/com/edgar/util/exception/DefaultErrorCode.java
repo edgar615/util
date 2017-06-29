@@ -162,6 +162,12 @@ public enum DefaultErrorCode implements ErrorCode {
    * 过多的请求.
    */
   TOO_MANY_REQ(1029, "Too Many Requests", 429),
+
+  /**
+   * 断路器打开.
+   */
+  BREAKER_TRIPPED(1030, "Breaker Tripped", 429),
+
   /**
    * 事件超时.
    */

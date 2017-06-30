@@ -5,10 +5,10 @@ import com.google.common.base.Preconditions;
 
 /**
  * Created by Edgar on 2017/3/8.
- *
+ *改为public，因为eventbus的codec需要访问这个对象
  * @author Edgar  Date 2017/3/8
  */
-class EventImpl implements Event {
+public class EventImpl implements Event {
 
   private final EventHead head;
 

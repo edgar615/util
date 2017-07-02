@@ -13,9 +13,8 @@ public class ResponseCodec implements EventActionCodec {
   public EventAction decode(Map<String, Object> map) {
     Integer result = (Integer) map.get("result");
     Map<String, Object> content = (Map<String, Object>) map.get("content");
-    String reply = (String) map.get("reply");
     String resource = (String) map.get("resource");
-    return Response.create(resource, result, reply, content);
+    return Response.create(resource, result, content);
   }
 
   @Override
@@ -24,7 +23,6 @@ public class ResponseCodec implements EventActionCodec {
     Map<String, Object> map = new HashMap<>();
     map.put("resource", response.resource());
     map.put("result", response.result());
-    map.put("reply", response.reply());
     map.put("content", response.content());
     return map;
   }

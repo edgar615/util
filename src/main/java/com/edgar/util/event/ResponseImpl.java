@@ -18,38 +18,26 @@ class ResponseImpl implements Response {
   private final int result;
 
   /**
-   * 对应的请求ID，表示是针对哪条消息的回应.
-   */
-  private final String reply;
-
-  /**
    * 回应结果
    */
   private final Map<String, Object> content;
 
   /**
-   * 资源标识
+   * 对应的请求ID，表示是针对哪条消息的回应.
    */
   private final String resource;
 
-  ResponseImpl(String resource, int result, String reply, Map<String, Object> content) {
+  ResponseImpl(String resource, int result,Map<String, Object> content) {
     Preconditions.checkNotNull(resource, "resource cannot be null");
-    Preconditions.checkNotNull(reply, "reply cannot be null");
     Preconditions.checkNotNull(content, "content cannot be null");
     this.resource = resource;
     this.result = result;
-    this.reply = reply;
     this.content = ImmutableMap.copyOf(content);
   }
 
   @Override
   public int result() {
     return result;
-  }
-
-  @Override
-  public String reply() {
-    return reply;
   }
 
   @Override
@@ -62,7 +50,6 @@ class ResponseImpl implements Response {
     return MoreObjects.toStringHelper("Response")
             .add("resource", resource)
             .add("result", result)
-            .add("reply", reply)
             .add("content", content)
             .toString();
   }

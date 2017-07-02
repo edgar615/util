@@ -12,11 +12,6 @@ public interface Request extends EventAction {
   String TYPE = "request";
 
   /**
-   * @return 请求参数
-   */
-  Map<String, Object> content();
-
-  /**
    * @return 操作类型
    */
   String operation();

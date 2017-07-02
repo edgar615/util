@@ -94,8 +94,7 @@ public class EventTest {
 
   @Test
   public void testResponse() {
-    String reply = UUID.randomUUID().toString();
-    Response response = Response.create("test", 1, reply, ImmutableMap.of("foo", 1));
+    Response response = Response.create("test", 1, ImmutableMap.of("foo", 1));
     String id = UUID.randomUUID().toString();
     String to = UUID.randomUUID().toString();
     Event event = Event.create(id, to, response);
@@ -117,7 +116,6 @@ public class EventTest {
     Assert.assertEquals(group, headerMap.get("group"));
 
     Map<String, Object> bodyMap = (Map<String, Object>) map.get("data");
-    Assert.assertEquals(reply, bodyMap.get("reply"));
     Assert.assertEquals(1, bodyMap.get("result"));
     Map<String, Object> content = (Map<String, Object>) bodyMap.get("content");
     Assert.assertEquals(1, content.get("foo"));
@@ -133,7 +131,6 @@ public class EventTest {
     Assert.assertTrue(event2.action() instanceof Response);
 
     Response response2 = (Response) event2.action();
-    Assert.assertEquals(reply, response2.reply());
     Assert.assertEquals(1, response2.result());
     Assert.assertEquals(1, response2.content().get("foo"));
 

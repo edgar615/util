@@ -12,11 +12,6 @@ public interface Message extends EventAction {
   String TYPE = "message";
 
   /**
-   * @return 请求参数
-   */
-  Map<String, Object> content();
-
-  /**
    * 创建一个单向消息
    *
    * @param resource 资源标识

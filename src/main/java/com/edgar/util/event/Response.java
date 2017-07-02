@@ -16,19 +16,7 @@ public interface Response extends EventAction {
    */
   int result();
 
-  /**
-   *
-   * @return 对应的请求ID
-   */
-  String reply();
-
-  /**
-   *
-   * @return 回应结果
-   */
-  Map<String, Object> content();
-
-  static Response create(String resource, int result, String reply, Map<String, Object> content) {
-    return new ResponseImpl(resource, result, reply, content);
+  static Response create(String resource, int result, Map<String, Object> content) {
+    return new ResponseImpl(resource, result, content);
   }
 }

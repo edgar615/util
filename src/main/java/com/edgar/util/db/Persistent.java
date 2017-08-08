@@ -32,4 +32,10 @@ public interface Persistent<ID> extends Serializable {
   String primaryField();
 
   Map<String, Object> toMap();
+
+  /**
+   * 设置自增主键
+   * @param key
+   */
+  void setGeneratedKey(Number key);
 }

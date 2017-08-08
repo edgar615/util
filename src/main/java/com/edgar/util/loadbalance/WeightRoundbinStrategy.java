@@ -71,7 +71,7 @@ class WeightRoundbinStrategy implements ProviderStrategy {
     ServiceInstance instance = instances.stream()
             .max((o1, o2) -> o1.effectiveWeight() - o2.effectiveWeight())
             .get();
-    Collections.sort(new ArrayList<>(instances), (o1, o2) -> o1.weight() - o2.weight());
+//    Collections.sort(new ArrayList<>(instances), (o1, o2) -> o1.weight() - o2.weight());
     return instance.decEffectiveWeight(total);
   }
 

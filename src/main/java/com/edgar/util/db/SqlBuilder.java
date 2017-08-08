@@ -23,33 +23,33 @@ public class SqlBuilder {
   /**
    * 根据主键查询.
    *
-   * @param clazz 领域类
+   * @param elementType 持久化对象
    * @param id    主键
    * @param <ID>  主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> clazz, ID id) {
-    return findById(clazz, id, Lists.newArrayList());
+  public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> elementType, ID id) {
+    return findById(elementType, id, Lists.newArrayList());
   }
 
   /**
    * 根据主键查询.
    *
-   * @param clazz  领域类
+   * @param elementType  持久化对象
    * @param id     主键
    * @param fields 返回的属性列表
    * @param <ID>   主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> clazz,
+  public static <ID> SQLBindings findById(Class<? extends Persistent<ID>> elementType,
                                           ID id, List<String> fields) {
-    return findById(newDomain(clazz), id, fields);
+    return findById(newDomain(elementType), id, fields);
   }
 
   /**
    * 根据主键查询.
    *
-   * @param domain 领域对象
+   * @param domain 持久化对象
    * @param id     主键
    * @param fields 返回的属性列表
    * @param <ID>   主键类型
@@ -82,7 +82,7 @@ public class SqlBuilder {
   /**
    * 根据主键删除.
    *
-   * @param clazz 领域类
+   * @param clazz 持久化对象
    * @param id    主键
    * @param <ID>  主键类型
    * @return {@link SQLBindings}
@@ -95,7 +95,7 @@ public class SqlBuilder {
   /**
    * 根据主键删除.
    *
-   * @param domain 领域对象
+   * @param domain 持久化对象
    * @param id     主键
    * @param <ID>   主键类型
    * @return {@link SQLBindings}
@@ -113,7 +113,7 @@ public class SqlBuilder {
   /**
    * 根据主键更新.
    *
-   * @param persistent 领域对象
+   * @param persistent 持久化对象
    * @param id         主键
    * @param <ID>       主键类型
    * @return {@link SQLBindings}
@@ -146,7 +146,7 @@ public class SqlBuilder {
   /**
    * insert.
    *
-   * @param persistent 领域对象
+   * @param persistent 持久化对象
    * @param <ID>       主键类型
    * @return {@link SQLBindings}
    */

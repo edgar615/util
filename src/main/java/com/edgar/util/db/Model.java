@@ -48,24 +48,25 @@ public interface Model {
   /**
    * 根据主键更新.
    *
-   * @param elementType 持久化对象
+   * @param persistent 持久化对象
    * @param id         主键
    * @param <ID>       主键类型
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateById(Class<T> elementType, ID id);
+  <ID, T extends Persistent<ID>> int updateById(Persistent<ID> persistent, ID id);
 
   /**
    * 根据条件更新.
    *
-   * @param elementType 持久化对象
+   * @param persistent 持久化对象
    * @param criteria   条件集合
    * @param <ID>       条件集合
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateByCriteria(Class<T> elementType, List<Criterion> criteria);
+  <ID, T extends Persistent<ID>> int updateByCriteria(Persistent<ID> persistent, List<Criterion>
+          criteria);
 
   /**
    * 根据主键查找.

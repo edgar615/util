@@ -1,5 +1,6 @@
 package com.edgar.util.search;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 
@@ -29,8 +30,45 @@ public class Example {
     return new Example();
   }
 
+  /**
+   * 根据传入的string，解析出对应的query.
+   * <p>
+   * <pre>
+   * foo:bar foo=bar的条件
+   * foo:"bar" foo="bar"的条件
+   * stars:>10 stars > 10的条件
+   * created:>=2012-04-30
+   * created:>2012-04-29
+   * stars:10..* stars >= 10的条件
+   * created:2012-04-30..*
+   * stars:10..50
+   * created:2012-04-30..2012-07-04
+   * stars:<10
+   * stars:<=9
+   * created:<2012-07-05
+   * created:<=2012-07-04
+   * stars:* ..10
+   * created:*..2012-04-30
+   * stars:1..10
+   * created:2012-04-30..2012-07-04
+   * foo:*bar 以bar开头的条件
+   * foo:bar* 以bar结尾的条件
+   * foo:*bar* 包含bar的条件
+   * -language:javascript 取反language !=javascript的条件 -created:<=2012-07-04表示created>2012-07-04
+   * </pre>
+   * <p>
+   * 多个条件用空格组合，<b>空格会被URL编码为+</b>
+   *
+   * @param query 查询字符串
+   * @return Example
+   */
+  public Example addQuery(String query) {
+    addCriteria(SearchHelper.fromStr(query));
+    return this;
+  }
+
   public Example addCriteria(List<Criterion> criteria) {
-    criteria.addAll(criteria);
+    this.criteria.addCriteria(criteria);
     return this;
   }
 
@@ -276,5 +314,14 @@ public class Example {
 
   public List<String> orderBy() {
     return ImmutableList.copyOf(orderBy);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("Example")
+            .add("criteria", criteria)
+            .add("fields", fields)
+            .add("orderBy", orderBy)
+            .toString();
   }
 }

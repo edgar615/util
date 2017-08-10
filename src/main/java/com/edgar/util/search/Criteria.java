@@ -1,5 +1,6 @@
 package com.edgar.util.search;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -31,45 +32,6 @@ public class Criteria {
    */
   public static Criteria create() {
     return new Criteria();
-  }
-
-  /**
-   * 根据传入的string，解析出对应的query.
-   * <p>
-   * <pre>
-   * foo:bar foo=bar的条件
-   * foo:"bar" foo="bar"的条件
-   * stars:>10 stars > 10的条件
-   * created:>=2012-04-30
-   * created:>2012-04-29
-   * stars:10..* stars >= 10的条件
-   * created:2012-04-30..*
-   * stars:10..50
-   * created:2012-04-30..2012-07-04
-   * stars:<10
-   * stars:<=9
-   * created:<2012-07-05
-   * created:<=2012-07-04
-   * stars:* ..10
-   * created:*..2012-04-30
-   * stars:1..10
-   * created:2012-04-30..2012-07-04
-   * foo:*bar 以bar开头的条件
-   * foo:bar* 以bar结尾的条件
-   * foo:*bar* 包含bar的条件
-   * -language:javascript 取反language !=javascript的条件 -created:<=2012-07-04表示created>2012-07-04
-   * </pre>
-   * <p>
-   * 多个条件用空格组合，<b>空格会被URL编码为+</b>
-   *
-   * @param queryString 查询字符串
-   * @return Criteria
-   */
-  public static Criteria fromStr(String queryString) {
-    Criteria criteria = new Criteria();
-    SearchHelper.fromStr(queryString)
-            .forEach(c -> criteria.addCriteria(c));
-    return criteria;
   }
 
   public List<Criterion> criteria() {
@@ -248,6 +210,11 @@ public class Criteria {
     return addCriteria(field, Op.IS_NOT_NULL);
   }
 
+  protected Criteria addCriteria(List<Criterion> criteria) {
+    this.criteria.addAll(criteria);
+    return this;
+  }
+
   /**
    * 增加一个查询条件
    *
@@ -255,7 +222,7 @@ public class Criteria {
    * @param op    查询条件
    * @return Criteria
    */
-  private Criteria addCriteria(String field, Op op) {
+  protected Criteria addCriteria(String field, Op op) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
     criteria.add(new Criterion(field, op));
     return this;
@@ -301,7 +268,7 @@ public class Criteria {
    * @param value 比较值
    * @return Criteria
    */
-  private Criteria addCriteria(String field, Op op, Object value) {
+  protected Criteria addCriteria(String field, Op op, Object value) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
     Preconditions.checkNotNull(value, "value cannot be null");
     check(op, value);
@@ -318,7 +285,7 @@ public class Criteria {
    * @param value2 比较值
    * @return Criteria
    */
-  private Criteria addCriteria(String field, Op op, Object value1, Object value2) {
+  protected Criteria addCriteria(String field, Op op, Object value1, Object value2) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
     Preconditions.checkNotNull(value1, "value1 cannot be null");
     Preconditions.checkNotNull(value2, "value2 cannot be null");
@@ -329,9 +296,16 @@ public class Criteria {
     return this;
   }
 
-  private Criteria addCriteria(Criterion criteria) {
+  protected Criteria addCriteria(Criterion criteria) {
     Preconditions.checkNotNull(criteria, "value1 cannot be null");
     this.criteria.add(criteria);
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("Criteria")
+            .add("criteria", criteria)
+            .toString();
   }
 }

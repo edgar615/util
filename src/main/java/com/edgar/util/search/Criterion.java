@@ -1,5 +1,7 @@
 package com.edgar.util.search;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * 查询标准.
  *
@@ -83,4 +85,13 @@ public class Criterion {
     return secondValue;
   }
 
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("Criterion")
+            .add("field", field)
+            .add("op", op)
+            .add("value", value)
+            .add("secondValue", secondValue)
+            .toString();
+  }
 }

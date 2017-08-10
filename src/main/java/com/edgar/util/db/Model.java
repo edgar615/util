@@ -38,12 +38,12 @@ public interface Model {
    * 根据条件删除.
    *
    * @param elementType 持久化对象
-   * @param criteria   条件集合
+   * @param example   查询条件
    * @param <ID>       主键类型
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int deleteByCriteria(Class<T> elementType, List<Criterion> criteria);
+  <ID, T extends Persistent<ID>> int deleteByCriteria(Class<T> elementType, Example example);
 
   /**
    * 根据主键更新.
@@ -60,13 +60,12 @@ public interface Model {
    * 根据条件更新.
    *
    * @param persistent 持久化对象
-   * @param criteria   条件集合
+   * @param example   查询条件
    * @param <ID>       条件集合
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateByCriteria(Persistent<ID> persistent, List<Criterion>
-          criteria);
+  <ID, T extends Persistent<ID>> int updateByCriteria(Persistent<ID> persistent, Example example);
 
   /**
    * 根据主键查找.
@@ -109,12 +108,12 @@ public interface Model {
    * 根据条件查找.
    *
    * @param elementType 持久化对象
-   * @param criteria   条件集合
+   * @param example   查询条件
    * @param <ID>       主键类型
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int countByCriteria(Class<T> elementType, List<Criterion> criteria);
+  <ID, T extends Persistent<ID>> int countByCriteria(Class<T> elementType, Example example);
 
   /**
    * 分页查找.
@@ -132,7 +131,7 @@ public interface Model {
     Preconditions.checkArgument(page > 0, "page must greater than 0");
     Preconditions.checkArgument(pageSize > 0, "pageSize must greater than 0");
     //查询总数
-    final int totalRecords = countByCriteria(elementType, example.criteria());
+    final int totalRecords = countByCriteria(elementType, example);
     if (totalRecords == 0) {
       return Pagination.newInstance(page, pageSize, totalRecords, Lists.newArrayList());
     }

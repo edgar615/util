@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/22
  */
-public interface Model {
+public interface Jdbc {
 
   /**
    * 新增数据.
@@ -22,6 +22,14 @@ public interface Model {
    * @param <ID>       主键类型
    */
   <ID> void insert(Persistent<ID> persistent);
+
+  /**
+   * insert一条数据，并返回自增主键
+   *
+   * @param persistent
+   * @param <ID>
+   */
+  <ID> void insertAndGeneratedKey(Persistent<ID> persistent);
 
   /**
    * 根据主键删除.

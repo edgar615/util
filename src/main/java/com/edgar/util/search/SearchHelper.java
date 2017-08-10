@@ -30,6 +30,7 @@ class SearchHelper {
     List<String> splitedList =
             Splitter.onPattern(":")
                     .omitEmptyStrings()
+                    .trimResults()
                     .splitToList(queryString);
     List<String> list = new ArrayList<>();
     for (int i = 0; i < splitedList.size(); i++) {
@@ -37,11 +38,11 @@ class SearchHelper {
       int index = str.lastIndexOf(" ");
       if (index == -1) {
         //第一个参数名，最后一个参数值
-        list.add(str);
+        list.add(str.trim());
       } else {
         //前半部分是上一个参数名对应的参数值，后半部分是下一个参数值对应的参数名
-        list.add(str.substring(0, index));
-        list.add(str.substring(index + 1));
+        list.add(str.substring(0, index).trim());
+        list.add(str.substring(index + 1).trim());
       }
     }
     Preconditions.checkArgument(list.size() % 2 == 0,

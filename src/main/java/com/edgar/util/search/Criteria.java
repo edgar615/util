@@ -47,7 +47,7 @@ public class Criteria {
    */
   public Criteria notEqualsTo(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.NE, value);
+    return addCriterion(field, Op.NE, value);
   }
 
   /**
@@ -59,7 +59,7 @@ public class Criteria {
    */
   public Criteria greaterThan(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.GT, value);
+    return addCriterion(field, Op.GT, value);
   }
 
   /**
@@ -71,7 +71,7 @@ public class Criteria {
    */
   public Criteria greaterThanOrEqualTo(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.GE, value);
+    return addCriterion(field, Op.GE, value);
   }
 
   /**
@@ -83,7 +83,7 @@ public class Criteria {
    */
   public Criteria lessThan(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.LT, value);
+    return addCriterion(field, Op.LT, value);
   }
 
   /**
@@ -95,7 +95,7 @@ public class Criteria {
    */
   public Criteria lessThanOrEqualTo(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.LE, value);
+    return addCriterion(field, Op.LE, value);
   }
 
   /**
@@ -107,7 +107,7 @@ public class Criteria {
    */
   public Criteria contains(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.CN, value);
+    return addCriterion(field, Op.CN, value);
   }
 
   /**
@@ -119,7 +119,7 @@ public class Criteria {
    */
   public Criteria startsWith(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.SW, value);
+    return addCriterion(field, Op.SW, value);
   }
 
   /**
@@ -133,7 +133,7 @@ public class Criteria {
    */
   public Criteria endsWtih(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.EW, value);
+    return addCriterion(field, Op.EW, value);
   }
 
   /**
@@ -146,7 +146,7 @@ public class Criteria {
   public Criteria in(String field, List<Object> values) {
     Preconditions.checkNotNull(values);
     MorePreconditions.checkNotEmpty(values);
-    return addCriteria(field, Op.IN, values);
+    return addCriterion(field, Op.IN, values);
   }
 
   /**
@@ -159,7 +159,7 @@ public class Criteria {
   public Criteria notIn(String field, List<Object> values) {
     Preconditions.checkNotNull(values);
     MorePreconditions.checkNotEmpty(values);
-    return addCriteria(field, Op.NOT_IN, values);
+    return addCriterion(field, Op.NOT_IN, values);
   }
 
   /**
@@ -171,7 +171,7 @@ public class Criteria {
    */
   public Criteria equalsTo(String field, Object value) {
     Preconditions.checkNotNull(value);
-    return addCriteria(field, Op.EQ, value);
+    return addCriterion(field, Op.EQ, value);
   }
 
   /**
@@ -185,7 +185,7 @@ public class Criteria {
   public Criteria between(String field, Object value1, Object value2) {
     Preconditions.checkNotNull(value1);
     Preconditions.checkNotNull(value2);
-    return addCriteria(field, Op.BETWEEN, value1, value2);
+    return addCriterion(field, Op.BETWEEN, value1, value2);
   }
 
   /**
@@ -196,7 +196,7 @@ public class Criteria {
    */
   public Criteria isNull(String field) {
     Preconditions.checkNotNull(field);
-    return addCriteria(field, Op.IS_NULL);
+    return addCriterion(field, Op.IS_NULL);
   }
 
   /**
@@ -207,10 +207,10 @@ public class Criteria {
    */
   public Criteria isNotNull(String field) {
     Preconditions.checkNotNull(field);
-    return addCriteria(field, Op.IS_NOT_NULL);
+    return addCriterion(field, Op.IS_NOT_NULL);
   }
 
-  protected Criteria addCriteria(List<Criterion> criteria) {
+  Criteria addCriteria(List<Criterion> criteria) {
     this.criteria.addAll(criteria);
     return this;
   }
@@ -222,7 +222,7 @@ public class Criteria {
    * @param op    查询条件
    * @return Criteria
    */
-  protected Criteria addCriteria(String field, Op op) {
+  Criteria addCriterion(String field, Op op) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
     criteria.add(new Criterion(field, op));
     return this;
@@ -268,11 +268,11 @@ public class Criteria {
    * @param value 比较值
    * @return Criteria
    */
-  protected Criteria addCriteria(String field, Op op, Object value) {
+  Criteria addCriterion(String field, Op op, Object value) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
     Preconditions.checkNotNull(value, "value cannot be null");
     check(op, value);
-    addCriteria(new Criterion(field, op, value));
+    addCriterion(new Criterion(field, op, value));
     return this;
   }
 
@@ -285,20 +285,20 @@ public class Criteria {
    * @param value2 比较值
    * @return Criteria
    */
-  protected Criteria addCriteria(String field, Op op, Object value1, Object value2) {
+  Criteria addCriterion(String field, Op op, Object value1, Object value2) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
     Preconditions.checkNotNull(value1, "value1 cannot be null");
     Preconditions.checkNotNull(value2, "value2 cannot be null");
     Preconditions.checkArgument(op == Op.BETWEEN, "op should be BETWEEN");
     check(op, value1);
     check(op, value2);
-    addCriteria(new Criterion(field, op, value1, value2));
+    addCriterion(new Criterion(field, op, value1, value2));
     return this;
   }
 
-  protected Criteria addCriteria(Criterion criteria) {
-    Preconditions.checkNotNull(criteria, "value1 cannot be null");
-    this.criteria.add(criteria);
+  Criteria addCriterion(Criterion criterion) {
+    Preconditions.checkNotNull(criterion, "value1 cannot be null");
+    this.criteria.add(criterion);
     return this;
   }
 

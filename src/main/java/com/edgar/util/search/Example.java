@@ -9,6 +9,7 @@ import com.edgar.util.base.MorePreconditions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Edgar on 2017/5/19.
@@ -69,6 +70,11 @@ public class Example {
 
   public Example addCriteria(List<Criterion> criteria) {
     this.criteria.addCriteria(criteria);
+    return this;
+  }
+
+  public Example addCriterion(Criterion criterion) {
+    this.criteria.addCriterion(criterion);
     return this;
   }
 
@@ -306,14 +312,33 @@ public class Example {
   public Example orderBy(String field) {
     MorePreconditions.checkNoNullElements(fields, "field cannot be null");
     orderBy.addAll(Splitter.on(",")
-                           .trimResults()
-                           .omitEmptyStrings()
-                           .splitToList(field));
+            .trimResults()
+            .omitEmptyStrings()
+            .splitToList(field));
     return this;
   }
 
   public List<String> orderBy() {
     return ImmutableList.copyOf(orderBy);
+  }
+
+  public Example removeUndefinedField(List<String> definedFields) {
+    Example copyExample = Example.create();
+    this.criteria().stream()
+            .filter(c -> definedFields.contains(c.field()))
+            .forEach(c -> copyExample.addCriterion(c));
+    this.fields().stream()
+            .filter(f -> definedFields.contains(f))
+            .forEach(f -> copyExample.addField(f));
+    this.orderBy().stream()
+            .filter(o -> {
+              if (o.startsWith("-")) {
+                return definedFields.contains(o.substring(1));
+              }
+              return definedFields.contains(o);
+            })
+            .forEach(o -> copyExample.orderBy(o));
+    return copyExample;
   }
 
   @Override

@@ -1,6 +1,7 @@
 package com.edgar.util.search;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -16,20 +17,20 @@ class LoeCreator implements CriterionCreator {
   public List<Criterion> create(String field, String opValue, boolean negation) {
     if (opValue.startsWith(">")
         && !opValue.startsWith(">=")) {
-      Preconditions.checkArgument(opValue.length() > 1,
+      String value = opValue.substring(1).trim();
+      Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
                                   "Problems parsing queryString: %s",
                                   negation ? "-" + field : field + ":" + opValue);
-      String value = opValue.substring(1);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.LE, value));
       }
       return Lists.newArrayList(new Criterion(field, Op.GT, value));
     }
     if (opValue.startsWith(">=")) {
-      Preconditions.checkArgument(opValue.length() > 2,
+      String value = opValue.substring(2).trim();
+      Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
                                   "Problems parsing queryString: %s",
                                   negation ? "-" + field : field + ":" + opValue);
-      String value = opValue.substring(2);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.LT, value));
       }

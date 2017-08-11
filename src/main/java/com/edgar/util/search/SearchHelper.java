@@ -32,14 +32,15 @@ class SearchHelper {
                     .omitEmptyStrings()
                     .trimResults()
                     .splitToList(queryString);
+    System.out.println(splitedList);
     List<String> list = new ArrayList<>();
     for (int i = 0; i < splitedList.size(); i++) {
-      String str = splitedList.get(i);
-      int index = str.lastIndexOf(" ");
-      if (index == -1) {
+      if (i == 0 || i == splitedList.size() - 1) {
         //第一个参数名，最后一个参数值
-        list.add(str.trim());
+        list.add(splitedList.get(i).trim());
       } else {
+        String str = splitedList.get(i);
+        int index = str.lastIndexOf(" ");
         //前半部分是上一个参数名对应的参数值，后半部分是下一个参数值对应的参数名
         list.add(str.substring(0, index).trim());
         list.add(str.substring(index + 1).trim());

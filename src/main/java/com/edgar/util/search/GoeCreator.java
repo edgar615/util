@@ -15,20 +15,20 @@ class GoeCreator implements CriterionCreator {
   public List<Criterion> create(String field, String opValue, boolean negation) {
     if (opValue.startsWith("<")
         && !opValue.startsWith("<=")) {
+      String value = opValue.substring(1).trim();
       Preconditions.checkArgument(opValue.length() > 1,
                                   "Problems parsing queryString: %s",
                                   negation ? "-" + field : field + ":" + opValue);
-      String value = opValue.substring(1);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.GE, value));
       }
       return Lists.newArrayList(new Criterion(field, Op.LT, value));
     }
     if (opValue.startsWith("<=")) {
+      String value = opValue.substring(2).trim();
       Preconditions.checkArgument(opValue.length() > 2,
                                   "Problems parsing queryString: %s",
                                   negation ? "-" + field : field + ":" + opValue);
-      String value = opValue.substring(2);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.GT, value));
       }

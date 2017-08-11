@@ -73,12 +73,15 @@ public class ExampleTest {
 
   @Test
   public void testTrimBlank() {
-    String data = " foo: bar fda   -name: edgar stars:    >10    ";
+    String data = " foo:  bar fda   -name: edgar stars:    > 10   addOn :   1  ..  2  login_name  "
+                  + ":   *   edgar   * ";
     Example example = Example.create().addQuery(data);
     System.out.println(example);
     Assert.assertTrue(example.criteria().contains(new Criterion("foo", Op.EQ, "bar fda")));
     Assert.assertTrue(example.criteria().contains(new Criterion("name", Op.NE, "edgar")));
     Assert.assertTrue(example.criteria().contains(new Criterion("stars", Op.GT, "10")));
+    Assert.assertTrue(example.criteria().contains(new Criterion("addOn", Op.BETWEEN, "1", "2")));
+    Assert.assertTrue(example.criteria().contains(new Criterion("login_name", Op.CN, "   edgar   ")));
   }
 
   @Test(expected = IllegalArgumentException.class)

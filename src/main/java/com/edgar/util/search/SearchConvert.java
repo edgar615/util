@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author Edgar  Date 2017/5/15
  */
-class SearchHelper {
+class SearchConvert {
 
   static List<Criterion> fromStr(String queryString) {
     List<Map.Entry<String, String>> params = checkAndCreateParams(queryString);

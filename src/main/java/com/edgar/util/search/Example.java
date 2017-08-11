@@ -9,7 +9,6 @@ import com.edgar.util.base.MorePreconditions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Edgar on 2017/5/19.
@@ -64,7 +63,7 @@ public class Example {
    * @return Example
    */
   public Example addQuery(String query) {
-    addCriteria(SearchHelper.fromStr(query));
+    addCriteria(SearchConvert.fromStr(query));
     return this;
   }
 

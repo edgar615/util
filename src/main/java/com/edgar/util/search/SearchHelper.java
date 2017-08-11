@@ -41,6 +41,8 @@ class SearchHelper {
       } else {
         String str = splitedList.get(i);
         int index = str.lastIndexOf(" ");
+        Preconditions.checkArgument(index > 0,
+                                    "Problems parsing queryString: %s", queryString);
         //前半部分是上一个参数名对应的参数值，后半部分是下一个参数值对应的参数名
         list.add(str.substring(0, index).trim());
         list.add(str.substring(index + 1).trim());

@@ -169,6 +169,11 @@ public enum DefaultErrorCode implements ErrorCode {
   BREAKER_TRIPPED(1030, "Breaker Tripped", 429),
 
   /**
+   * 数据冲突
+   */
+  CONFLICT(1031, "Conflict", 400),
+
+  /**
    * 事件超时.
    */
   EVENTBUS_TIMOUT(1101, "Eventbus: Timeout", 400),

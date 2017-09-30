@@ -32,7 +32,6 @@ class SearchConvert {
                     .omitEmptyStrings()
                     .trimResults()
                     .splitToList(queryString);
-    System.out.println(splitedList);
     List<String> list = new ArrayList<>();
     for (int i = 0; i < splitedList.size(); i++) {
       if (i == 0 || i == splitedList.size() - 1) {

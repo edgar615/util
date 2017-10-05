@@ -265,7 +265,7 @@ public class SqlBuilder {
               if (c.op() == Op.IN) {
                 List<Object> values = (List<Object>) c.value();
                 List<String> strings = values.stream()
-                        .map(v -> ",")
+                        .map(v -> "?")
                         .collect(Collectors.toList());
                 sql.add(underscoreName(c.field()) + " in ("
                         + Joiner.on(",").join(strings)
@@ -275,7 +275,7 @@ public class SqlBuilder {
               if (c.op() == Op.NOT_IN) {
                 List<Object> values = (List<Object>) c.value();
                 List<String> strings = values.stream()
-                        .map(v -> ",")
+                        .map(v -> "?")
                         .collect(Collectors.toList());
                 sql.add(underscoreName(c.field()) + " not in ("
                         + Joiner.on(",").join(strings)

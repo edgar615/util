@@ -1,6 +1,7 @@
 package com.github.edgar615.util.search;
 
 import com.google.common.collect.Lists;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -141,4 +142,5 @@ public class ExampleTest {
     Assert.assertTrue(example.fields().contains("addOn"));
     Assert.assertFalse(example.fields().contains("created_on"));
   }
+
 }

@@ -1,5 +1,10 @@
 package com.github.edgar615.util.db;
 
+import com.google.common.collect.Lists;
+
+import com.github.edgar615.util.search.Criterion;
+import com.github.edgar615.util.search.Example;
+import com.github.edgar615.util.search.Op;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -86,5 +91,29 @@ public class SqlBuilderTest {
     fields.add("companyCode");
     SqlBuilder.findById(Device.class, 1, fields);
     Assert.fail();
+  }
+
+  @Test
+  public void testIgnoreNullValue() {
+    Example example = Example.create()
+            .equalsTo("foo", "bar")
+            .equalsTo("companyCode", null)
+            .notEqualsTo("companyCode", null)
+            .lessThan("companyCode", null)
+            .lessThanOrEqualTo("companyCode", null)
+            .greaterThan("companyCode", null)
+            .greaterThanOrEqualTo("companyCode", null)
+            .between("companyCode", null, null)
+            .between("companyCode", null, 1)
+            .between("companyCode", 1, null)
+            .startsWith("companyCode", null)
+            .endsWtih("companyCode", null)
+            .contains("companyCode", null)
+            .in("companyCode", null)
+            .notIn("companyCode", null)
+            .in("companyCode", Lists.newArrayList())
+            .notIn("companyCode", Lists.newArrayList());
+    System.out.println(SqlBuilder.whereSql(example.criteria()).sql());
+    System.out.println(SqlBuilder.whereSql(example.criteria()).bindings());
   }
 }

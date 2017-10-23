@@ -30,15 +30,15 @@ public class Criterion {
    */
   private final Object secondValue;
 
-  public Criterion(String field, Op op, Object value) {
+  Criterion(String field, Op op, Object value) {
     this(field, op, value, null);
   }
 
-  public Criterion(String field, Op op) {
+  Criterion(String field, Op op) {
     this(field, op, null, null);
   }
 
-  public Criterion(String field, Op op, Object value, Object secondValue) {
+  Criterion(String field, Op op, Object value, Object secondValue) {
     this.field = field;
     this.op = op;
     this.value = value;

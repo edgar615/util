@@ -190,14 +190,91 @@ public class RuleTest {
   }
 
   @Test
+  public void testByte() {
+
+    Rule rule = Rule.byteRule();
+    assertTrue(rule.isValid(5));
+    assertTrue(rule.isValid("5"));
+    assertFalse(rule.message(), rule.isValid("1111111111"));
+    assertFalse(rule.message(), rule.isValid(129));
+    assertFalse(rule.message(), rule.isValid(1111111111111111111l));
+    assertFalse(rule.message(), rule.isValid(new Object()));
+    assertFalse(rule.message(), rule.isValid("11111111111111111111"));
+    assertFalse(rule.message(), rule.isValid(0.00));
+  }
+
+  @Test
+  public void testShort() {
+
+    Rule rule = Rule.shortRule();
+    assertTrue(rule.isValid(5));
+    assertTrue(rule.isValid("5"));
+    assertFalse(rule.message(), rule.isValid("1111111111"));
+    assertFalse(rule.message(), rule.isValid(32768));
+    assertFalse(rule.message(), rule.isValid(1111111111111111111l));
+    assertFalse(rule.message(), rule.isValid(new Object()));
+    assertFalse(rule.message(), rule.isValid("11111111111111111111"));
+    assertFalse(rule.message(), rule.isValid(0.00));
+  }
+
+  @Test
   public void testInt() {
 
     Rule rule = Rule.integer();
     assertTrue(rule.isValid(5));
     assertTrue(rule.isValid("5"));
     assertTrue(rule.message(), rule.isValid("1111111111"));
+    assertTrue(rule.message(), rule.isValid(-1111111111l));
+    assertFalse(rule.message(), rule.isValid(1111111111111111111l));
     assertFalse(rule.message(), rule.isValid(new Object()));
     assertFalse(rule.message(), rule.isValid("11111111111111111111"));
+    assertFalse(rule.message(), rule.isValid(0.00));
+  }
+
+  @Test
+  public void testLong() {
+
+    Rule rule = Rule.longRule();
+    assertTrue(rule.isValid(5));
+    assertTrue(rule.isValid("5"));
+    assertTrue(rule.message(), rule.isValid("1111111111"));
+    assertTrue(rule.message(), rule.isValid(1111111111l));
+    assertTrue(rule.message(), rule.isValid(1111111111111111111l));
+    assertFalse(rule.message(), rule.isValid(new Object()));
+    assertTrue(rule.message(), rule.isValid("1111111111111111111"));
+    assertFalse(rule.message(), rule.isValid("11111111111111111111111"));
+    assertFalse(rule.message(), rule.isValid(0.00));
+
+  }
+
+  @Test
+  public void testFloat() {
+
+    Rule rule = Rule.floatRule();
+    assertTrue(rule.isValid(5));
+    assertTrue(rule.isValid("5"));
+    assertTrue(rule.message(), rule.isValid("" + Integer.MAX_VALUE));
+    assertTrue(rule.message(), rule.isValid(Integer.MAX_VALUE));
+    assertTrue(rule.message(), rule.isValid(Long.MAX_VALUE));
+    assertFalse(rule.message(), rule.isValid(new Object()));
+    assertTrue(rule.message(), rule.isValid("" + Long.MAX_VALUE));
+    assertTrue(rule.message(), rule.isValid(0.00));
+    assertTrue(rule.message(), rule.isValid(Double.MAX_VALUE + ""));
+  }
+
+  @Test
+  public void testDouble() {
+
+    Rule rule = Rule.doubleRule();
+    assertTrue(rule.isValid(5));
+    assertTrue(rule.isValid("5"));
+    assertTrue(rule.message(), rule.isValid("" + Integer.MAX_VALUE));
+    assertTrue(rule.message(), rule.isValid(Integer.MAX_VALUE));
+    assertTrue(rule.message(), rule.isValid(Long.MAX_VALUE));
+    assertFalse(rule.message(), rule.isValid(new Object()));
+    assertTrue(rule.message(), rule.isValid("-" + Float.MAX_VALUE));
+    assertTrue(rule.message(), rule.isValid(0.00));
+    assertTrue(rule.message(), rule.isValid(Double.MAX_VALUE + ""));
   }
 
   @Test

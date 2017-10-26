@@ -138,6 +138,24 @@ public interface Rule {
   }
 
   /**
+   * byte的校验
+   *
+   * @return Rule
+   */
+  static Rule byteRule() {
+    return ByteRule.create();
+  }
+
+  /**
+   * short的校验
+   *
+   * @return Rule
+   */
+  static Rule shortRule() {
+    return ShortRule.create();
+  }
+
+  /**
    * 整数的校验
    *
    * @return Rule
@@ -145,6 +163,34 @@ public interface Rule {
   static Rule integer() {
     return IntRule.create();
   }
+
+  /**
+   * long的校验
+   *
+   * @return Rule
+   */
+  static Rule longRule() {
+    return LongRule.create();
+  }
+
+  /**
+   * float的校验
+   *
+   * @return Rule
+   */
+  static Rule floatRule() {
+    return FloatRule.create();
+  }
+
+  /**
+   * double的校验
+   *
+   * @return Rule
+   */
+  static Rule doubleRule() {
+    return DoubleRule.create();
+  }
+
 
   /**
    * bool的校验

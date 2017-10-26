@@ -6,29 +6,32 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
 /**
- * 校验是否是int.
+ * 校验是否是long.
  * <p>
  * 只校验String类型的值，其他类型默认为合法.
  *
  * @author Edgar  Date 2016/1/6
  */
-class IntRule implements Rule {
+class LongRule implements Rule {
 
-  private IntRule() {
+  private LongRule() {
   }
 
   static Rule create() {
-    return new IntRule();
+    return new LongRule();
   }
 
   @Override
   public String message() {
-    return "Int Required";
+    return "Long Required";
   }
 
   @Override
   public boolean isValid(Object property) {
     if (property == null) {
+      return true;
+    }
+    if (property instanceof Long) {
       return true;
     }
     if (property instanceof Integer) {
@@ -40,14 +43,10 @@ class IntRule implements Rule {
     if (property instanceof Byte) {
       return true;
     }
-    if (property instanceof Long) {
-      Long longVal = (Long) property;
-      return longVal >= Integer.MIN_VALUE && longVal <= Integer.MAX_VALUE;
-    }
     if (property != null && (property instanceof String)) {
       String str = String.class.cast(property);
       try {
-        Integer.parseInt(str);
+        Long.parseLong(str);
         return true;
       } catch (NumberFormatException e) {
         return false;
@@ -58,12 +57,12 @@ class IntRule implements Rule {
 
   @Override
   public Map<String, Object> toMap() {
-    return ImmutableMap.of("integer", true);
+    return ImmutableMap.of("long", true);
   }
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper("IntRule")
+    return MoreObjects.toStringHelper("LongRule")
             .toString();
   }
 }

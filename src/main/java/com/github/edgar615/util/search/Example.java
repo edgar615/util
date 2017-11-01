@@ -1,7 +1,9 @@
 package com.github.edgar615.util.search;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import com.github.edgar615.util.base.MorePreconditions;
@@ -63,6 +65,16 @@ public class Example {
    * @return Example
    */
   public Example addQuery(String query) {
+    if (Strings.isNullOrEmpty(query)) {
+      return this;
+    }
+    if (CharMatcher.whitespace().matchesAllOf(query)) {
+      return this;
+    }
+    query = query.trim();
+    if (query.indexOf(":") < 1) {
+      return this;
+    }
     addCriteria(SearchConvert.fromStr(query));
     return this;
   }

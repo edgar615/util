@@ -34,6 +34,7 @@ public class StripedQueue {
       }
       if (!queue.running()) {
         queue.add(task);
+        //将交换running和wating队列的方法放在running的最后，在running执行完之后就会执行交换
         queue.execute(callback(hash), executor);
       }
     } finally {

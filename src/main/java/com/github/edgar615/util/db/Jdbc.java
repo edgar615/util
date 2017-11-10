@@ -140,7 +140,7 @@ public interface Jdbc {
     //查询总数
     final int totalRecords = countByCriteria(elementType, example);
     if (totalRecords == 0) {
-      return Pagination.newInstance(page, pageSize, totalRecords, Lists.newArrayList());
+      return Pagination.newInstance(1, pageSize, totalRecords, Lists.newArrayList());
     }
     int pageCount = totalRecords / pageSize;
     if (totalRecords > pageSize * pageCount) {

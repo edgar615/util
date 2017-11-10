@@ -171,7 +171,7 @@ public enum DefaultErrorCode implements ErrorCode {
   /**
    * 数据冲突
    */
-  CONFLICT(1031, "Conflict", 400),
+  CONFLICT(1031, "Conflict", 500),
 
   /**
    * 事件超时.

@@ -1,5 +1,6 @@
 package com.github.edgar615.util.db;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -94,4 +95,14 @@ public final class Pagination<T> {
     return totalPages;
   }
 
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("Pagination")
+            .add("page", page)
+            .add("pageSize", pageSize)
+            .add("totalRecords", totalRecords)
+            .add("totalPages", totalPages)
+            .add("records", records)
+            .toString();
+  }
 }

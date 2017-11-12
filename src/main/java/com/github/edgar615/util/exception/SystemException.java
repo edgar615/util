@@ -101,6 +101,18 @@ public class SystemException extends RuntimeException {
   }
 
   /**
+   * 增加额外属性
+   * @param properties 属性的map
+   * @return
+   */
+  public SystemException setAll(Map<String, Object> properties) {
+    if (properties != null) {
+      properties.putAll(properties);
+    }
+    return this;
+  }
+
+  /**
    * 返回保存额外属性的Map对象，<b>该方法返回的是一个不可变对象.</b>
    * 如果map为空，直接返回nul，该方法会返回null，这样是避免jaskson序列化该对象的时候忽略值为null的属性
    *

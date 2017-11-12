@@ -73,10 +73,9 @@ public class SystemException extends RuntimeException {
   }
 
   public Map<String, Object> asMap() {
-    Map<String, Object> map = new HashMap<>(this.errorCode.asMap());
-    if (!properties.isEmpty()) {
-      map.put("properties", properties);
-    }
+    Map<String, Object> map = new HashMap<>();
+    map.putAll(properties);
+    map.putAll(this.errorCode.asMap());
     return map;
   }
 

@@ -2,9 +2,7 @@ package com.github.edgar615.util.db;
 
 import com.google.common.collect.Lists;
 
-import com.github.edgar615.util.search.Criterion;
 import com.github.edgar615.util.search.Example;
-import com.github.edgar615.util.search.Op;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -115,5 +113,18 @@ public class SqlBuilderTest {
             .notIn("companyCode", Lists.newArrayList());
     System.out.println(SqlBuilder.whereSql(example.criteria()).sql());
     System.out.println(SqlBuilder.whereSql(example.criteria()).bindings());
+  }
+
+  @Test
+  public void testSetNull() {
+    SQLBindings sqlBindings = SqlBuilder.setNullById(Device.class, Lists.newArrayList("abc",
+                                                                                      "userId",
+                                                                                      "parentId")
+            , 1);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("update device set user_id = null,parent_id = null where device_id = ?",
+                        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
 }

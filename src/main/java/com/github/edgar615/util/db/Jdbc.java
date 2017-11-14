@@ -77,27 +77,27 @@ public interface Jdbc {
   /**
    * 根据主键，将某些字段更新为null.
    *
-   * @param persistent 持久化对象
+   * @param elementType 持久化对象
    * @param fields     需要更新的字段
    * @param id         主键
    * @param <ID>       主键类型
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int setNullById(Persistent<ID> persistent, List<String> fields,
+  <ID, T extends Persistent<ID>> int setNullById(Class<T> elementType, List<String> fields,
                                                  ID id);
 
   /**
    * 根据条件更新.
    *
-   * @param persistent 持久化对象
+   * @param elementType 持久化对象
    * @param fields     需要更新的字段
    * @param example    查询条件
    * @param <ID>       条件集合
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int setNullByCriteria(Persistent<ID> persistent,
+  <ID, T extends Persistent<ID>> int setNullByCriteria(Class<T> elementType,
                                                        List<String> fields, Example example);
 
   /**

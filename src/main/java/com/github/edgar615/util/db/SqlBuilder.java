@@ -114,7 +114,7 @@ public class SqlBuilder {
   }
 
   /**
-   * 根据主键更新.
+   * 根据主键更新,忽略实体中的null.
    *
    * @param persistent 持久化对象
    * @param id         主键
@@ -175,6 +175,39 @@ public class SqlBuilder {
             .append(") values(")
             .append(Joiner.on(",").join(prepare))
             .append(")");
+    return SQLBindings.create(s.toString(), params);
+  }
+
+  /**
+   * 根据主键更新,设置字段为null.
+   *
+   * @param clazz  持久化对象
+   * @param fields 需要更新的字段
+   * @param id     主键
+   * @param <ID>   主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings setNullById(Class<? extends Persistent<ID>> clazz,
+                                             List<String> fields, ID id) {
+    Persistent<ID> domain = newDomain(clazz);
+    List<String> domainColumns =  domain.fields();
+    List<String> columns = fields.stream()
+            .filter(f -> domainColumns.contains(f))
+            .map(f -> underscoreName(f))
+            .map(f -> f + " = null")
+            .collect(Collectors.toList());
+    MorePreconditions.checkNotEmpty(fields, "no update field");
+
+    List<Object> params = new ArrayList<>();
+    StringBuilder s = new StringBuilder();
+    s.append("update ")
+            .append(underscoreName(domain.getClass().getSimpleName()))
+            .append(" set ")
+            .append(Joiner.on(",").join(columns))
+            .append(" where ")
+            .append(underscoreName(domain.primaryField()))
+            .append(" = ?");
+    params.add(id);
     return SQLBindings.create(s.toString(), params);
   }
 

@@ -78,10 +78,10 @@ public interface Jdbc {
    * 根据主键，将某些字段更新为null.
    *
    * @param elementType 持久化对象
-   * @param fields     需要更新的字段
-   * @param id         主键
-   * @param <ID>       主键类型
-   * @param <T>        持久化对象
+   * @param fields      需要更新的字段
+   * @param id          主键
+   * @param <ID>        主键类型
+   * @param <T>         持久化对象
    * @return
    */
   <ID, T extends Persistent<ID>> int setNullById(Class<T> elementType, List<String> fields,
@@ -91,10 +91,10 @@ public interface Jdbc {
    * 根据条件更新.
    *
    * @param elementType 持久化对象
-   * @param fields     需要更新的字段
-   * @param example    查询条件
-   * @param <ID>       条件集合
-   * @param <T>        持久化对象
+   * @param fields      需要更新的字段
+   * @param example     查询条件
+   * @param <ID>        条件集合
+   * @param <T>         持久化对象
    * @return
    */
   <ID, T extends Persistent<ID>> int setNullByCriteria(Class<T> elementType,
@@ -211,6 +211,31 @@ public interface Jdbc {
    */
   default <ID, T extends Persistent<ID>> T findById(Class<T> elementType, ID id) {
     return findById(elementType, id, Lists.newArrayList());
+  }
+
+  /**
+   * 根据条件查找，并返回总数.
+   *
+   * @param elementType 持久化对象
+   * @param example     查询参数的定义，包括查询条件、排序规则等
+   * @param start       开始索引
+   * @param limit       查询数量
+   * @param <ID>        主键类型
+   * @param <T>         持久化对象
+   * @return
+   */
+  default <ID, T extends Persistent<ID>> Page<T> page(Class<T> elementType, Example example,
+                                                      int start,
+                                                      int limit) {
+    List<T> records = findByExample(elementType, example, start, limit);
+    //如果records的数量小于limit，说明已经没有记录，直接计算总数
+    if (records.size() > 0 && records.size() < limit) {
+      int total = start + records.size();
+      return Page.newInstance(total, records);
+    }
+    //通过数据库查询总数
+    final int totalRecords = countByCriteria(elementType, example);
+    return Page.newInstance(totalRecords, records);
   }
 
 }

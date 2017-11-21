@@ -25,6 +25,10 @@ public class EncryptUtils {
 
   public static final String MD5 = "MD5";
 
+  private EncryptUtils() {
+    throw new AssertionError("Not instantiable: " + EncryptUtils.class);
+  }
+
   /**
    * HMACSHA256加密
    *

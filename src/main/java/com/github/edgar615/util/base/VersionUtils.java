@@ -8,6 +8,9 @@ import com.google.common.base.Preconditions;
  * @author Edgar  Date 2016/12/5
  */
 public class VersionUtils {
+  private VersionUtils() {
+    throw new AssertionError("Not instantiable: " + VersionUtils.class);
+  }
 
   public static int compareVersion(String version1, String version2) {
     Preconditions.checkNotNull(version1);

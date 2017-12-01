@@ -1,7 +1,5 @@
 package com.github.edgar615.util.exception;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -134,13 +132,27 @@ public class SystemException extends RuntimeException {
     return (T) properties.get(name);
   }
 
-  /**
-   * 返回异常的简要描述.
-   *
-   * @return 描述
-   */
-  public String getSimpleMessage() {
-    StringBuilder builder = new StringBuilder(this.toString());
+//  /**
+//   * 返回异常的简要描述.
+//   *
+//   * @return 描述
+//   */
+//  public String getSimpleMessage() {
+//    StringBuilder builder = new StringBuilder(this.toString());
+//    builder.append("\n\t--------------------------------------------------------------");
+//    if (errorCode != null) {
+//      builder.append("\n\t| " + errorCode);
+//    }
+//    for (String key : properties.keySet()) {
+//      builder.append("\n\t| " + key + "=[" + properties.get(key) + "]");
+//    }
+//    builder.append("\n\t--------------------------------------------------------------");
+//    return builder.toString();
+//  }
+
+  @Override
+  public String getMessage() {
+    StringBuilder builder = new StringBuilder(super.getMessage());
     builder.append("\n\t--------------------------------------------------------------");
     if (errorCode != null) {
       builder.append("\n\t| " + errorCode);
@@ -152,28 +164,28 @@ public class SystemException extends RuntimeException {
     return builder.toString();
   }
 
-  @Override
-  public void printStackTrace(PrintStream stream) {
-    synchronized (stream) {
-      printStackTrace(new PrintWriter(stream));
-    }
-  }
-
-  @Override
-  public void printStackTrace(PrintWriter writer) {
-    synchronized (writer) {
-      writer.println(getSimpleMessage());
-      StackTraceElement[] trace = getStackTrace();
-      for (int i = 0; i < trace.length; i++) {
-        writer.println("\tat " + trace[i]);
-      }
-
-      Throwable ourCause = getCause();
-      if (ourCause != null) {
-        ourCause.printStackTrace(writer);
-      }
-      writer.flush();
-    }
-  }
+//  @Override
+//  public void printStackTrace(PrintStream stream) {
+//    synchronized (stream) {
+//      printStackTrace(new PrintWriter(stream));
+//    }
+//  }
+//
+//  @Override
+//  public void printStackTrace(PrintWriter writer) {
+//    synchronized (writer) {
+//      writer.println(getSimpleMessage());
+//      StackTraceElement[] trace = getStackTrace();
+//      for (int i = 0; i < trace.length; i++) {
+//        writer.println("\tat " + trace[i]);
+//      }
+//
+//      Throwable ourCause = getCause();
+//      if (ourCause != null) {
+//        ourCause.printStackTrace(writer);
+//      }
+//      writer.flush();
+//    }
+//  }
 
 }

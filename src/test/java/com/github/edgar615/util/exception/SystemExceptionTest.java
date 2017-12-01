@@ -7,6 +7,17 @@ import org.junit.Test;
  */
 public class SystemExceptionTest {
 
+  @Test
+  public void test() {
+    try {
+      throw SystemException.create(DefaultErrorCode.INVALID_TOKEN)
+              .set("foo", "bar");
+    } catch (Exception e) {
+      System.out.println(e.toString());
+      e.printStackTrace();
+    }
+  }
+
   @Test(expected = SystemException.class)
   public void testEx() {
     throwEx();

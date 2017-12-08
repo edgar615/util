@@ -179,6 +179,9 @@ public class Example {
     if (value == null) {
       return this;
     }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
     criteria.contains(field, value);
     return this;
   }
@@ -192,6 +195,9 @@ public class Example {
    */
   public Example startsWith(String field, Object value) {
     if (value == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
     criteria.startsWith(field, value);
@@ -209,6 +215,9 @@ public class Example {
    */
   public Example endsWtih(String field, Object value) {
     if (value == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
     criteria.endsWtih(field, value);

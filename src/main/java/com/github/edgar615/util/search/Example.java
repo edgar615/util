@@ -292,6 +292,9 @@ public class Example {
    * @return Example
    */
   public Example isNull(String field) {
+    if (Strings.isNullOrEmpty(field)) {
+      return this;
+    }
     criteria.isNull(field);
     return this;
   }
@@ -303,6 +306,9 @@ public class Example {
    * @return Example
    */
   public Example isNotNull(String field) {
+    if (Strings.isNullOrEmpty(field)) {
+      return this;
+    }
     criteria.isNotNull(field);
     return this;
   }
@@ -314,7 +320,9 @@ public class Example {
    * @return Example
    */
   public Example addField(String field) {
-    MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
+    if (Strings.isNullOrEmpty(field)) {
+      return this;
+    }
     this.fields.add(field);
     return this;
   }
@@ -326,7 +334,9 @@ public class Example {
    * @return Example
    */
   public Example addFields(List<String> fields) {
-    MorePreconditions.checkNoNullElements(fields, "field cannot be null");
+    if (fields == null || fields.isEmpty()) {
+      return this;
+    }
     fields.forEach(f -> addField(f));
     return this;
   }
@@ -342,7 +352,9 @@ public class Example {
    * @return Example
    */
   public Example asc(String field) {
-    MorePreconditions.checkNoNullElements(fields, "field cannot be null");
+    if (Strings.isNullOrEmpty(field)) {
+      return this;
+    }
     orderBy.add(field);
     return this;
   }
@@ -354,6 +366,9 @@ public class Example {
    * @return Example
    */
   public Example desc(String field) {
+    if (Strings.isNullOrEmpty(field)) {
+      return this;
+    }
     MorePreconditions.checkNoNullElements(fields, "field cannot be null");
     orderBy.add("-" + field);
     return this;
@@ -366,7 +381,9 @@ public class Example {
    * @return Example
    */
   public Example orderBy(String field) {
-    MorePreconditions.checkNoNullElements(fields, "field cannot be null");
+    if (Strings.isNullOrEmpty(field)) {
+      return this;
+    }
     orderBy.addAll(Splitter.on(",")
             .trimResults()
             .omitEmptyStrings()

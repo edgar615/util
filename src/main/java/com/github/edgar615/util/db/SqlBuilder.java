@@ -125,8 +125,9 @@ public class SqlBuilder {
     Map<String, Object> map = persistent.toMap();
     List<String> columns = new ArrayList<>();
     List<Object> params = new ArrayList<>();
+    List<String> virtualFields  = persistent.virtualFields();
     map.forEach((k, v) -> {
-      if (v != null) {
+      if (v != null && !virtualFields.contains(k)) {
         columns.add(underscoreName(k) + " = ?");
         params.add(v);
       }
@@ -158,8 +159,9 @@ public class SqlBuilder {
     List<String> columns = new ArrayList<>();
     List<String> prepare = new ArrayList<>();
     List<Object> params = new ArrayList<>();
+    List<String> virtualFields  = persistent.virtualFields();
     map.forEach((k, v) -> {
-      if (v != null) {
+      if (v != null && !virtualFields.contains(k)) {
         columns.add(underscoreName(k));
         prepare.add("?");
         params.add(v);

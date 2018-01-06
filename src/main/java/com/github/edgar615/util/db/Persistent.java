@@ -1,5 +1,7 @@
 package com.github.edgar615.util.db;
 
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,10 @@ public interface Persistent<ID> extends Serializable {
    */
   String primaryField();
 
+  /**
+   * 转换为map对象
+   * @return
+   */
   Map<String, Object> toMap();
 
   /**
@@ -38,4 +44,12 @@ public interface Persistent<ID> extends Serializable {
    * @param key
    */
   void setGeneratedKey(Number key);
+
+  /**
+   * 虚拟列，5.7新增，新增修改是要忽略这个属性
+   * @return
+   */
+  default List<String> virtualFields() {
+    return Lists.newArrayList();
+  }
 }

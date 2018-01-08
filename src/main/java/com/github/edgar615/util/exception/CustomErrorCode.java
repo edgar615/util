@@ -30,4 +30,13 @@ public class CustomErrorCode implements ErrorCode {
   public int getStatusCode() {
     return statusCode;
   }
+
+  @Override
+  public String toString() {
+    return "CustomErrorCode{" +
+           "number=" + number +
+           ", message='" + message + '\'' +
+           ", statusCode=" + statusCode +
+           '}';
+  }
 }

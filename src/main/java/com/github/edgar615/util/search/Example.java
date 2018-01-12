@@ -104,6 +104,9 @@ public class Example {
     if (value == null) {
       return this;
     }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
     criteria.notEqualsTo(field, value);
     return this;
   }
@@ -117,6 +120,9 @@ public class Example {
    */
   public Example greaterThan(String field, Object value) {
     if (value == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
     criteria.greaterThan(field, value);
@@ -134,6 +140,9 @@ public class Example {
     if (value == null) {
       return this;
     }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
     criteria.greaterThanOrEqualTo(field, value);
     return this;
   }
@@ -149,6 +158,9 @@ public class Example {
     if (value == null) {
       return this;
     }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
     criteria.lessThan(field, value);
     return this;
   }
@@ -162,6 +174,9 @@ public class Example {
    */
   public Example lessThanOrEqualTo(String field, Object value) {
     if (value == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
     criteria.lessThanOrEqualTo(field, value);
@@ -265,6 +280,9 @@ public class Example {
     if (value == null) {
       return this;
     }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
     criteria.equalsTo(field, value);
     return this;
   }
@@ -279,6 +297,20 @@ public class Example {
    */
   public Example between(String field, Object value1, Object value2) {
     if (value1 == null || value2 == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value1.toString())
+            && Strings.isNullOrEmpty(value2.toString())) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value1.toString())
+            && !Strings.isNullOrEmpty(value2.toString())) {
+      criteria.lessThanOrEqualTo(field, value2);
+      return this;
+    }
+    if (!Strings.isNullOrEmpty(value1.toString())
+            && Strings.isNullOrEmpty(value2.toString())) {
+      criteria.greaterThanOrEqualTo(field, value1);
       return this;
     }
     criteria.between(field, value1, value2);

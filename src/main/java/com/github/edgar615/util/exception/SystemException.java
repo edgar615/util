@@ -99,6 +99,16 @@ public class SystemException extends RuntimeException {
   }
 
   /**
+   * 增加details的属性.
+   *
+   * @param details 细节描述
+   * @return 返回对象本身，这样可以使用链式操作<code>set("foo", "bar").set("name", "Edgar)</code>
+   */
+  public SystemException setDetails(String details) {
+    properties.put("details", details);
+    return this;
+  }
+  /**
    * 增加额外属性
    * @param properties 属性的map
    * @return

@@ -8,7 +8,7 @@ import com.github.edgar615.util.search.Example;
 import java.util.List;
 
 /**
- * Created by Edgar on 2017/5/22.
+ * 数据访问层的接口.
  *
  * @author Edgar  Date 2017/5/22
  */

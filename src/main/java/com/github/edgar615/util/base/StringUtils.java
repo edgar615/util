@@ -1,5 +1,7 @@
 package com.github.edgar615.util.base;
 
+import com.google.common.base.Strings;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,5 +54,81 @@ public class StringUtils {
    */
   public static List<String> splitRemainDelimiter(String string, String separator) {
     return Arrays.asList(string.split(String.format(WITH_DELIMITER, separator)));
+  }
+
+  /**
+   * <p>Checks if the String contains only Unicode letters.</p>
+   *
+   * <p>{@code null} will return {@code false}.
+   * An empty String (length()=0) will return {@code false}.</p>
+   *
+   * <pre>
+   * StringUtils.isAlpha(null)   = false
+   * StringUtils.isAlpha("")     = false
+   * StringUtils.isAlpha("  ")   = false
+   * StringUtils.isAlpha("abc")  = true
+   * StringUtils.isAlpha("ab2c") = false
+   * StringUtils.isAlpha("ab-c") = false
+   * </pre>
+   *从commons-lang中复制
+   * @param cs  the String to check, may be null
+   * @return {@code true} if only contains letters, and is non-null
+   * @since 3.0 Changed signature from isAlpha(String) to isAlpha(String)
+   * @since 3.0 Changed "" to return false and not true
+   */
+  public static boolean isAlpha(final String cs) {
+    if (Strings.isNullOrEmpty(cs)) {
+      return false;
+    }
+    final int sz = cs.length();
+    for (int i = 0; i < sz; i++) {
+      if (!Character.isLetter(cs.charAt(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * <p>Checks if the String contains only Unicode digits.
+   * A decimal point is not a Unicode digit and returns false.</p>
+   * <p>
+   * <p>{@code null} will return {@code false}.
+   * An empty String (length()=0) will return {@code false}.</p>
+   * <p>
+   * <p>Note that the method does not allow for a leading sign, either positive or negative.
+   * Also, if a String passes the numeric test, it may still generate a NumberFormatException
+   * when parsed by Integer.parseInt or Long.parseLong, e.g. if the value is outside the range
+   * for int or long respectively.</p>
+   * <p>
+   * <pre>
+   * StringUtils.isNumeric(null)   = false
+   * StringUtils.isNumeric("")     = false
+   * StringUtils.isNumeric("  ")   = false
+   * StringUtils.isNumeric("123")  = true
+   * StringUtils.isNumeric("\u0967\u0968\u0969")  = true
+   * StringUtils.isNumeric("12 3") = false
+   * StringUtils.isNumeric("ab2c") = false
+   * StringUtils.isNumeric("12-3") = false
+   * StringUtils.isNumeric("12.3") = false
+   * StringUtils.isNumeric("-123") = false
+   * StringUtils.isNumeric("+123") = false
+   * </pre>
+   *从commons-lang中复制
+   * @param cs the String to check, may be null
+   * @return {@code true} if only contains digits, and is non-null
+   * @since 3.0 Changed "" to return false and not true
+   */
+  public static boolean isNumeric(final String cs) {
+    if (Strings.isNullOrEmpty(cs)) {
+      return false;
+    }
+    final int sz = cs.length();
+    for (int i = 0; i < sz; i++) {
+      if (!Character.isDigit(cs.charAt(i))) {
+        return false;
+      }
+    }
+    return true;
   }
 }

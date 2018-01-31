@@ -30,11 +30,6 @@ public class Log {
   private Logger logger = defaultLogger;
 
   /**
-   * 应用
-   */
-  private String application = "localhost";
-
-  /**
    * 方法或者事件
    */
   private String event;
@@ -45,11 +40,6 @@ public class Log {
    * 简要描述
    */
   private String message;
-
-  /**
-   * 跟踪ID
-   */
-  private String traceId;
 
   /**
    * 异常
@@ -134,11 +124,6 @@ public class Log {
     return this;
   }
 
-  public Log setApplication(String application) {
-    this.application = application;
-    return this;
-  }
-
   public Log setEvent(String event) {
     this.event = event;
     return this;
@@ -151,11 +136,6 @@ public class Log {
 
   public Log setThrowable(Throwable throwable) {
     this.throwable = throwable;
-    return this;
-  }
-
-  public Log setTraceId(String traceId) {
-    this.traceId = traceId;
     return this;
   }
 
@@ -193,12 +173,6 @@ public class Log {
       logArgs = new ArrayList<>();
       if (logApplication) {
         logFormat = "[{},{}] " + logFormat;
-        logArgs.add(application);
-        if (traceId == null) {
-          logArgs.add("");
-        } else {
-          logArgs.add(traceId);
-        }
       }
       logArgs.add(logType.name());
       logArgs.add(event == null ? "log" : event);

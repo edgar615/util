@@ -17,6 +17,8 @@ public class EncryptUtils {
 
   public static final String CHARSET_UTF8 = "UTF-8";
 
+  public static final String HMACSHA1 = "HMACSHA1";
+
   public static final String HMACSHA256 = "HMACSHA256";
 
   public static final String HMACSHA512 = "HMACSHA512";
@@ -27,6 +29,18 @@ public class EncryptUtils {
 
   private EncryptUtils() {
     throw new AssertionError("Not instantiable: " + EncryptUtils.class);
+  }
+
+  /**
+   * HMACSHA1加密
+   *
+   * @param data   源字符串
+   * @param secret 密钥
+   * @return 加密后的字符串
+   * @throws IOException
+   */
+  public static String encryptHmacSha1(String data, String secret) throws IOException {
+    return byte2hex(encryptHMAC(data, secret, HMACSHA1));
   }
 
   /**

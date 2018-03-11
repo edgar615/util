@@ -50,7 +50,7 @@ public interface Jdbc {
    * @param <T>         持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int deleteByCriteria(Class<T> elementType, Example example);
+  <ID, T extends Persistent<ID>> int deleteByExample(Class<T> elementType, Example example);
 
   /**
    * 根据主键更新，忽略实体中的null.
@@ -72,7 +72,7 @@ public interface Jdbc {
    * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateByCriteria(Persistent<ID> persistent, Example example);
+  <ID, T extends Persistent<ID>> int updateByExample(Persistent<ID> persistent, Example example);
 
   /**
    * 根据主键，将某些字段更新为null.
@@ -97,7 +97,7 @@ public interface Jdbc {
    * @param <T>         持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int setNullByCriteria(Class<T> elementType,
+  <ID, T extends Persistent<ID>> int setNullByExample(Class<T> elementType,
                                                        List<String> fields, Example example);
 
   /**
@@ -147,7 +147,7 @@ public interface Jdbc {
    * @param <T>         持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int countByCriteria(Class<T> elementType, Example example);
+  <ID, T extends Persistent<ID>> int countByExample(Class<T> elementType, Example example);
 
   /**
    * 分页查找.
@@ -166,7 +166,7 @@ public interface Jdbc {
     Preconditions.checkArgument(page > 0, "page must greater than 0");
     Preconditions.checkArgument(pageSize > 0, "pageSize must greater than 0");
     //查询总数
-    final int totalRecords = countByCriteria(elementType, example);
+    final int totalRecords = countByExample(elementType, example);
     if (totalRecords == 0) {
       return Pagination.newInstance(1, pageSize, totalRecords, Lists.newArrayList());
     }
@@ -234,7 +234,7 @@ public interface Jdbc {
       return Page.newInstance(total, records);
     }
     //通过数据库查询总数
-    final int totalRecords = countByCriteria(elementType, example);
+    final int totalRecords = countByExample(elementType, example);
     return Page.newInstance(totalRecords, records);
   }
 

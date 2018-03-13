@@ -119,6 +119,30 @@ public interface Rule {
   }
 
   /**
+   * ISO 8601的日期格式
+   * @return Rule
+   */
+  static Rule  ISO8601Date() {
+    return ISO8601DateRule.create();
+  }
+
+  /**
+   * ISO 8601的时间格式
+   * @return Rule
+   */
+  static Rule  ISO8601Time() {
+    return ISO8601TimeRule.create();
+  }
+
+  /**
+   * ISO 8601的日期时间格式
+   * @return Rule
+   */
+  static Rule  ISO8601DateTime() {
+    return ISO8601DateTimeRule.create();
+  }
+
+  /**
    * 禁止出现某个参数的校验
    *
    * @return Rule

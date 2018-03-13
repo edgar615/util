@@ -331,4 +331,34 @@ public class RuleTest {
     assertFalse(rule.message(), rule.isValid("11111111111111111111"));
   }
 
+  @Test
+  public void testISO8601Date() {
+    Rule rule = Rule.ISO8601Date();
+    assertFalse(rule.message(), rule.isValid("abc"));
+    assertFalse(rule.message(), rule.isValid("123"));
+    assertFalse(rule.message(), rule.isValid("20180313"));
+    assertTrue(rule.message(), rule.isValid("2018-03-13"));
+
+  }
+
+  @Test
+  public void testISO8601Time() {
+    Rule rule = Rule.ISO8601Time();
+    assertFalse(rule.message(), rule.isValid("abc"));
+    assertFalse(rule.message(), rule.isValid("123"));
+    assertFalse(rule.message(), rule.isValid("141500"));
+    assertTrue(rule.message(), rule.isValid("14:15:00"));
+    assertTrue(rule.message(), rule.isValid("00:00:00"));
+  }
+
+  @Test
+  public void testISO8601DateTime() {
+    Rule rule = Rule.ISO8601DateTime();
+    assertFalse(rule.message(), rule.isValid("abc"));
+    assertFalse(rule.message(), rule.isValid("123"));
+    assertFalse(rule.message(), rule.isValid("141500"));
+    assertFalse(rule.message(), rule.isValid("2018-03-1314:15:00"));
+    assertFalse(rule.message(), rule.isValid("2018-03-13 00:00:00"));
+    assertTrue(rule.message(), rule.isValid("2018-03-13T14:15:00"));
+  }
 }

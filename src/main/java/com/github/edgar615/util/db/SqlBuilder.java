@@ -1,7 +1,6 @@
 package com.github.edgar615.util.db;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import com.github.edgar615.util.base.MorePreconditions;
@@ -62,13 +61,10 @@ public class SqlBuilder {
     String selectedField = "*";
     if (!fields.isEmpty()) {
       List<String> domainFields = domain.fields();
-      long undefindedCount = fields.stream()
-              .filter(f -> !domainFields.contains(f))
-              .count();
-      Preconditions.checkArgument(undefindedCount == 0,
-                                  "fields contains %s undefined field", undefindedCount);
       selectedField = Joiner.on(",")
-              .join(fields.stream().map(f -> underscoreName(f))
+              .join(fields.stream()
+                            .filter(f -> domainFields.contains(f))
+                            .map(f -> underscoreName(f))
                             .collect(Collectors.toList()));
     }
     StringBuilder s = new StringBuilder();

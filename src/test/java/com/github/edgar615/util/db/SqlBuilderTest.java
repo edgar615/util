@@ -2,6 +2,7 @@ package com.github.edgar615.util.db;
 
 import com.google.common.collect.Lists;
 
+import com.github.edgar615.util.base.Randoms;
 import com.github.edgar615.util.search.Example;
 import org.junit.Assert;
 import org.junit.Test;
@@ -74,21 +75,13 @@ public class SqlBuilderTest {
     List<String> fields = new ArrayList<>();
     fields.add("deviceId");
     fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
     SQLBindings sqlBindings = SqlBuilder.findById(Device.class, 1, fields);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("select device_id,company_code from device where device_id = ?",
                         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testFindByIdWithUndefiendFields() {
-    List<String> fields = new ArrayList<>();
-    fields.add("device_id");
-    fields.add("companyCode");
-    SqlBuilder.findById(Device.class, 1, fields);
-    Assert.fail();
   }
 
   @Test

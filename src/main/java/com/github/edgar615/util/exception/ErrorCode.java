@@ -25,13 +25,6 @@ public interface ErrorCode {
    */
   String getMessage();
 
-  /**
-   * HTTP response应该返回的错误码.
-   *
-   * @return http response code
-   */
-  int getStatusCode();
-
   default Map<String, Object> asMap() {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("message", getMessage());

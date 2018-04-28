@@ -27,14 +27,14 @@ public class Log {
 
   private final List<Object> args = new ArrayList<>();
 
-  private Logger logger = defaultLogger;
+  private final Logger logger;
 
   /**
    * 方法或者事件
    */
   private String event;
 
-  private LogType logType = LogType.LOG;
+  private String logType = LogType.LOG;
 
   /**
    * 简要描述
@@ -47,12 +47,20 @@ public class Log {
   private Throwable throwable;
 
   /**
-   * 日志中是否输出应用
+   * 跟踪ID
    */
-  private boolean logApplication;
+  private String traceId;
 
   private Log(Logger logger) {
-    this.logger = logger;
+    if (logger == null) {
+      this.logger = defaultLogger;
+    } else {
+      this.logger = logger;
+    }
+  }
+
+  public static Log create() {
+    return new Log(null);
   }
 
   public static Log create(Logger logger) {
@@ -114,13 +122,8 @@ public class Log {
     }
   }
 
-  public Log setLogType(LogType logType) {
+  public Log setLogType(String logType) {
     this.logType = logType;
-    return this;
-  }
-
-  public Log setLogApplication(boolean logApplication) {
-    this.logApplication = logApplication;
     return this;
   }
 
@@ -154,6 +157,11 @@ public class Log {
     return this;
   }
 
+  public Log setTraceId(String traceId) {
+    this.traceId = traceId;
+    return this;
+  }
+
   private class LogData {
     private String logFormat;
 
@@ -168,15 +176,18 @@ public class Log {
     }
 
     public LogData get() {
-      logFormat = "[{}] [{}] [{}]";
+      logFormat = "";
 
       logArgs = new ArrayList<>();
-      if (logApplication) {
-        logFormat = "[{},{}] " + logFormat;
+      if (traceId != null) {
+        logFormat = "[{}] " + logFormat;
+        logArgs.add(traceId);
       }
-      logArgs.add(logType.name());
+      logFormat = logFormat + "[{}] [{}]";
+      logArgs.add(logType);
       logArgs.add(event == null ? "log" : event);
 
+      logFormat = logFormat + " [{}]";
       if (data.isEmpty()) {
         logArgs.add("no data");
       } else {

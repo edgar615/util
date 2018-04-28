@@ -25,6 +25,10 @@ public class StatusBind {
     return this;
   }
 
+  public Integer statusCode(int errorCode) {
+    return map.getOrDefault(errorCode, 500);
+  }
+
   public StatusBind add(Integer errorCode, Integer statusCode) {
     this.map.put(errorCode, statusCode);
     return this;

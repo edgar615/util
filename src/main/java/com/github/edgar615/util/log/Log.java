@@ -187,18 +187,16 @@ public class Log {
       logArgs.add(logType);
       logArgs.add(event == null ? "log" : event);
 
+      if (!Strings.isNullOrEmpty(message)) {
+        logFormat += " " + message;
+        logArgs.addAll(args);
+      }
       logFormat = logFormat + " [{}]";
       if (data.isEmpty()) {
         logArgs.add("no data");
       } else {
         logArgs.add(dataFormat(data));
       }
-
-      if (!Strings.isNullOrEmpty(message)) {
-        logFormat += " " + message;
-        logArgs.addAll(args);
-      }
-
       if (throwable != null) {
         logArgs.add(throwable);
       }

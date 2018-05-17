@@ -3,6 +3,7 @@ package com.github.edgar615.util.db;
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,5 +61,16 @@ public interface Persistent<ID> extends Serializable {
    */
   default List<String> virtualFields() {
     return Lists.newArrayList();
+  }
+
+  default void fillDefaultValue(Map<String, Object> defaultMap) {
+    Map<String, Object> map = toMap();
+    Map<String, Object> newMap = new HashMap<>();
+    defaultMap.forEach((k, v) -> {
+      if (map.get(k) == null) {
+        newMap.put(k, v);
+      }
+    });
+    fromMap(newMap);
   }
 }

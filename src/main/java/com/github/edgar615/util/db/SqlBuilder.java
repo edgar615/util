@@ -118,16 +118,53 @@ public class SqlBuilder {
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings updateById(Persistent<ID> persistent, ID id) {
+    return updateById(persistent, null, null, id);
+  }
+
+  /**
+   * 根据主键更新,忽略实体中的null.
+   *
+   * @param persistent 持久化对象
+   * @param id         主键
+   * @param <ID>       主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings updateById(Persistent<ID> persistent,
+                                            Map<String, Integer> addOrSub,
+                                            List<String> nullFields, ID id) {
     Map<String, Object> map = persistent.toMap();
     List<String> columns = new ArrayList<>();
     List<Object> params = new ArrayList<>();
-    List<String> virtualFields  = persistent.virtualFields();
+    List<String> virtualFields = persistent.virtualFields();
     map.forEach((k, v) -> {
       if (v != null && !virtualFields.contains(k)) {
         columns.add(underscoreName(k) + " = ?");
         params.add(v);
       }
     });
+    if (addOrSub != null) {
+      for (Map.Entry<String, Integer> entry : addOrSub.entrySet()) {
+        String key = entry.getKey();
+        if (persistent.fields().contains(key)) {
+          String underscoreKey = StringUtils.underscoreName(key);
+          if (entry.getValue() > 0) {
+            columns.add(
+                    underscoreKey + " = " + underscoreKey + " + " + entry.getValue());
+          } else {
+            columns.add(
+                    underscoreKey + " = " + underscoreKey + " - " + ~(entry.getValue() - 1));
+          }
+        }
+      }
+    }
+    if (nullFields != null) {
+      List<String> nullColumns = nullFields.stream()
+              .filter(f -> persistent.fields().contains(f))
+              .map(f -> underscoreName(f))
+              .map(f -> f + " = null")
+              .collect(Collectors.toList());
+      columns.addAll(nullColumns);
+    }
     MorePreconditions.checkNotEmpty(columns, "no update field");
 
     String tableName = underscoreName(persistent.getClass().getSimpleName());
@@ -150,12 +187,13 @@ public class SqlBuilder {
    * @param <ID>       主键类型
    * @return {@link SQLBindings}
    */
+
   public static <ID> SQLBindings insert(Persistent<ID> persistent) {
     Map<String, Object> map = persistent.toMap();
     List<String> columns = new ArrayList<>();
     List<String> prepare = new ArrayList<>();
     List<Object> params = new ArrayList<>();
-    List<String> virtualFields  = persistent.virtualFields();
+    List<String> virtualFields = persistent.virtualFields();
     map.forEach((k, v) -> {
       if (v != null && !virtualFields.contains(k)) {
         columns.add(underscoreName(k));
@@ -188,7 +226,7 @@ public class SqlBuilder {
   public static <ID> SQLBindings setNullById(Class<? extends Persistent<ID>> clazz,
                                              List<String> fields, ID id) {
     Persistent<ID> domain = newDomain(clazz);
-    List<String> domainColumns =  domain.fields();
+    List<String> domainColumns = domain.fields();
     List<String> columns = fields.stream()
             .filter(f -> domainColumns.contains(f))
             .map(f -> underscoreName(f))

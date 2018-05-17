@@ -3,6 +3,7 @@ package com.github.edgar615.util.db;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -15,14 +16,20 @@ public class Paginations {
     throw new AssertionError("Not instantiable: " + Paginations.class);
   }
 
-  public static <T extends Persistent> Pagination<Map> transformToMap(
-          Pagination<T> pagination) {
-    List<Map> mapRecords =
+
+  public static <T extends Persistent, V> Pagination<V> transform(
+          Pagination<T> pagination, Function<T, V> function) {
+    List<V> mapRecords =
             pagination.getRecords().stream()
-                    .map(r -> r.toMap())
+                    .map(r ->function.apply(r))
                     .collect(Collectors.toList());
     return Pagination.newInstance(pagination.getPage(), pagination.getPageSize(),
-            pagination.getTotalRecords(), mapRecords);
+                                  pagination.getTotalRecords(), mapRecords);
+  }
+
+  public static <T extends Persistent> Pagination<Map> transformToMap(
+          Pagination<T> pagination) {
+    return transform(pagination, p -> p.toMap());
   }
 
   public static <T extends Persistent> Pagination<Map> transformToMap(

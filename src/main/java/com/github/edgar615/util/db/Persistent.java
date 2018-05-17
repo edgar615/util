@@ -28,25 +28,34 @@ public interface Persistent<ID> extends Serializable {
   List<String> fields();
 
   /**
-   *
    * @return 主键属性
    */
   String primaryField();
 
   /**
    * 转换为map对象
+   *
    * @return
    */
   Map<String, Object> toMap();
 
   /**
+   * 将map对象填充到实体中
+   *
+   * @param map
+   */
+  void fromMap(Map<String, Object> map);
+
+  /**
    * 设置自增主键
+   *
    * @param key
    */
   void setGeneratedKey(Number key);
 
   /**
    * 虚拟列，5.7新增，新增修改是要忽略这个属性
+   *
    * @return
    */
   default List<String> virtualFields() {

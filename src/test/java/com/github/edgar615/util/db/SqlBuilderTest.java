@@ -1,5 +1,6 @@
 package com.github.edgar615.util.db;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 import com.github.edgar615.util.base.Randoms;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Edgar on 2017/5/18.
@@ -48,6 +50,23 @@ public class SqlBuilderTest {
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("update device set barcode = ?,company_code = ? where device_id = ?",
+                        sqlBindings.sql());
+    Assert.assertEquals("barcode", sqlBindings.bindings().get(0));
+    Assert.assertEquals(0, sqlBindings.bindings().get(1));
+    Assert.assertEquals(1, sqlBindings.bindings().get(2));
+  }
+
+  @Test
+  public void testUpdateById2() {
+    Device device = new Device();
+    device.setBarcode("barcode");
+    device.setCompanyCode(0);
+    Map<String, Integer> addOrSub = ImmutableMap.of("parentId", 1, "deviceCode", -2);
+    List<String> fiedls = Lists.newArrayList("manufacturerName");
+    SQLBindings sqlBindings = SqlBuilder.updateById(device, addOrSub, fiedls, 1);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("update device set barcode = ?,company_code = ?,parent_id = parent_id + 1,device_code = device_code - 2,manufacturer_name = null where device_id = ?",
                         sqlBindings.sql());
     Assert.assertEquals("barcode", sqlBindings.bindings().get(0));
     Assert.assertEquals(0, sqlBindings.bindings().get(1));

@@ -694,7 +694,12 @@ public class Device implements Persistent<Integer>  {
         return map;
     }
 
-  @Override
+    @Override
+    public void fromMap(Map<String, Object> map) {
+
+    }
+
+    @Override
   public void setGeneratedKey(Number key) {
     this.deviceId = key.intValue();
   }

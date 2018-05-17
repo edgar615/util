@@ -7,10 +7,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import com.github.edgar615.util.base.MorePreconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Edgar on 2017/5/19.
@@ -18,6 +21,8 @@ import java.util.List;
  * @author Edgar  Date 2017/5/19
  */
 public class Example {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Example.class);
 
   private final Criteria criteria = Criteria.create();
 
@@ -432,9 +437,19 @@ public class Example {
     this.criteria().stream()
             .filter(c -> definedFields.contains(c.field()))
             .forEach(c -> copyExample.addCriterion(c));
+    //日志
+    List<Criterion> criterias = this.criteria().stream()
+            .filter(c -> !definedFields.contains(c.field()))
+            .collect(Collectors.toList());
+    LOGGER.warn("remove undefined criterion:{}", criterias);
     this.fields().stream()
             .filter(f -> definedFields.contains(f))
             .forEach(f -> copyExample.addField(f));
+    //日志
+    List<String> fields = this.fields().stream()
+            .filter(f -> !definedFields.contains(f))
+            .collect(Collectors.toList());
+    LOGGER.warn("remove undefined field:{}", fields);
     this.orderBy().stream()
             .filter(o -> {
               if (o.startsWith("-")) {
@@ -443,6 +458,15 @@ public class Example {
               return definedFields.contains(o);
             })
             .forEach(o -> copyExample.orderBy(o));
+    List<String> orderBy = this.fields().stream()
+            .filter(o -> {
+              if (o.startsWith("-")) {
+                return !definedFields.contains(o.substring(1));
+              }
+              return !definedFields.contains(o);
+            })
+            .collect(Collectors.toList());
+    LOGGER.warn("remove undefined sort:{}", orderBy);
     return copyExample;
   }
 

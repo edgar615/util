@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.github.edgar615.util.search.Example;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据访问层的接口.
@@ -64,6 +65,22 @@ public interface Jdbc {
   <ID, T extends Persistent<ID>> int updateById(Persistent<ID> persistent, ID id);
 
   /**
+   * 根据主键更新，忽略实体中的null
+   *
+   * @param persistent 持久化对象
+   * @param addOrSub   需要做增加或者减去的字段，value为正数表示增加，负数表示减少
+   * @param nullFields 需要设为null的字段
+   * @param id         主键ID
+   * @param <ID>       主键类型
+   * @param <T>        持久化对象
+   * @return
+   */
+  <ID, T extends Persistent<ID>> int updateById(Persistent<ID> persistent,
+                                                Map<String, Integer> addOrSub,
+                                                List<String> nullFields,
+                                                ID id);
+
+  /**
    * 根据条件更新，忽略实体中的null.
    *
    * @param persistent 持久化对象
@@ -75,30 +92,20 @@ public interface Jdbc {
   <ID, T extends Persistent<ID>> int updateByExample(Persistent<ID> persistent, Example example);
 
   /**
-   * 根据主键，将某些字段更新为null.
+   * 根据条件更新，忽略实体中的null
    *
-   * @param elementType 持久化对象
-   * @param fields      需要更新的字段
-   * @param id          主键
-   * @param <ID>        主键类型
-   * @param <T>         持久化对象
+   * @param persistent 持久化对象
+   * @param addOrSub   需要做增加或者减去的字段，value为正数表示增加，负数表示减少
+   * @param nullFields 需要设为null的字段
+   * @param example         查询条件
+   * @param <ID>       主键类型
+   * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int setNullById(Class<T> elementType, List<String> fields,
-                                                 ID id);
+  <ID, T extends Persistent<ID>> int updateByExample(Persistent<ID> persistent,
+                                                     Map<String, Integer> addOrSub,
+                                                     List<String> nullFields, Example example);
 
-  /**
-   * 根据条件更新.
-   *
-   * @param elementType 持久化对象
-   * @param fields      需要更新的字段
-   * @param example     查询条件
-   * @param <ID>        条件集合
-   * @param <T>         持久化对象
-   * @return
-   */
-  <ID, T extends Persistent<ID>> int setNullByExample(Class<T> elementType,
-                                                       List<String> fields, Example example);
 
   /**
    * 根据主键查找.

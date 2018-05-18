@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 
 import com.github.edgar615.util.search.Example;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +63,9 @@ public interface Jdbc {
    * @param <ID>       主键类型
    * @return
    */
-  <ID> int updateById(Persistent<ID> persistent, ID id);
+  default <ID> int updateById(Persistent<ID> persistent, ID id) {
+    return updateById(persistent, new HashMap<>(), new ArrayList<>(), id);
+  }
 
   /**
    * 根据主键更新，忽略实体中的null
@@ -86,7 +90,9 @@ public interface Jdbc {
    * @param <ID>       条件集合
    * @return
    */
-  <ID> int updateByExample(Persistent<ID> persistent, Example example);
+  default <ID> int updateByExample(Persistent<ID> persistent, Example example) {
+    return updateByExample(persistent, new HashMap<>(), new ArrayList<>(), example);
+  }
 
   /**
    * 根据条件更新，忽略实体中的null

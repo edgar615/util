@@ -59,10 +59,9 @@ public interface Jdbc {
    * @param persistent 持久化对象
    * @param id         主键
    * @param <ID>       主键类型
-   * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateById(Persistent<ID> persistent, ID id);
+  <ID> int updateById(Persistent<ID> persistent, ID id);
 
   /**
    * 根据主键更新，忽略实体中的null
@@ -72,10 +71,9 @@ public interface Jdbc {
    * @param nullFields 需要设为null的字段
    * @param id         主键ID
    * @param <ID>       主键类型
-   * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateById(Persistent<ID> persistent,
+  <ID> int updateById(Persistent<ID> persistent,
                                                 Map<String, Integer> addOrSub,
                                                 List<String> nullFields,
                                                 ID id);
@@ -86,10 +84,9 @@ public interface Jdbc {
    * @param persistent 持久化对象
    * @param example    查询条件
    * @param <ID>       条件集合
-   * @param <T>        持久化对象
    * @return
    */
-  <ID, T extends Persistent<ID>> int updateByExample(Persistent<ID> persistent, Example example);
+  <ID> int updateByExample(Persistent<ID> persistent, Example example);
 
   /**
    * 根据条件更新，忽略实体中的null

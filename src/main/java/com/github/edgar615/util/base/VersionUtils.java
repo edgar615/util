@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Edgar  Date 2016/12/5
  */
+@Deprecated
 public class VersionUtils {
   private VersionUtils() {
     throw new AssertionError("Not instantiable: " + VersionUtils.class);

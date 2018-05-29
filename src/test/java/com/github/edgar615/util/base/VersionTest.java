@@ -8,7 +8,7 @@ import org.junit.Test;
  *
  * @author Edgar  Date 2016/12/5
  */
-public class VersionUtilsTest {
+public class VersionTest {
 
   @Test
   public void testVersion() {
@@ -33,5 +33,12 @@ public class VersionUtilsTest {
     Assert.assertTrue(VersionUtils.compareVersion("1.0", "0.9.0") > 0);
 
     Assert.assertTrue(VersionUtils.compareVersion("0.6", "0.6") >= 0);
+  }
+
+  @Test
+  public void testSemanticVersion() {
+    Assert.assertTrue(SemanticVersion.isAtLeast("V1.0.1", "1.0.0"));
+    Assert.assertFalse(SemanticVersion.isAtLeast("1.0.1", "v1.0.2"));
+
   }
 }

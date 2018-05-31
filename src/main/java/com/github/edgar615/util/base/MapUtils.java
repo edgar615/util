@@ -294,5 +294,20 @@ public interface MapUtils {
             .reduce(true, (b1, b2) -> b1 && b2);
   }
 
+  /**
+   * 删除value是null的键值对
+   *
+   * @param source
+   * @return
+   */
+  static Map<String, Object> removeNull(Map<String, Object> source) {
+    Map<String, Object> map = new HashMap<>();
+    source.forEach((k, v) -> {
+      if (v != null) {
+        map.put(k, v);
+      }
+    });
+    return map;
+  }
 
 }

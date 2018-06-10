@@ -441,7 +441,9 @@ public class Example {
     List<Criterion> criterias = this.criteria().stream()
             .filter(c -> !definedFields.contains(c.field()))
             .collect(Collectors.toList());
-    LOGGER.warn("remove undefined criterion:{}", criterias);
+    if (!criterias.isEmpty()) {
+      LOGGER.warn("remove undefined criterion:{}", criterias);
+    }
     this.fields().stream()
             .filter(f -> definedFields.contains(f))
             .forEach(f -> copyExample.addField(f));
@@ -449,7 +451,9 @@ public class Example {
     List<String> fields = this.fields().stream()
             .filter(f -> !definedFields.contains(f))
             .collect(Collectors.toList());
-    LOGGER.warn("remove undefined field:{}", fields);
+    if (!fields.isEmpty()) {
+      LOGGER.warn("remove undefined field:{}", fields);
+    }
     this.orderBy().stream()
             .filter(o -> {
               if (o.startsWith("-")) {
@@ -466,7 +470,9 @@ public class Example {
               return !definedFields.contains(o);
             })
             .collect(Collectors.toList());
-    LOGGER.warn("remove undefined sort:{}", orderBy);
+    if (!orderBy.isEmpty()) {
+      LOGGER.warn("remove undefined sort:{}", orderBy);
+    }
     return copyExample;
   }
 

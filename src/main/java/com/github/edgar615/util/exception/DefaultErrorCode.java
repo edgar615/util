@@ -174,6 +174,11 @@ public enum DefaultErrorCode implements ErrorCode {
   CONFLICT(1031, "Conflict"),
 
   /**
+   * 数据冲突
+   */
+  NOT_YOUR_RESOURCE(1032, "Not your resources"),
+
+  /**
    * 事件超时.
    */
   EVENTBUS_TIMOUT(1101, "Eventbus: Timeout"),

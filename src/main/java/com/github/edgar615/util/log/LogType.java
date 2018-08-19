@@ -5,6 +5,7 @@ package com.github.edgar615.util.log;
  *
  * @author Edgar  Date 2017/7/7
  */
+@Deprecated
 public class LogType {
 
   /**

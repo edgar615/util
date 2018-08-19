@@ -16,6 +16,7 @@ import java.util.Map;
  *
  * @author Edgar  Date 2017/7/4
  */
+@Deprecated
 public class Log {
 
   private final Logger defaultLogger = LoggerFactory.getLogger("root");

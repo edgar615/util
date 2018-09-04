@@ -246,4 +246,69 @@ public interface Rule {
   static Rule map() {
     return MapRule.create();
   }
+
+  /**
+   * 字母的校验.
+   *
+   * @return Rule
+   */
+  static Rule alpha() {
+    return AlphaRule.create();
+  }
+
+  /**
+   * 字母、数字、下划线的校验.
+   *
+   * @return Rule
+   */
+  static Rule alphaUnderscore() {
+    return AlphaUnderscoreRule.create();
+  }
+
+  /**
+   * 字母、数字的校验.
+   *
+   * @return Rule
+   */
+  static Rule alphaNumber() {
+    return AlphaNumberRule.create();
+  }
+
+  /**
+   * 字母、空格的校验.
+   *
+   * @return Rule
+   */
+  static Rule alphaSpace() {
+    return AlphaSpaceRule.create();
+  }
+
+  /**
+   * 数字的校验(不考虑长度).
+   *
+   * @return Rule
+   */
+  static Rule digits() {
+    return DigitsRule.create();
+  }
+
+  /**
+   * 数字的校验(考虑长度).
+   *
+   * @param length 长度
+   * @return Rule
+   */
+  static Rule digits(int length) {
+    return DigitsRule.create(length);
+  }
+
+  /**
+   * 带小数点的数字校验.
+   *
+   * @param point 小数的长度
+   * @return Rule
+   */
+  static Rule decimal(int point) {
+    return DecimalRule.create(point);
+  }
 }

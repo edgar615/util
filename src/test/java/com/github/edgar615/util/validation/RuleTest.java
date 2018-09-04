@@ -8,6 +8,8 @@ import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.junit.Test;
 
 /**
@@ -358,5 +360,96 @@ public class RuleTest {
     assertFalse(rule.message(), rule.isValid("2018-03-1314:15:00"));
     assertFalse(rule.message(), rule.isValid("2018-03-13 00:00:00"));
     assertTrue(rule.message(), rule.isValid("2018-03-13T14:15:00"));
+  }
+
+  @Test
+  public void testAlpha() {
+    Rule rule = Rule.alpha();
+    assertTrue(rule.message(), rule.isValid(""));
+    assertTrue(rule.message(), rule.isValid("abc"));
+    assertFalse(rule.message(), rule.isValid("123"));
+    assertFalse(rule.message(), rule.isValid("a1"));
+    assertFalse(rule.message(), rule.isValid("1a"));
+  }
+
+  @Test
+  public void testAlphaUnderscore() {
+    Rule rule = Rule.alphaUnderscore();
+    assertTrue(rule.message(), rule.isValid(""));
+    assertTrue(rule.message(), rule.isValid("abc"));
+    assertTrue(rule.message(), rule.isValid("123"));
+    assertTrue(rule.message(), rule.isValid("a1__"));
+    assertTrue(rule.message(), rule.isValid("_1_a"));
+    assertTrue(rule.message(), rule.isValid("_1_a"));
+    assertTrue(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("a @ #"));
+  }
+
+  @Test
+  public void testAlphaNumber() {
+    Rule rule = Rule.alphaNumber();
+    assertTrue(rule.message(), rule.isValid(""));
+    assertTrue(rule.message(), rule.isValid("abc"));
+    assertTrue(rule.message(), rule.isValid("123"));
+    assertTrue(rule.message(), rule.isValid("a12e3"));
+    assertFalse(rule.message(), rule.isValid("a1__"));
+    assertFalse(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("a @ #"));
+  }
+
+  @Test
+  public void testAlphaSpace() {
+    Rule rule = Rule.alphaSpace();
+    assertTrue(rule.message(), rule.isValid(""));
+    assertTrue(rule.message(), rule.isValid("abc"));
+    assertTrue(rule.message(), rule.isValid(" ab c "));
+    assertFalse(rule.message(), rule.isValid("123"));
+    assertFalse(rule.message(), rule.isValid("a12e3"));
+    assertFalse(rule.message(), rule.isValid("a1__"));
+    assertFalse(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("_1_a"));
+    assertFalse(rule.message(), rule.isValid("a @ #"));
+  }
+
+  @Test
+  public void testDigits() {
+    Rule rule = Rule.digits();
+    assertFalse(rule.message(), rule.isValid(""));
+    assertFalse(rule.message(), rule.isValid("abc"));
+    assertTrue(rule.message(), rule.isValid("12345677889977687878"));
+    assertTrue(rule.message(), rule.isValid("3"));
+    assertFalse(rule.message(), rule.isValid("03"));
+    assertTrue(rule.message(), rule.isValid(3));
+
+    rule = Rule.digits(3);
+    assertFalse(rule.message(), rule.isValid("a12e3"));
+    assertFalse(rule.message(), rule.isValid("a1__"));
+    assertFalse(rule.message(), rule.isValid("1"));
+    assertFalse(rule.message(), rule.isValid("12"));
+    assertFalse(rule.message(), rule.isValid("1234"));
+    assertTrue(rule.message(), rule.isValid("132"));
+    assertFalse(rule.message(), rule.isValid("012"));
+  }
+
+  @Test
+  public void testDecimal() {
+    Rule rule = Rule.decimal(2);
+    assertFalse(rule.message(), rule.isValid(""));
+    assertFalse(rule.message(), rule.isValid("abc"));
+    assertFalse(rule.message(), rule.isValid("12345677889977687878"));
+    assertFalse(rule.message(), rule.isValid("3"));
+    assertFalse(rule.message(), rule.isValid("03"));
+    assertTrue(rule.message(), rule.isValid(3.1));
+    assertFalse(rule.message(), rule.isValid("01.11"));
+    assertTrue(rule.message(), rule.isValid(0.00));
+    assertTrue(rule.message(), rule.isValid(0.10));
+    assertTrue(rule.message(), rule.isValid(0.11));
+    assertTrue(rule.message(), rule.isValid(3.00));
+    assertTrue(rule.message(), rule.isValid(3.10));
+    assertTrue(rule.message(), rule.isValid(3.11));
+
   }
 }

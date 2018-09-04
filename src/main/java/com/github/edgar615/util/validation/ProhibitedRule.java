@@ -2,7 +2,6 @@ package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 
 /**
@@ -12,34 +11,34 @@ import java.util.Map;
  */
 public class ProhibitedRule implements Rule {
 
-    private ProhibitedRule() {
-    }
+  private ProhibitedRule() {
+  }
 
-    static Rule create() {
-        return new ProhibitedRule();
-    }
+  static Rule create() {
+    return new ProhibitedRule();
+  }
 
-    @Override
-    public String message() {
-        return "Prohibited";
-    }
+  @Override
+  public String message() {
+    return "Prohibited";
+  }
 
-    @Override
-    public boolean isValid(Object property) {
-        if (property == null) {
-            return true;
-        }
-        return false;
+  @Override
+  public boolean isValid(Object property) {
+    if (property == null) {
+      return true;
     }
+    return false;
+  }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("prohibited", true);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("prohibited", true);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper("ProhibitedRule")
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("ProhibitedRule")
+        .toString();
+  }
 }

@@ -10,66 +10,55 @@ import java.util.List;
  * <p>
  * Upstream: smooth weighted round-robin balancing.
  * <p>
- * For edge case weights like { 5, 1, 1 } we now produce { a, a, b, a, c, a, a }
- * sequence instead of { c, b, a, a, a, a, a } produced previously.
+ * For edge case weights like { 5, 1, 1 } we now produce { a, a, b, a, c, a, a } sequence instead of
+ * { c, b, a, a, a, a, a } produced previously.
  * <p>
- * Algorithm is as follows: on each peer selection we increase current_weight
- * of each eligible peer by its weight, select peer with greatest current_weight
- * and reduce its current_weight by total number of weight points distributed
- * among peers.
+ * Algorithm is as follows: on each peer selection we increase current_weight of each eligible peer
+ * by its weight, select peer with greatest current_weight and reduce its current_weight by total
+ * number of weight points distributed among peers.
  * <p>
- * In case of { 5, 1, 1 } weights this gives the following sequence of
- * current_weight's:
+ * In case of { 5, 1, 1 } weights this gives the following sequence of current_weight's:
  * <p>
- * a  b  c
- * 0  0  0  (initial state)
+ * a  b  c 0  0  0  (initial state)
  * <p>
- * 5  1  1  (a selected)
- * -2  1  1
+ * 5  1  1  (a selected) -2  1  1
  * <p>
- * 3  2  2  (a selected)
- * -4  2  2
+ * 3  2  2  (a selected) -4  2  2
  * <p>
- * 1  3  3  (b selected)
- * 1 -4  3
+ * 1  3  3  (b selected) 1 -4  3
  * <p>
- * 6 -3  4  (a selected)
- * -1 -3  4
+ * 6 -3  4  (a selected) -1 -3  4
  * <p>
- * 4 -2  5  (c selected)
- * 4 -2 -2
+ * 4 -2  5  (c selected) 4 -2 -2
  * <p>
- * 9 -1 -1  (a selected)
- * 2 -1 -1
+ * 9 -1 -1  (a selected) 2 -1 -1
  * <p>
- * 7  0  0  (a selected)
- * 0  0  0
+ * 7  0  0  (a selected) 0  0  0
  * <p>
- * To preserve weight reduction in case of failures the effective_weight
- * variable was introduced, which usually matches peer's weight, but is
- * reduced temporarily on peer failures.
- * Created by edgar on 17-5-6.
+ * To preserve weight reduction in case of failures the effective_weight variable was introduced,
+ * which usually matches peer's weight, but is reduced temporarily on peer failures. Created by
+ * edgar on 17-5-6.
  */
 class WeightRoundbinStrategy implements ProviderStrategy {
 
-    public ServiceInstance compute(List<ServiceInstance> instances) {
-        int total = instances.stream()
-                .map(r -> r.weight())
-                .reduce(0, (i1, i2) -> i1 + i2);
+  public ServiceInstance compute(List<ServiceInstance> instances) {
+    int total = instances.stream()
+        .map(r -> r.weight())
+        .reduce(0, (i1, i2) -> i1 + i2);
 
-        instances.stream()
-                .forEach(i -> i.incEffectiveWeight(i.weight()));
-        ServiceInstance instance = instances.stream()
-                .max((o1, o2) -> o1.effectiveWeight() - o2.effectiveWeight())
-                .get();
-        return instance.decEffectiveWeight(total);
-    }
+    instances.stream()
+        .forEach(i -> i.incEffectiveWeight(i.weight()));
+    ServiceInstance instance = instances.stream()
+        .max((o1, o2) -> o1.effectiveWeight() - o2.effectiveWeight())
+        .get();
+    return instance.decEffectiveWeight(total);
+  }
 
-    @Override
-    public ServiceInstance get(List<ServiceInstance> instances) {
-        ServiceInstance instance = compute(instances);
-        //重新计算weight
-        return instance;
-    }
+  @Override
+  public ServiceInstance get(List<ServiceInstance> instances) {
+    ServiceInstance instance = compute(instances);
+    //重新计算weight
+    return instance;
+  }
 
 }

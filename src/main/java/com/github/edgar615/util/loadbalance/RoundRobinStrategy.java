@@ -12,15 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class RoundRobinStrategy implements ProviderStrategy {
 
-    private final AtomicInteger integer = new AtomicInteger(0);
+  private final AtomicInteger integer = new AtomicInteger(0);
 
-    @Override
-    public ServiceInstance get(List<ServiceInstance> records) {
-        if (records == null || records.isEmpty()) {
-            return null;
-        }
-        int index = Math.abs(integer.getAndIncrement());
-        return records.get(index % records.size());
+  @Override
+  public ServiceInstance get(List<ServiceInstance> records) {
+    if (records == null || records.isEmpty()) {
+      return null;
     }
+    int index = Math.abs(integer.getAndIncrement());
+    return records.get(index % records.size());
+  }
 
 }

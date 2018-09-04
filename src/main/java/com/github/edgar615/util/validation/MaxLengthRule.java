@@ -2,7 +2,6 @@ package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 
 /**
@@ -14,46 +13,46 @@ import java.util.Map;
  */
 class MaxLengthRule implements Rule {
 
-    /**
-     * 最大长度.
-     */
-    private final int value;
+  /**
+   * 最大长度.
+   */
+  private final int value;
 
-    private MaxLengthRule(int value) {
-        this.value = value;
-    }
+  private MaxLengthRule(int value) {
+    this.value = value;
+  }
 
-    static Rule create(int value) {
-        return new MaxLengthRule(value);
-    }
+  static Rule create(int value) {
+    return new MaxLengthRule(value);
+  }
 
-    @Override
-    public String message() {
-        return "MaxLength:" + value;
-    }
+  @Override
+  public String message() {
+    return "MaxLength:" + value;
+  }
 
-    @Override
-    public boolean isValid(Object property) {
-        if (property != null && (property instanceof String)) {
-            String str = String.class.cast(property);
-            return str.length() <= value;
-        }
-        if (property != null && (property instanceof Number)) {
-            String str = property.toString();
-            return str.length() <= value;
-        }
-        return true;
+  @Override
+  public boolean isValid(Object property) {
+    if (property != null && (property instanceof String)) {
+      String str = String.class.cast(property);
+      return str.length() <= value;
     }
+    if (property != null && (property instanceof Number)) {
+      String str = property.toString();
+      return str.length() <= value;
+    }
+    return true;
+  }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("maxLength", value);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("maxLength", value);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper("MaxLengthRule")
-                .add("value", value)
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("MaxLengthRule")
+        .add("value", value)
+        .toString();
+  }
 }

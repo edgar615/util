@@ -10,19 +10,19 @@ import org.junit.Test;
  */
 public class ExceptionUtilsTest {
 
-    @Test
-    public void wrapNullToIllegal() {
-        NullPointerException exception = new NullPointerException("foo");
-        Assertions.assertThat(ExceptionUtils.wrap(exception, IllegalArgumentException.class))
-                .isInstanceOf(IllegalArgumentException.class);
-        System.out.println(ExceptionUtils.wrap(exception, IllegalArgumentException.class));
-    }
+  @Test
+  public void wrapNullToIllegal() {
+    NullPointerException exception = new NullPointerException("foo");
+    Assertions.assertThat(ExceptionUtils.wrap(exception, IllegalArgumentException.class))
+        .isInstanceOf(IllegalArgumentException.class);
+    System.out.println(ExceptionUtils.wrap(exception, IllegalArgumentException.class));
+  }
 
-    @Test
-    public void wrapNullToNull() {
-        NullPointerException exception = new NullPointerException();
-        Assertions.assertThat(ExceptionUtils.wrap(exception, NullPointerException.class))
-                .isInstanceOf(NullPointerException.class);
-        System.out.println(ExceptionUtils.wrap(exception, NullPointerException.class));
-    }
+  @Test
+  public void wrapNullToNull() {
+    NullPointerException exception = new NullPointerException();
+    Assertions.assertThat(ExceptionUtils.wrap(exception, NullPointerException.class))
+        .isInstanceOf(NullPointerException.class);
+    System.out.println(ExceptionUtils.wrap(exception, NullPointerException.class));
+  }
 }

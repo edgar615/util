@@ -5,16 +5,16 @@ import java.lang.reflect.Method;
 
 public class MyServiceHandler implements InvocationHandler {
 
-    private Object target;
+  private Object target;
 
-    public MyServiceHandler(Object target) {
-        this.target = target;
-    }
+  public MyServiceHandler(Object target) {
+    this.target = target;
+  }
 
-    public Object invoke(Object proxy, Method method, Object[] args)
-            throws Throwable {
-        System.out.println(1);
-        return method.invoke(target, args);
-    }
+  public Object invoke(Object proxy, Method method, Object[] args)
+      throws Throwable {
+    System.out.println(1);
+    return method.invoke(target, args);
+  }
 
 }

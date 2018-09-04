@@ -10,21 +10,21 @@ import java.lang.reflect.Method;
  */
 public class MyServiceProxy implements InvocationHandler, ObjectProxy<IMyService> {
 
-    private IMyService target;
+  private IMyService target;
 
-    public MyServiceProxy(IMyService target) {
-        this.target = target;
-    }
+  public MyServiceProxy(IMyService target) {
+    this.target = target;
+  }
 
 
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println(1);
-        return method.invoke(target, args);
-    }
+  @Override
+  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    System.out.println(1);
+    return method.invoke(target, args);
+  }
 
-    @Override
-    public IMyService getProxiedObject() {
-        return target;
-    }
+  @Override
+  public IMyService getProxiedObject() {
+    return target;
+  }
 }

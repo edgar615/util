@@ -56,61 +56,61 @@ import java.util.Map;
  */
 class FloatRule implements Rule {
 
-  private FloatRule() {
-  }
+    private FloatRule() {
+    }
 
-  static Rule create() {
-    return new FloatRule();
-  }
+    static Rule create() {
+        return new FloatRule();
+    }
 
-  @Override
-  public String message() {
-    return "Float Required";
-  }
+    @Override
+    public String message() {
+        return "Float Required";
+    }
 
-  @Override
-  public boolean isValid(Object property) {
-    if (property == null) {
-      return true;
-    }
-    if (property instanceof Float) {
-      return true;
-    }
-    if (property instanceof Double) {
-      return true;
-    }
-    if (property instanceof Integer) {
-      return true;
-    }
-    if (property instanceof Long) {
-      return true;
-    }
-    if (property instanceof Short) {
-      return true;
-    }
-    if (property instanceof Byte) {
-      return true;
-    }
-    if (property != null && (property instanceof String)) {
-      String str = String.class.cast(property);
-      try {
-        Float.parseFloat(str);
-        return true;
-      } catch (NumberFormatException e) {
+    @Override
+    public boolean isValid(Object property) {
+        if (property == null) {
+            return true;
+        }
+        if (property instanceof Float) {
+            return true;
+        }
+        if (property instanceof Double) {
+            return true;
+        }
+        if (property instanceof Integer) {
+            return true;
+        }
+        if (property instanceof Long) {
+            return true;
+        }
+        if (property instanceof Short) {
+            return true;
+        }
+        if (property instanceof Byte) {
+            return true;
+        }
+        if (property != null && (property instanceof String)) {
+            String str = String.class.cast(property);
+            try {
+                Float.parseFloat(str);
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
         return false;
-      }
     }
-    return false;
-  }
 
-  @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("float", true);
-  }
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("float", true);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper("FloatRule")
-            .toString();
-  }
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("FloatRule")
+                .toString();
+    }
 }

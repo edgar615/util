@@ -13,28 +13,28 @@ import java.util.List;
  */
 public class ReflectUtilsTest {
 
-  @Test
-  public void testClassLoader() {
-    System.out.println(ReflectUtils.getDefaultClassLoader());
-  }
-
-  @Test
-  public void testComputeSignature() throws NoSuchMethodException {
-    System.out.println(ReflectUtils.computeSignature(Object.class.getDeclaredMethod("clone")));
-    System.out.println(ReflectUtils.computeSignature(List.class.getMethod("add",
-                                                                          Object.class)));
-  }
-
-  @Test
-  public void testExtractAllInterfaces() throws NoSuchMethodException {
-    Class[] classes = ReflectUtils.extractAllInterfaces(new ArrayList<>());
-    for (Class clazz : classes) {
-      System.out.println(clazz);
+    @Test
+    public void testClassLoader() {
+        System.out.println(ReflectUtils.getDefaultClassLoader());
     }
-  }
 
-  @Test
-  public void testIsSubClassOrInterfaceOf() throws NoSuchMethodException {
-    System.out.println(ReflectUtils.isSubClassOrInterfaceOf(ArrayList.class, Collection.class));
-  }
+    @Test
+    public void testComputeSignature() throws NoSuchMethodException {
+        System.out.println(ReflectUtils.computeSignature(Object.class.getDeclaredMethod("clone")));
+        System.out.println(ReflectUtils.computeSignature(List.class.getMethod("add",
+                Object.class)));
+    }
+
+    @Test
+    public void testExtractAllInterfaces() throws NoSuchMethodException {
+        Class[] classes = ReflectUtils.extractAllInterfaces(new ArrayList<>());
+        for (Class clazz : classes) {
+            System.out.println(clazz);
+        }
+    }
+
+    @Test
+    public void testIsSubClassOrInterfaceOf() throws NoSuchMethodException {
+        System.out.println(ReflectUtils.isSubClassOrInterfaceOf(ArrayList.class, Collection.class));
+    }
 }

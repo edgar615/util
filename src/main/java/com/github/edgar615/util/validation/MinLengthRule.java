@@ -14,45 +14,47 @@ import java.util.Map;
  */
 class MinLengthRule implements Rule {
 
-  /**
-   * 最小长度.
-   */
-  private final int value;
+    /**
+     * 最小长度.
+     */
+    private final int value;
 
-  private MinLengthRule(int value) {this.value = value;}
-
-  static Rule create(int value) {
-    return new MinLengthRule(value);
-  }
-
-  @Override
-  public String message() {
-    return "MinLength:" + value;
-  }
-
-  @Override
-  public boolean isValid(Object property) {
-    if (property != null && (property instanceof String)) {
-      String str = String.class.cast(property);
-      return str.length() >= value;
+    private MinLengthRule(int value) {
+        this.value = value;
     }
 
-    if (property != null && (property instanceof Number)) {
-      String str = property.toString();
-      return str.length() >= value;
+    static Rule create(int value) {
+        return new MinLengthRule(value);
     }
-    return true;
-  }
 
-  @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("minLength", value);
-  }
+    @Override
+    public String message() {
+        return "MinLength:" + value;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper("MinLengthRule")
-            .add("value", value)
-            .toString();
-  }
+    @Override
+    public boolean isValid(Object property) {
+        if (property != null && (property instanceof String)) {
+            String str = String.class.cast(property);
+            return str.length() >= value;
+        }
+
+        if (property != null && (property instanceof Number)) {
+            String str = property.toString();
+            return str.length() >= value;
+        }
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("minLength", value);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("MinLengthRule")
+                .add("value", value)
+                .toString();
+    }
 }

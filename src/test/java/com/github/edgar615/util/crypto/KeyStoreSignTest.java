@@ -10,9 +10,9 @@ import java.io.FileNotFoundException;
  */
 public class KeyStoreSignTest {
 
-  public static void main(String[] args) throws FileNotFoundException {
-    FileInputStream inputStream = new FileInputStream("h:/keystore.jceks");
-    KeyStoreSign sign = new KeyStoreSign(inputStream, "jceks", "secret");
-    System.out.println(sign.sign("ES256","hello"));
-  }
+    public static void main(String[] args) throws FileNotFoundException {
+        FileInputStream inputStream = new FileInputStream("h:/keystore.jceks");
+        KeyStoreSign sign = new KeyStoreSign(inputStream, "jceks", "secret");
+        System.out.println(sign.sign("ES256", "hello"));
+    }
 }

@@ -10,27 +10,27 @@ import java.util.List;
  * @author Edgar
  */
 public interface ProviderStrategy {
-  /**
-   * 从给定一组对象中，返回一个对象.
-   *
-   * @param instances the instance list
-   * @return the instance to use
-   */
-  ServiceInstance get(List<ServiceInstance> instances);
+    /**
+     * 从给定一组对象中，返回一个对象.
+     *
+     * @param instances the instance list
+     * @return the instance to use
+     */
+    ServiceInstance get(List<ServiceInstance> instances);
 
-  static ProviderStrategy random() {
-    return new RandomStrategy();
-  }
+    static ProviderStrategy random() {
+        return new RandomStrategy();
+    }
 
-  static ProviderStrategy weightRoundRobin() {
-    return new WeightRoundbinStrategy();
-  }
+    static ProviderStrategy weightRoundRobin() {
+        return new WeightRoundbinStrategy();
+    }
 
-  static ProviderStrategy roundRobin() {
-    return new RoundRobinStrategy();
-  }
+    static ProviderStrategy roundRobin() {
+        return new RoundRobinStrategy();
+    }
 
-  static ProviderStrategy sticky(ProviderStrategy masterStrategy) {
-    return new StickyStrategy(masterStrategy);
-  }
+    static ProviderStrategy sticky(ProviderStrategy masterStrategy) {
+        return new StickyStrategy(masterStrategy);
+    }
 }

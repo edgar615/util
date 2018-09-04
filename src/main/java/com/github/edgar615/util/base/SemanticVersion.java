@@ -21,6 +21,8 @@ package com.github.edgar615.util.base;
 public class SemanticVersion implements Comparable<SemanticVersion> {
 
     private static final int PARTS_MIN = 3;
+    private static final String VERSION_PREFIX_UPPER = "V";
+    private static final String VERSION_PREFIX_LOWER = "v";
     private final Integer major;
     private final Integer minor;
     private final Integer patch;
@@ -28,7 +30,7 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
     private final String version;
 
     public SemanticVersion(String version) {
-        if (version.startsWith("v") || version.startsWith("V")) {
+        if (version.startsWith(VERSION_PREFIX_LOWER) || version.startsWith(VERSION_PREFIX_UPPER)) {
             version = version.substring(1);
         }
         this.version = version;
@@ -44,32 +46,6 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
         } else {
             throw new IllegalArgumentException("Version number is not semantic. Should be in the format d.d.d. See http://semver.org");
         }
-    }
-
-    /**
-     * @return The version string
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    @Override
-    public int compareTo(SemanticVersion o) {
-        int majorCompare = this.major.compareTo(o.major);
-        if (majorCompare != 0) {
-            return majorCompare;
-        }
-
-        int minorCompare = this.minor.compareTo(o.minor);
-        if (minorCompare != 0) {
-            return minorCompare;
-        }
-
-        int patchCompare = this.patch.compareTo(o.patch);
-        if (patchCompare != 0) {
-            return patchCompare;
-        }
-        return 0;
     }
 
     /**
@@ -103,5 +79,31 @@ public class SemanticVersion implements Comparable<SemanticVersion> {
 
     private static boolean isAtLeastMajorMinorImpl(SemanticVersion version, int majorVersion, int minorVersion) {
         return version != null && version.major >= majorVersion && version.minor >= minorVersion;
+    }
+
+    @Override
+    public int compareTo(SemanticVersion o) {
+        int majorCompare = this.major.compareTo(o.major);
+        if (majorCompare != 0) {
+            return majorCompare;
+        }
+
+        int minorCompare = this.minor.compareTo(o.minor);
+        if (minorCompare != 0) {
+            return minorCompare;
+        }
+
+        int patchCompare = this.patch.compareTo(o.patch);
+        if (patchCompare != 0) {
+            return patchCompare;
+        }
+        return 0;
+    }
+
+    /**
+     * @return The version string
+     */
+    public String getVersion() {
+        return version;
     }
 }

@@ -9,10 +9,10 @@ import org.junit.Test;
  */
 public class ObjectProxyInvocationHandlerTest {
 
-  @Test
-  public void testCreateProxy() {
-    IMyService myService = new MyServiceImpl();
-    IMyService proxy = ObjectProxyInvocationHandler.createProxy(IMyService.class, myService);
-    proxy.say("hello");
-  }
+    @Test
+    public void testCreateProxy() {
+        IMyService myService = new MyServiceImpl();
+        IMyService proxy = ObjectProxyInvocationHandler.createProxy(IMyService.class, myService);
+        proxy.say("hello");
+    }
 }

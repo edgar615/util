@@ -8,25 +8,25 @@ import java.net.URL;
  * @author ypujante@linkedin.com
  */
 public class NullClassLoader extends ClassLoader {
-  private static final NullClassLoader INSTANCE = new NullClassLoader();
+    private static final NullClassLoader INSTANCE = new NullClassLoader();
 
-  /**
-   * Constructor
-   */
-  private NullClassLoader() {
-  }
+    /**
+     * Constructor
+     */
+    private NullClassLoader() {
+    }
 
-  public static NullClassLoader instance() {
-    return INSTANCE;
-  }
+    public static NullClassLoader instance() {
+        return INSTANCE;
+    }
 
-  @Override
-  public Class<?> loadClass(String name) throws ClassNotFoundException {
-    throw new ClassNotFoundException(name);
-  }
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        throw new ClassNotFoundException(name);
+    }
 
-  @Override
-  public URL getResource(String name) {
-    return null;
-  }
+    @Override
+    public URL getResource(String name) {
+        return null;
+    }
 }

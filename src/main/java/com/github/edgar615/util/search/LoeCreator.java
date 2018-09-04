@@ -13,30 +13,33 @@ import java.util.List;
  */
 class LoeCreator implements CriterionCreator {
 
-  @Override
-  public List<Criterion> create(String field, String opValue, boolean negation) {
-    if (opValue.startsWith(">")
-        && !opValue.startsWith(">=")) {
-      String value = opValue.substring(1).trim();
-      Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
-                                  "Problems parsing queryString: %s",
-                                  negation ? "-" + field : field + ":" + opValue);
-      if (negation) {
-        return Lists.newArrayList(new Criterion(field, Op.LE, value));
-      }
-      return Lists.newArrayList(new Criterion(field, Op.GT, value));
+    private static final String GE = ">=";
+    private static final String GT = ">";
+
+    @Override
+    public List<Criterion> create(String field, String opValue, boolean negation) {
+        if (opValue.startsWith(GT)
+                && !opValue.startsWith(GE)) {
+            String value = opValue.substring(1).trim();
+            Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
+                    "Problems parsing queryString: %s",
+                    negation ? "-" + field : field + ":" + opValue);
+            if (negation) {
+                return Lists.newArrayList(new Criterion(field, Op.LE, value));
+            }
+            return Lists.newArrayList(new Criterion(field, Op.GT, value));
+        }
+        if (opValue.startsWith(GE)) {
+            String value = opValue.substring(2).trim();
+            Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
+                    "Problems parsing queryString: %s",
+                    negation ? "-" + field : field + ":" + opValue);
+            if (negation) {
+                return Lists.newArrayList(new Criterion(field, Op.LT, value));
+            }
+            return Lists.newArrayList(new Criterion(field, Op.GE, value));
+        }
+        return null;
     }
-    if (opValue.startsWith(">=")) {
-      String value = opValue.substring(2).trim();
-      Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
-                                  "Problems parsing queryString: %s",
-                                  negation ? "-" + field : field + ":" + opValue);
-      if (negation) {
-        return Lists.newArrayList(new Criterion(field, Op.LT, value));
-      }
-      return Lists.newArrayList(new Criterion(field, Op.GE, value));
-    }
-    return null;
-  }
 
 }

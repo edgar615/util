@@ -14,35 +14,35 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 class StickyStrategy implements ProviderStrategy {
 
-  private final ProviderStrategy masterStrategy;
+    private final ProviderStrategy masterStrategy;
 
-  private final AtomicReference<ServiceInstance> ourInstance = new AtomicReference<>(null);
+    private final AtomicReference<ServiceInstance> ourInstance = new AtomicReference<>(null);
 
-  private final AtomicInteger instanceNumber = new AtomicInteger(-1);
+    private final AtomicInteger instanceNumber = new AtomicInteger(-1);
 
-  public StickyStrategy(ProviderStrategy masterStrategy) {
-    this.masterStrategy = masterStrategy;
-  }
-
-  @Override
-  public ServiceInstance get(List<ServiceInstance> instances) {
-
-    ServiceInstance localOurInstance = ourInstance.get();
-    if (localOurInstance != null) {
-      long count = instances.stream()
-              .filter(i -> i.id().equals(localOurInstance.id()))
-              .count();
-      if (count == 0) {
-        ourInstance.compareAndSet(localOurInstance, null);
-      }
+    public StickyStrategy(ProviderStrategy masterStrategy) {
+        this.masterStrategy = masterStrategy;
     }
 
-    if (ourInstance.get() == null) {
-      ServiceInstance instance = masterStrategy.get(instances);
-      if (ourInstance.compareAndSet(null, instance)) {
-        instanceNumber.incrementAndGet();
-      }
+    @Override
+    public ServiceInstance get(List<ServiceInstance> instances) {
+
+        ServiceInstance localOurInstance = ourInstance.get();
+        if (localOurInstance != null) {
+            long count = instances.stream()
+                    .filter(i -> i.id().equals(localOurInstance.id()))
+                    .count();
+            if (count == 0) {
+                ourInstance.compareAndSet(localOurInstance, null);
+            }
+        }
+
+        if (ourInstance.get() == null) {
+            ServiceInstance instance = masterStrategy.get(instances);
+            if (ourInstance.compareAndSet(null, instance)) {
+                instanceNumber.incrementAndGet();
+            }
+        }
+        return ourInstance.get();
     }
-    return ourInstance.get();
-  }
 }

@@ -15,42 +15,42 @@ import java.util.List;
  */
 public final class Page<T> {
 
-  private final List<T> records;
+    private final List<T> records;
 
-  private final int totalRecords;
+    private final int totalRecords;
 
 
-  private Page(int totalRecords, List<T> records) {
-    this.totalRecords = totalRecords;
-    this.records = ImmutableList.copyOf(records);
-  }
+    private Page(int totalRecords, List<T> records) {
+        this.totalRecords = totalRecords;
+        this.records = ImmutableList.copyOf(records);
+    }
 
-  /**
-   * 创建一个Pagination类
-   *
-   * @param totalRecords 总记录数
-   * @param records      当前页显示的集合
-   * @param <T>          实体类
-   * @return Page
-   */
-  public static <T> Page<T> newInstance(int totalRecords,
-                                        List<T> records) {
-    return new Page<T>(totalRecords, records);
-  }
+    /**
+     * 创建一个Pagination类
+     *
+     * @param totalRecords 总记录数
+     * @param records      当前页显示的集合
+     * @param <T>          实体类
+     * @return Page
+     */
+    public static <T> Page<T> newInstance(int totalRecords,
+                                          List<T> records) {
+        return new Page<T>(totalRecords, records);
+    }
 
-  public List<T> getRecords() {
-    return records;
-  }
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("Pagination")
+                .add("totalRecords", totalRecords)
+                .add("records", records)
+                .toString();
+    }
 
-  public int getTotalRecords() {
-    return totalRecords;
-  }
+    public List<T> getRecords() {
+        return records;
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper("Pagination")
-            .add("totalRecords", totalRecords)
-            .add("records", records)
-            .toString();
-  }
+    public int getTotalRecords() {
+        return totalRecords;
+    }
 }

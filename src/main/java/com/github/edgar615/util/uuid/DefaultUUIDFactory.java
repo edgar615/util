@@ -8,8 +8,8 @@ import java.util.UUID;
  * @author Edgar  Date 2016/4/6
  */
 public class DefaultUUIDFactory implements UUIDFactory {
-  @Override
-  public UUID uuid() {
-    return UUID.randomUUID();
-  }
+    @Override
+    public UUID uuid() {
+        return UUID.randomUUID();
+    }
 }

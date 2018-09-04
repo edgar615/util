@@ -10,8 +10,8 @@ import org.junit.Test;
  */
 public class ConcurrentUUIDFactoryTest {
 
-  @Test
-  public void testUUID() {
-    System.out.println(UUIDFactory.concurrentUUIDFactory().uuid());
-  }
+    @Test
+    public void testUUID() {
+        System.out.println(UUIDFactory.concurrentUUIDFactory().uuid());
+    }
 }

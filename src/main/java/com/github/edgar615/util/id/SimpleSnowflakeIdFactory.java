@@ -31,130 +31,132 @@ import java.util.concurrent.ConcurrentMap;
  * @author Edgar
  */
 class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, SeqExtracter<Long>,
-    ShardingExtracter<Long> {
+        ShardingExtracter<Long> {
 
-  /**
-   * 自增序列的位数
-   */
-  private static final int SEQ_BIT = 12;
+    /**
+     * 自增序列的位数
+     */
+    private static final int SEQ_BIT = 12;
 
-  /**
-   * 节点标识的位数
-   */
-  private static final int SERVER_BIT = 10;
+    /**
+     * 节点标识的位数
+     */
+    private static final int SERVER_BIT = 10;
 
-  /**
-   * 最大序列号
-   */
-  private static final int SEQ_MASK = -1 ^ (-1 << SEQ_BIT);
+    /**
+     * 最大序列号
+     */
+    private static final int SEQ_MASK = -1 ^ (-1 << SEQ_BIT);
 
-  /**
-   * 最大server
-   */
-  private static final int SERVER_MASK = -1 ^ (-1 << SERVER_BIT);
+    /**
+     * 最大server
+     */
+    private static final int SERVER_MASK = -1 ^ (-1 << SERVER_BIT);
 
 
-  /**
-   * 时间的左移位数
-   */
-  private static final int TIME_LEFT_BIT = SEQ_BIT + SERVER_BIT;
+    /**
+     * 时间的左移位数
+     */
+    private static final int TIME_LEFT_BIT = SEQ_BIT + SERVER_BIT;
 
-  /**
-   * SERVER的左移位数
-   */
-  private static final int SERVER_LEFT_BIT = SEQ_BIT;
+    /**
+     * SERVER的左移位数
+     */
+    private static final int SERVER_LEFT_BIT = SEQ_BIT;
 
-  /**
-   * 每次初始化对序列值.
-   */
-  private static final int INIT_SEQ = 0;
+    /**
+     * 每次初始化对序列值.
+     */
+    private static final int INIT_SEQ = 0;
 
-  /**
-   * 用来保存每个服务节点的ID生成类，保证每个节点只有一个实例.
-   */
-  private static final ConcurrentMap<Integer, SimpleSnowflakeIdFactory> FACTORY_HOLDER =
-          new ConcurrentHashMap<>();
+    /**
+     * 用来保存每个服务节点的ID生成类，保证每个节点只有一个实例.
+     */
+    private static final ConcurrentMap<Integer, SimpleSnowflakeIdFactory> FACTORY_HOLDER =
+            new ConcurrentHashMap<>();
 
-  /**
-   * 服务器id
-   */
-  private final int serverId;
+    /**
+     * 服务器id
+     */
+    private final int serverId;
 
-  /**
-   * 上次时间戳
-   */
-  private volatile long lastTime = -1l;
+    /**
+     * 上次时间戳
+     */
+    private volatile long lastTime = -1L;
 
-  /**
-   * 自增序列
-   */
-  private volatile long seqId = INIT_SEQ;
+    /**
+     * 自增序列
+     */
+    private volatile long seqId = INIT_SEQ;
 
-  private SimpleSnowflakeIdFactory(int serverId) {
-    this.serverId = serverId & SERVER_MASK;
-  }
-
-  @Override
-  public synchronized Long nextId() {
-    long time = currentTime();
-    if (time < lastTime) {//当前时间小于上次时间，说明时钟不对
-      throw new IllegalStateException("Clock moved backwards.");
+    private SimpleSnowflakeIdFactory(int serverId) {
+        this.serverId = serverId & SERVER_MASK;
     }
-    if (time == lastTime) {
-      seqId = (seqId + 1) & SEQ_MASK;
-      if (seqId == 0) {//说明该毫秒下对序列已经自增完毕，等待下一个毫秒
-        tilNextMillis(lastTime);
-      }
-    } else {
-      seqId = INIT_SEQ;
+
+    /**
+     * 使用服务器id创建一个IdFactory,每个服务器id始终只有一个实例，避免同一个服务器id生成重复的id.
+     * <p>
+     * <b>在分布式环境下，必须保证每个分布式服务使用的serverId不同，否则还是可能生成重复的id</b>
+     *
+     * @param serverId 服务器id
+     * @return IdFactory
+     */
+    static SimpleSnowflakeIdFactory create(int serverId) {
+        SimpleSnowflakeIdFactory idFactory = FACTORY_HOLDER.get(serverId);
+        if (idFactory != null) {
+            return idFactory;
+        }
+        idFactory = FACTORY_HOLDER.putIfAbsent(serverId, new SimpleSnowflakeIdFactory(serverId));
+        if (idFactory != null) {
+            return idFactory;
+        } else {
+            return FACTORY_HOLDER.get(serverId);
+        }
     }
-    lastTime = time;
-    long id = time << TIME_LEFT_BIT;
-    id |= serverId << SERVER_LEFT_BIT;
-    id |= seqId;// & SEQ_MASK;
-    return id;
-  }
 
-  /**
-   * 使用服务器id创建一个IdFactory,每个服务器id始终只有一个实例，避免同一个服务器id生成重复的id.
-   * <p>
-   * <b>在分布式环境下，必须保证每个分布式服务使用的serverId不同，否则还是可能生成重复的id</b>
-   *
-   * @param serverId 服务器id
-   * @return IdFactory
-   */
-  static SimpleSnowflakeIdFactory create(int serverId) {
-    SimpleSnowflakeIdFactory idFactory = FACTORY_HOLDER.get(serverId);
-    if (idFactory != null) {
-      return idFactory;
+    @Override
+    public synchronized Long nextId() {
+        long time = currentTime();
+        if (time < lastTime) {
+            //当前时间小于上次时间，说明时钟不对
+            throw new IllegalStateException("Clock moved backwards.");
+        }
+        if (time == lastTime) {
+            seqId = (seqId + 1) & SEQ_MASK;
+            if (seqId == 0) {
+                //说明该毫秒下对序列已经自增完毕，等待下一个毫秒
+                tilNextMillis(lastTime);
+            }
+        } else {
+            seqId = INIT_SEQ;
+        }
+        lastTime = time;
+        long id = time << TIME_LEFT_BIT;
+        id |= serverId << SERVER_LEFT_BIT;
+        id |= seqId;// & SEQ_MASK;
+        return id;
     }
-    idFactory = FACTORY_HOLDER.putIfAbsent(serverId, new SimpleSnowflakeIdFactory(serverId));
-    if (idFactory != null) {
-      return idFactory;
-    } else {
-      return FACTORY_HOLDER.get(serverId);
+
+    /**
+     * 从主键中提取时间.
+     * 将ID左移22位，提取出时间
+     *
+     * @param id 主键
+     * @return 时间
+     */
+    @Override
+    public long fetchTime(Long id) {
+        return id >> TIME_LEFT_BIT;
     }
-  }
 
-  /**
-   * 从主键中提取时间.
-   * 将ID左移22位，提取出时间
-   *
-   * @param id 主键
-   * @return 时间
-   */
-  @Override
-  public long fetchTime(Long id) {
-    return id >> TIME_LEFT_BIT;
-  }
+    @Override
+    public long fetchSharding(Long id) {
+        return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) >> SERVER_LEFT_BIT;
+    }
 
-  @Override
-  public long fetchSharding(Long id) {
-    return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) >> SERVER_LEFT_BIT;
-  }
-
-  @Override
-  public long fetchSeq(Long id) {
-    return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) ^ (fetchSharding(id) << SERVER_LEFT_BIT);
-  }
+    @Override
+    public long fetchSeq(Long id) {
+        return (id ^ (fetchTime(id) << TIME_LEFT_BIT)) ^ (fetchSharding(id) << SERVER_LEFT_BIT);
+    }
 }

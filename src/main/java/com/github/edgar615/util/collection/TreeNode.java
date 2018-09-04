@@ -3,11 +3,11 @@ package com.github.edgar615.util.collection;
 import java.util.List;
 
 public interface TreeNode {
-  Integer getParentId();
+    TreeNode addChild(TreeNode treeNode);
 
-  Integer getId();
+    Integer getParentId();
 
-  TreeNode addChild(TreeNode treeNode);
+    Integer getId();
 
-  List<TreeNode> getChildren();
+    List<TreeNode> getChildren();
 }

@@ -15,36 +15,37 @@ import java.util.Map;
  */
 class RequiredRule implements Rule {
 
-  private RequiredRule() {
-  }
-
-  static Rule create() {
-    return new RequiredRule();
-  }
-
-  @Override
-  public String message() {
-    return "Required";
-  }
-
-  public boolean isValid(Object property) {
-    if (property == null) {
-      return false;
+    private RequiredRule() {
     }
-    if (property instanceof String) {
-      return !Strings.isNullOrEmpty(String.class.cast(property));
+
+    static Rule create() {
+        return new RequiredRule();
     }
-    return true;
-  }
 
-  @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("required", true);
-  }
+    @Override
+    public String message() {
+        return "Required";
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper("RequiredRule")
-            .toString();
-  }
+    @Override
+    public boolean isValid(Object property) {
+        if (property == null) {
+            return false;
+        }
+        if (property instanceof String) {
+            return !Strings.isNullOrEmpty(String.class.cast(property));
+        }
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("required", true);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("RequiredRule")
+                .toString();
+    }
 }

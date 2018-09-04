@@ -6,8 +6,8 @@ package com.github.edgar615.util.id;
  */
 public interface WorkerIdCreator {
 
-  /**
-   * @return　workerId
-   */
-  int create();
+    /**
+     * @return　workerId
+     */
+    int create();
 }

@@ -9,12 +9,12 @@ import org.junit.Test;
  * @author Edgar  Date 2018/8/17
  */
 public class LuhnTest {
-  @Test
-  public void testGenerateCheckNum() {
-    int checkNum = Luhn.generateCheckNum("7992739871");
-    Assert.assertEquals(3, checkNum);
-    Assert.assertEquals("79927398713", Luhn.generate("7992739871"));
-    Assert.assertTrue(Luhn.check("79927398713"));
-    Assert.assertFalse(Luhn.check("79927398714"));
-  }
+    @Test
+    public void testGenerateCheckNum() {
+        int checkNum = Luhn.generateCheckNum("7992739871");
+        Assert.assertEquals(3, checkNum);
+        Assert.assertEquals("79927398713", Luhn.generate("7992739871"));
+        Assert.assertTrue(Luhn.check("79927398713"));
+        Assert.assertFalse(Luhn.check("79927398714"));
+    }
 }

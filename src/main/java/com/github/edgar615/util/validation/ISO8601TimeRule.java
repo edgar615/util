@@ -16,41 +16,42 @@ import java.util.regex.Pattern;
  */
 class ISO8601TimeRule implements Rule {
 
-  /**
-   * 正则表达式
-   */
-  private static final Pattern PATTERN = Pattern.compile("0[0-9]:[0-5][0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]:[0-5][0-9]");
+    /**
+     * 正则表达式
+     */
+    private static final Pattern PATTERN = Pattern.compile("0[0-9]:[0-5][0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]:[0-5][0-9]");
 
-  private ISO8601TimeRule() {}
-
-  static Rule create() {
-    return new ISO8601TimeRule();
-  }
-
-  @Override
-  public String message() {
-    return "Must match pattern: HH:mm:ss";
-  }
-
-  @Override
-  public boolean isValid(Object property) {
-    if (property != null && (property instanceof String)) {
-      String str = String.class.cast(property);
-      Matcher matcher = PATTERN.matcher(str);
-      return matcher.matches();
+    private ISO8601TimeRule() {
     }
-    return true;
-  }
 
-  @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("ISO8601Time", true);
-  }
+    static Rule create() {
+        return new ISO8601TimeRule();
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper("ISO8601TimeRule")
-            .add("ISO8601Time", true)
-            .toString();
-  }
+    @Override
+    public String message() {
+        return "Must match pattern: HH:mm:ss";
+    }
+
+    @Override
+    public boolean isValid(Object property) {
+        if (property != null && (property instanceof String)) {
+            String str = String.class.cast(property);
+            Matcher matcher = PATTERN.matcher(str);
+            return matcher.matches();
+        }
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("iso8601Time", true);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("ISO8601TimeRule")
+                .add("iso8601Time", true)
+                .toString();
+    }
 }

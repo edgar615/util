@@ -7,65 +7,65 @@ import org.junit.Test;
  */
 public class SystemExceptionTest {
 
-  @Test
-  public void test() {
-    try {
-      throw SystemException.create(DefaultErrorCode.INVALID_TOKEN)
-              .set("foo", "bar");
-    } catch (Exception e) {
-      System.out.println(e.toString());
-      e.printStackTrace();
+    @Test
+    public void test() {
+        try {
+            throw SystemException.create(DefaultErrorCode.INVALID_TOKEN)
+                    .set("foo", "bar");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            e.printStackTrace();
+        }
     }
-  }
 
-  @Test(expected = SystemException.class)
-  public void testEx() {
-    throwEx();
-  }
+    @Test(expected = SystemException.class)
+    public void testEx() {
+        throwEx();
+    }
 
-  @Test(expected = SystemException.class)
-  public void testExWithProperties() {
-    throwExWithProperties();
-  }
+    @Test(expected = SystemException.class)
+    public void testExWithProperties() {
+        throwExWithProperties();
+    }
 
-  @Test(expected = SystemException.class)
-  public void testExWithThrowable() {
-    throwExWithThrowable();
-  }
+    @Test(expected = SystemException.class)
+    public void testExWithThrowable() {
+        throwExWithThrowable();
+    }
 
-  @Test(expected = SystemException.class)
-  public void testExWithSystemEx() {
-    throwExWithSystemEx();
-  }
+    @Test(expected = SystemException.class)
+    public void testExWithSystemEx() {
+        throwExWithSystemEx();
+    }
 
-  @Test(expected = SystemException.class)
-  public void testExWithSystemEx2() {
-    throwExWithSystemEx2();
-  }
+    @Test(expected = SystemException.class)
+    public void testExWithSystemEx2() {
+        throwExWithSystemEx2();
+    }
 
-  public void throwEx() {
-    throw SystemException.create(DefaultErrorCode.NULL);
-  }
+    public void throwEx() {
+        throw SystemException.create(DefaultErrorCode.NULL);
+    }
 
-  public void throwExWithProperties() {
-    throw SystemException.create(DefaultErrorCode.NULL).set("foo", "bar");
-  }
+    public void throwExWithProperties() {
+        throw SystemException.create(DefaultErrorCode.NULL).set("foo", "bar");
+    }
 
-  public void throwExWithThrowable() {
-    throw SystemException.wrap(DefaultErrorCode.NULL, new RuntimeException("no record")).set("foo",
-                                                                                             "bar");
-  }
+    public void throwExWithThrowable() {
+        throw SystemException.wrap(DefaultErrorCode.NULL, new RuntimeException("no record")).set("foo",
+                "bar");
+    }
 
-  public void throwExWithSystemEx() {
-    throw SystemException
-            .wrap(DefaultErrorCode.NULL, SystemException.create(DefaultErrorCode.INVALID_TOKEN))
-            .set("foo",
-                 "bar");
-  }
+    public void throwExWithSystemEx() {
+        throw SystemException
+                .wrap(DefaultErrorCode.NULL, SystemException.create(DefaultErrorCode.INVALID_TOKEN))
+                .set("foo",
+                        "bar");
+    }
 
-  public void throwExWithSystemEx2() {
-    throw SystemException.wrap(DefaultErrorCode.NULL, SystemException.create(DefaultErrorCode.NULL))
-            .set("foo",
-                 "bar");
-  }
+    public void throwExWithSystemEx2() {
+        throw SystemException.wrap(DefaultErrorCode.NULL, SystemException.create(DefaultErrorCode.NULL))
+                .set("foo",
+                        "bar");
+    }
 }

@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface CriterionCreator {
 
-  List<Criterion> create(String field, String opValue, boolean negation);
+    List<Criterion> create(String field, String opValue, boolean negation);
 
 }

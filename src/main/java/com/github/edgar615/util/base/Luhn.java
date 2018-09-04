@@ -13,46 +13,48 @@ package com.github.edgar615.util.base;
  * 将数字的和取模10（本例中得到7），再用10去减（本例中得到3），得到校验位。
  * <p>
  * 代码核心实现来自https://gist.github.com/mdp/9691528
+ *
+ * @author Edgar
  */
 public class Luhn {
 
-  public static String generate(String numString) {
-    return numString + generateCheckNum(numString);
-  }
-
-  public static int generateCheckNum(String numString) {
-    int sum = 0;
-    boolean alternate = true;
-    for (int i = numString.length() - 1; i >= 0; i--) {
-      int n = Integer.parseInt(numString.substring(i, i + 1));
-      if (alternate) {
-        n *= 2;
-        if (n > 9) {
-          n = (n % 10) + 1;
-        }
-      }
-      sum += n;
-      alternate = !alternate;
+    public static String generate(String numString) {
+        return numString + generateCheckNum(numString);
     }
-    return 10 - (sum % 10);
-  }
 
-  public static boolean check(String numString) {
-    int sum = 0;
-    boolean alternate = true;
-    for (int i = numString.length() - 2; i >= 0; i--) {
-      int n = Integer.parseInt(numString.substring(i, i + 1));
-      if (alternate) {
-        n *= 2;
-        if (n > 9) {
-          n = (n % 10) + 1;
+    public static int generateCheckNum(String numString) {
+        int sum = 0;
+        boolean alternate = true;
+        for (int i = numString.length() - 1; i >= 0; i--) {
+            int n = Integer.parseInt(numString.substring(i, i + 1));
+            if (alternate) {
+                n *= 2;
+                if (n > 9) {
+                    n = (n % 10) + 1;
+                }
+            }
+            sum += n;
+            alternate = !alternate;
         }
-      }
-      sum += n;
-      alternate = !alternate;
+        return 10 - (sum % 10);
     }
-    int checkNum =
-            Integer.parseInt(numString.substring(numString.length() - 1, numString.length()));
-    return ((10 - sum % 10) == checkNum);
-  }
+
+    public static boolean check(String numString) {
+        int sum = 0;
+        boolean alternate = true;
+        for (int i = numString.length() - 2; i >= 0; i--) {
+            int n = Integer.parseInt(numString.substring(i, i + 1));
+            if (alternate) {
+                n *= 2;
+                if (n > 9) {
+                    n = (n % 10) + 1;
+                }
+            }
+            sum += n;
+            alternate = !alternate;
+        }
+        int checkNum =
+                Integer.parseInt(numString.substring(numString.length() - 1, numString.length()));
+        return ((10 - sum % 10) == checkNum);
+    }
 }

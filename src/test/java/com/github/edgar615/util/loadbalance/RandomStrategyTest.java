@@ -11,23 +11,23 @@ import java.util.List;
  */
 public class RandomStrategyTest extends StrategyTest {
 
-  @Test
-  public void testRandom() {
-    ProviderStrategy providerStrategy = ProviderStrategy.random();
-    List<String> selected = select3000(providerStrategy);
-    Assert.assertEquals(3, new HashSet<>(selected).size());
-    long aSize = selected.stream()
-            .filter(i -> "a".equals(i))
-            .count();
-    long bSize = selected.stream()
-            .filter(i -> "b".equals(i))
-            .count();
-    long cSize = selected.stream()
-            .filter(i -> "c".equals(i))
-            .count();
-    Assert.assertNotEquals(aSize, 1000);
-    Assert.assertNotEquals(bSize, 1000);
-    Assert.assertNotEquals(cSize, 1000);
-  }
+    @Test
+    public void testRandom() {
+        ProviderStrategy providerStrategy = ProviderStrategy.random();
+        List<String> selected = select3000(providerStrategy);
+        Assert.assertEquals(3, new HashSet<>(selected).size());
+        long aSize = selected.stream()
+                .filter(i -> "a".equals(i))
+                .count();
+        long bSize = selected.stream()
+                .filter(i -> "b".equals(i))
+                .count();
+        long cSize = selected.stream()
+                .filter(i -> "c".equals(i))
+                .count();
+        Assert.assertNotEquals(aSize, 1000);
+        Assert.assertNotEquals(bSize, 1000);
+        Assert.assertNotEquals(cSize, 1000);
+    }
 
 }

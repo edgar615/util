@@ -52,25 +52,24 @@ import java.util.List;
  */
 class WeightRoundbinStrategy implements ProviderStrategy {
 
-  @Override
-  public ServiceInstance get(List<ServiceInstance> instances) {
-    ServiceInstance instance = compute(instances);
-    //重新计算weight
-    return instance;
-  }
+    public ServiceInstance compute(List<ServiceInstance> instances) {
+        int total = instances.stream()
+                .map(r -> r.weight())
+                .reduce(0, (i1, i2) -> i1 + i2);
 
-  public ServiceInstance compute(List<ServiceInstance> instances) {
-    int total = instances.stream()
-            .map(r -> r.weight())
-            .reduce(0, (i1, i2) -> i1 + i2);
+        instances.stream()
+                .forEach(i -> i.incEffectiveWeight(i.weight()));
+        ServiceInstance instance = instances.stream()
+                .max((o1, o2) -> o1.effectiveWeight() - o2.effectiveWeight())
+                .get();
+        return instance.decEffectiveWeight(total);
+    }
 
-    instances.stream()
-            .forEach(i -> i.incEffectiveWeight(i.weight()));
-    ServiceInstance instance = instances.stream()
-            .max((o1, o2) -> o1.effectiveWeight() - o2.effectiveWeight())
-            .get();
-//    Collections.sort(new ArrayList<>(instances), (o1, o2) -> o1.weight() - o2.weight());
-    return instance.decEffectiveWeight(total);
-  }
+    @Override
+    public ServiceInstance get(List<ServiceInstance> instances) {
+        ServiceInstance instance = compute(instances);
+        //重新计算weight
+        return instance;
+    }
 
 }

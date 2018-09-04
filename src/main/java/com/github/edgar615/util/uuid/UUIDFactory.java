@@ -12,24 +12,24 @@ import java.util.UUID;
  */
 @FunctionalInterface
 public interface UUIDFactory {
-  /**
-   * Generates a new version 4 UUID.
-   *
-   * @return the newly generated UUID
-   */
-  UUID uuid();
+    /**
+     * Generates a new version 4 UUID.
+     *
+     * @return the newly generated UUID
+     */
+    UUID uuid();
 
-  static UUIDFactory defaultUUIDFactory() {
-    return new DefaultUUIDFactory();
-  }
+    static UUIDFactory defaultUUIDFactory() {
+        return new DefaultUUIDFactory();
+    }
 
 
-  /**
-   * 创建ConcurrentUUIDFactory对象.
-   *
-   * @return ConcurrentUUIDFactory
-   */
-  static UUIDFactory concurrentUUIDFactory() {
-    return ConcurrentUUIDFactory.create();
-  }
+    /**
+     * 创建ConcurrentUUIDFactory对象.
+     *
+     * @return ConcurrentUUIDFactory
+     */
+    static UUIDFactory concurrentUUIDFactory() {
+        return ConcurrentUUIDFactory.create();
+    }
 }

@@ -13,55 +13,55 @@ import java.util.concurrent.Executor;
  */
 public class OrderQueue {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(OrderQueue.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderQueue.class);
 
-  private final Runnable runner;
+    private final Runnable runner;
 
-  private final LinkedList<Runnable> tasks = new LinkedList<>();
+    private final LinkedList<Runnable> tasks = new LinkedList<>();
 
-  private boolean running;
+    private boolean running;
 
-  public OrderQueue() {
-    this.runner = () -> {
-      for (; ; ) {
-        final Runnable task;
+    public OrderQueue() {
+        this.runner = () -> {
+            for (; ; ) {
+                final Runnable task;
+                synchronized (tasks) {
+                    task = tasks.poll();
+                    if (task == null) {
+                        running = false;
+                        return;
+                    }
+                }
+                try {
+                    task.run();
+                } catch (Throwable t) {
+                    LOGGER.error("Caught unexpected Throwable", t);
+                }
+            }
+        };
+    }
+
+    public void execute(Runnable task, Executor executor) {
         synchronized (tasks) {
-          task = tasks.poll();
-          if (task == null) {
-            running = false;
-            return;
-          }
+            tasks.add(task);
+            if (!running) {
+                running = true;
+                executor.execute(runner);
+            }
         }
-        try {
-          task.run();
-        } catch (Throwable t) {
-          LOGGER.error("Caught unexpected Throwable", t);
+    }
+
+    public boolean running() {
+        return running;
+    }
+
+    public int size() {
+        return tasks.size();
+    }
+
+    protected void add(Runnable task) {
+        synchronized (tasks) {
+            tasks.add(task);
         }
-      }
-    };
-  }
-
-  public void execute(Runnable task, Executor executor) {
-    synchronized (tasks) {
-      tasks.add(task);
-      if (!running) {
-        running = true;
-        executor.execute(runner);
-      }
     }
-  }
-
-  public boolean running() {
-    return running;
-  }
-
-  protected void add(Runnable task) {
-    synchronized (tasks) {
-      tasks.add(task);
-    }
-  }
-
-  public int size() {
-    return tasks.size();
-  }
 }

@@ -9,12 +9,12 @@ import java.io.OutputStream;
  */
 public interface Serializer<T> {
 
-  /**
-   * 将对象序列化为输出流
-   *
-   * @param value 对象
-   * @param out   输出流
-   * @throws SerDeException
-   */
-  void serialize(T value, OutputStream out) throws SerDeException;
+    /**
+     * 将对象序列化为输出流
+     *
+     * @param value 对象
+     * @param out   输出流
+     * @throws SerDeException
+     */
+    void serialize(T value, OutputStream out) throws SerDeException;
 }

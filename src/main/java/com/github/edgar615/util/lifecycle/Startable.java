@@ -6,8 +6,8 @@ package com.github.edgar615.util.lifecycle;
  * @author ypujante@linkedin.com
  */
 public interface Startable {
-  /**
-   * 启动方法，尽量不要阻塞该方法.
-   */
-  void start();
+    /**
+     * 启动方法，尽量不要阻塞该方法.
+     */
+    void start();
 }

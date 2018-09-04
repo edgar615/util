@@ -9,8 +9,8 @@ package com.github.edgar615.util.reflect;
  * @author ypujante@linkedin.com
  */
 public interface ObjectProxy<T> {
-  /**
-   * @return the object proxied
-   */
-  T getProxiedObject();
+    /**
+     * @return the object proxied
+     */
+    T getProxiedObject();
 }

@@ -16,41 +16,42 @@ import java.util.regex.Pattern;
  */
 class ISO8601DateRule implements Rule {
 
-  /**
-   * 正则表达式
-   */
-  private static final Pattern PATTERN = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}");
+    /**
+     * 正则表达式
+     */
+    private static final Pattern PATTERN = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}");
 
-  private ISO8601DateRule() {}
-
-  static Rule create() {
-    return new ISO8601DateRule();
-  }
-
-  @Override
-  public String message() {
-    return "Must match pattern: yyyy-MM-dd";
-  }
-
-  @Override
-  public boolean isValid(Object property) {
-    if (property != null && (property instanceof String)) {
-      String str = String.class.cast(property);
-      Matcher matcher = PATTERN.matcher(str);
-      return matcher.matches();
+    private ISO8601DateRule() {
     }
-    return true;
-  }
 
-  @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("ISO8601Date", true);
-  }
+    static Rule create() {
+        return new ISO8601DateRule();
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper("ISO8601DateRule")
-            .add("ISO8601Date", true)
-            .toString();
-  }
+    @Override
+    public String message() {
+        return "Must match pattern: yyyy-MM-dd";
+    }
+
+    @Override
+    public boolean isValid(Object property) {
+        if (property != null && (property instanceof String)) {
+            String str = String.class.cast(property);
+            Matcher matcher = PATTERN.matcher(str);
+            return matcher.matches();
+        }
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return ImmutableMap.of("iso8601Date", true);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("ISO8601DateRule")
+                .add("iso8601Date", true)
+                .toString();
+    }
 }

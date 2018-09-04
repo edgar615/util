@@ -7,11 +7,11 @@ package com.github.edgar615.util.id;
  */
 public interface ShardingExtracter<T> {
 
-    /**
-     * 从ID中提取分片ID
-     *
-     * @param id ID
-     * @return 分片ID
-     */
-    long fetchSharding(T id);
+  /**
+   * 从ID中提取分片ID
+   *
+   * @param id ID
+   * @return 分片ID
+   */
+  long fetchSharding(T id);
 }

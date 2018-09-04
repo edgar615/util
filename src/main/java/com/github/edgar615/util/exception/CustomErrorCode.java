@@ -7,33 +7,33 @@ package com.github.edgar615.util.exception;
  */
 public class CustomErrorCode implements ErrorCode {
 
-    private final int number;
-    private final String message;
+  private final int number;
+  private final String message;
 
-    CustomErrorCode(int number, String message) {
-        this.number = number;
-        this.message = message;
-    }
+  CustomErrorCode(int number, String message) {
+    this.number = number;
+    this.message = message;
+  }
 
-    public static CustomErrorCode create(int number, String message) {
-        return new CustomErrorCode(number, message);
-    }
+  public static CustomErrorCode create(int number, String message) {
+    return new CustomErrorCode(number, message);
+  }
 
-    @Override
-    public int getNumber() {
-        return number;
-    }
+  @Override
+  public String toString() {
+    return "CustomErrorCode{" +
+        "number=" + number +
+        ", message='" + message + '\'' +
+        '}';
+  }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
+  @Override
+  public int getNumber() {
+    return number;
+  }
 
-    @Override
-    public String toString() {
-        return "CustomErrorCode{" +
-                "number=" + number +
-                ", message='" + message + '\'' +
-                '}';
-    }
+  @Override
+  public String getMessage() {
+    return message;
+  }
 }

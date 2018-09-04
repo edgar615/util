@@ -5,11 +5,11 @@ package com.github.edgar615.util.id;
  */
 public interface SeqExtracter<T> {
 
-    /**
-     * 从ID中提取自增序列.
-     *
-     * @param id ID
-     * @return 自增序列
-     */
-    long fetchSeq(T id);
+  /**
+   * 从ID中提取自增序列.
+   *
+   * @param id ID
+   * @return 自增序列
+   */
+  long fetchSeq(T id);
 }

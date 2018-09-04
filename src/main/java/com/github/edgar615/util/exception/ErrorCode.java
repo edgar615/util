@@ -11,24 +11,24 @@ import java.util.Map;
  */
 public interface ErrorCode {
 
-    default Map<String, Object> asMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("message", getMessage());
-        map.put("code", getNumber());
-        return map;
-    }
+  default Map<String, Object> asMap() {
+    Map<String, Object> map = new HashMap<>();
+    map.put("message", getMessage());
+    map.put("code", getNumber());
+    return map;
+  }
 
-    /**
-     * 返回异常的编码.
-     *
-     * @return 编码值
-     */
-    int getNumber();
+  /**
+   * 返回异常的编码.
+   *
+   * @return 编码值
+   */
+  int getNumber();
 
-    /**
-     * 返回异常的描述.
-     *
-     * @return 描述
-     */
-    String getMessage();
+  /**
+   * 返回异常的描述.
+   *
+   * @return 描述
+   */
+  String getMessage();
 }

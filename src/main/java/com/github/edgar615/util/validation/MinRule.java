@@ -15,61 +15,61 @@ import java.util.Map;
  */
 class MinRule implements Rule {
 
-    /**
-     * 最小值.
-     */
-    private final int value;
+  /**
+   * 最小值.
+   */
+  private final int value;
 
-    private MinRule(int value) {
-        this.value = value;
-    }
+  private MinRule(int value) {
+    this.value = value;
+  }
 
-    static Rule create(int value) {
-        return new MinRule(value);
-    }
+  static Rule create(int value) {
+    return new MinRule(value);
+  }
 
-    @Override
-    public String message() {
-        return "Min value:" + value;
-    }
+  @Override
+  public String message() {
+    return "Min value:" + value;
+  }
 
-    @Override
-    public boolean isValid(Object property) {
-        if (property != null && property instanceof Short) {
-            return Short.class.cast(property) >= value;
-        }
-        if (property != null && property instanceof Integer) {
-            return Integer.class.cast(property) >= value;
-        }
-        if (property != null && property instanceof Long) {
-            return Long.class.cast(property) >= value;
-        }
-        if (property != null && property instanceof Float) {
-            return Float.class.cast(property) >= value;
-        }
-        if (property != null && property instanceof Double) {
-            return Double.class.cast(property) >= value;
-        }
-        if (property != null && (property instanceof String)) {
-            String str = String.class.cast(property);
-            try {
-                return new BigDecimal(str).compareTo(new BigDecimal(value + "")) >= 0;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return true;
+  @Override
+  public boolean isValid(Object property) {
+    if (property != null && property instanceof Short) {
+      return Short.class.cast(property) >= value;
     }
+    if (property != null && property instanceof Integer) {
+      return Integer.class.cast(property) >= value;
+    }
+    if (property != null && property instanceof Long) {
+      return Long.class.cast(property) >= value;
+    }
+    if (property != null && property instanceof Float) {
+      return Float.class.cast(property) >= value;
+    }
+    if (property != null && property instanceof Double) {
+      return Double.class.cast(property) >= value;
+    }
+    if (property != null && (property instanceof String)) {
+      String str = String.class.cast(property);
+      try {
+        return new BigDecimal(str).compareTo(new BigDecimal(value + "")) >= 0;
+      } catch (Exception e) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-    @Override
-    public Map<String, Object> toMap() {
-        return ImmutableMap.of("min", value);
-    }
+  @Override
+  public Map<String, Object> toMap() {
+    return ImmutableMap.of("min", value);
+  }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper("MinRule")
-                .add("value", value)
-                .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("MinRule")
+        .add("value", value)
+        .toString();
+  }
 }

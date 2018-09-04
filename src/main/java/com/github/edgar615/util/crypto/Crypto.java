@@ -1,22 +1,28 @@
 package com.github.edgar615.util.crypto;
 
-import javax.crypto.Mac;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import javax.crypto.Mac;
 
 /**
- * Internal common interface for all crypto algorithms.
- * This is just an utility in order to simplfy sign and verify operations.
+ * Internal common interface for all crypto algorithms. This is just an utility in order to simplfy
+ * sign and verify operations.
  * <p>
  * 从vert.x jwt中复制
  *
  * @author Paulo Lopes
  */
 public interface Crypto {
-    byte[] sign(byte[] payload);
 
-    boolean verify(byte[] signature, byte[] payload);
+  byte[] sign(byte[] payload);
+
+  boolean verify(byte[] signature, byte[] payload);
 }
 
 /**
@@ -25,21 +31,22 @@ public interface Crypto {
  * @author Paulo Lopes
  */
 final class CryptoMac implements Crypto {
-    private final Mac mac;
 
-    CryptoMac(final Mac mac) {
-        this.mac = mac;
-    }
+  private final Mac mac;
 
-    @Override
-    public synchronized byte[] sign(byte[] payload) {
-        return mac.doFinal(payload);
-    }
+  CryptoMac(final Mac mac) {
+    this.mac = mac;
+  }
 
-    @Override
-    public boolean verify(byte[] signature, byte[] payload) {
-        return Arrays.equals(signature, sign(payload));
-    }
+  @Override
+  public synchronized byte[] sign(byte[] payload) {
+    return mac.doFinal(payload);
+  }
+
+  @Override
+  public boolean verify(byte[] signature, byte[] payload) {
+    return Arrays.equals(signature, sign(payload));
+  }
 }
 
 /**
@@ -48,39 +55,40 @@ final class CryptoMac implements Crypto {
  * @author Paulo Lopes
  */
 final class CryptoPublicKey implements Crypto {
-    private final Signature sig;
-    private final PublicKey publicKey;
 
-    CryptoPublicKey(final String algorithm, final PublicKey publicKey) {
-        this.publicKey = publicKey;
+  private final Signature sig;
+  private final PublicKey publicKey;
 
-        Signature signature;
-        try {
-            // use default
-            signature = Signature.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            // error
-            throw new RuntimeException(e);
-        }
+  CryptoPublicKey(final String algorithm, final PublicKey publicKey) {
+    this.publicKey = publicKey;
 
-        this.sig = signature;
+    Signature signature;
+    try {
+      // use default
+      signature = Signature.getInstance(algorithm);
+    } catch (NoSuchAlgorithmException e) {
+      // error
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public synchronized byte[] sign(byte[] payload) {
-        throw new RuntimeException("CryptoPublicKey cannot sign");
-    }
+    this.sig = signature;
+  }
 
-    @Override
-    public synchronized boolean verify(byte[] signature, byte[] payload) {
-        try {
-            sig.initVerify(publicKey);
-            sig.update(payload);
-            return sig.verify(signature);
-        } catch (SignatureException | InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
+  @Override
+  public synchronized byte[] sign(byte[] payload) {
+    throw new RuntimeException("CryptoPublicKey cannot sign");
+  }
+
+  @Override
+  public synchronized boolean verify(byte[] signature, byte[] payload) {
+    try {
+      sig.initVerify(publicKey);
+      sig.update(payload);
+      return sig.verify(signature);
+    } catch (SignatureException | InvalidKeyException e) {
+      throw new RuntimeException(e);
     }
+  }
 }
 
 /**
@@ -89,39 +97,40 @@ final class CryptoPublicKey implements Crypto {
  * @author Paulo Lopes
  */
 final class CryptoPrivateKey implements Crypto {
-    private final Signature sig;
-    private final PrivateKey privateKey;
 
-    CryptoPrivateKey(final String algorithm, final PrivateKey privateKey) {
-        this.privateKey = privateKey;
+  private final Signature sig;
+  private final PrivateKey privateKey;
 
-        Signature signature;
-        try {
-            // use default
-            signature = Signature.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            // error
-            throw new RuntimeException(e);
-        }
+  CryptoPrivateKey(final String algorithm, final PrivateKey privateKey) {
+    this.privateKey = privateKey;
 
-        this.sig = signature;
+    Signature signature;
+    try {
+      // use default
+      signature = Signature.getInstance(algorithm);
+    } catch (NoSuchAlgorithmException e) {
+      // error
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public synchronized byte[] sign(byte[] payload) {
-        try {
-            sig.initSign(privateKey);
-            sig.update(payload);
-            return sig.sign();
-        } catch (SignatureException | InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    this.sig = signature;
+  }
 
-    @Override
-    public synchronized boolean verify(byte[] signature, byte[] payload) {
-        throw new RuntimeException("CryptoPrivateKey cannot verify");
+  @Override
+  public synchronized byte[] sign(byte[] payload) {
+    try {
+      sig.initSign(privateKey);
+      sig.update(payload);
+      return sig.sign();
+    } catch (SignatureException | InvalidKeyException e) {
+      throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public synchronized boolean verify(byte[] signature, byte[] payload) {
+    throw new RuntimeException("CryptoPrivateKey cannot verify");
+  }
 }
 
 /**
@@ -130,64 +139,67 @@ final class CryptoPrivateKey implements Crypto {
  * @author Paulo Lopes
  */
 final class CryptoSignature implements Crypto {
-    private final Signature sig;
-    private final PrivateKey privateKey;
-    private final X509Certificate certificate;
 
-    CryptoSignature(final String algorithm, final X509Certificate certificate, final PrivateKey privateKey) {
-        this.certificate = certificate;
-        this.privateKey = privateKey;
+  private final Signature sig;
+  private final PrivateKey privateKey;
+  private final X509Certificate certificate;
 
-        Signature signature;
-        try {
-            // use default
-            signature = Signature.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            // fallback
-            try {
-                signature = Signature.getInstance(certificate.getSigAlgName());
-            } catch (NoSuchAlgorithmException e1) {
-                // error
-                throw new RuntimeException(e);
-            }
-        }
+  CryptoSignature(final String algorithm, final X509Certificate certificate,
+      final PrivateKey privateKey) {
+    this.certificate = certificate;
+    this.privateKey = privateKey;
 
-        this.sig = signature;
+    Signature signature;
+    try {
+      // use default
+      signature = Signature.getInstance(algorithm);
+    } catch (NoSuchAlgorithmException e) {
+      // fallback
+      try {
+        signature = Signature.getInstance(certificate.getSigAlgName());
+      } catch (NoSuchAlgorithmException e1) {
+        // error
+        throw new RuntimeException(e);
+      }
     }
 
-    @Override
-    public synchronized byte[] sign(byte[] payload) {
-        try {
-            sig.initSign(privateKey);
-            sig.update(payload);
-            return sig.sign();
-        } catch (SignatureException | InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    this.sig = signature;
+  }
 
-    @Override
-    public synchronized boolean verify(byte[] signature, byte[] payload) {
-        try {
-            sig.initVerify(certificate);
-            sig.update(payload);
-            return sig.verify(signature);
-        } catch (SignatureException | InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
+  @Override
+  public synchronized byte[] sign(byte[] payload) {
+    try {
+      sig.initSign(privateKey);
+      sig.update(payload);
+      return sig.sign();
+    } catch (SignatureException | InvalidKeyException e) {
+      throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public synchronized boolean verify(byte[] signature, byte[] payload) {
+    try {
+      sig.initVerify(certificate);
+      sig.update(payload);
+      return sig.verify(signature);
+    } catch (SignatureException | InvalidKeyException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }
 
 final class CryptoNone implements Crypto {
-    private static final byte[] NOOP = new byte[0];
 
-    @Override
-    public byte[] sign(byte[] payload) {
-        return NOOP;
-    }
+  private static final byte[] NOOP = new byte[0];
 
-    @Override
-    public boolean verify(byte[] signature, byte[] payload) {
-        return true;
-    }
+  @Override
+  public byte[] sign(byte[] payload) {
+    return NOOP;
+  }
+
+  @Override
+  public boolean verify(byte[] signature, byte[] payload) {
+    return true;
+  }
 }

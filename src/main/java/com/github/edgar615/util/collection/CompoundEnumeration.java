@@ -12,34 +12,34 @@ import java.util.NoSuchElementException;
  */
 public class CompoundEnumeration<E> implements Enumeration<E> {
 
-    private Enumeration<E>[] enums;
+  private Enumeration<E>[] enums;
 
-    private int index = 0;
+  private int index = 0;
 
-    public CompoundEnumeration(Enumeration<E>[] enums) {
-        this.enums = enums;
+  public CompoundEnumeration(Enumeration<E>[] enums) {
+    this.enums = enums;
+  }
+
+  @Override
+  public boolean hasMoreElements() {
+    return next();
+  }
+
+  @Override
+  public E nextElement() {
+    if (next()) {
+      return enums[index].nextElement();
     }
+    throw new NoSuchElementException();
+  }
 
-    @Override
-    public boolean hasMoreElements() {
-        return next();
+  private boolean next() {
+    while (index < enums.length) {
+      if (enums[index] != null && enums[index].hasMoreElements()) {
+        return true;
+      }
+      index++;
     }
-
-    @Override
-    public E nextElement() {
-        if (next()) {
-            return enums[index].nextElement();
-        }
-        throw new NoSuchElementException();
-    }
-
-    private boolean next() {
-        while (index < enums.length) {
-            if (enums[index] != null && enums[index].hasMoreElements()) {
-                return true;
-            }
-            index++;
-        }
-        return false;
-    }
+    return false;
+  }
 }

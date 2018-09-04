@@ -8,4 +8,5 @@ import java.util.function.Function;
  * @author Edgar  Date 2018/3/12
  */
 public interface IdentificationExtractor<E> extends Function<E, String> {
+
 }

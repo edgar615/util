@@ -4,9 +4,9 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import java.net.IDN;
-import java.util.Map;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,12 +17,11 @@ import java.util.regex.Pattern;
  */
 class EmailRule implements Rule {
 
+  private static final String KEY = "email";
+  private static final String TRUE = "true";
   private static String ATOM = "[a-z0-9!#$%&'*+/=?^_`{|}~-]";
-
   private static String DOMAIN = ATOM + "+(\\." + ATOM + "+)*";
-
   private static String IP_DOMAIN = "\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]";
-
   /**
    * Regular expression for the local part of an email address (everything before '@')
    */
@@ -89,11 +88,6 @@ class EmailRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("email", true);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("EmailRule")
         .toString();
@@ -110,5 +104,31 @@ class EmailRule implements Rule {
     }
     Matcher matcher = pattern.matcher(part);
     return matcher.matches();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() == 1) {
+        return new EmailRule();
+      }
+      if (TRUE.equalsIgnoreCase(keyAndValue.get(1))) {
+        return new EmailRule();
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof EmailRule) {
+        return Lists.newArrayList(KEY);
+      }
+      return Lists.newArrayList();
+    }
   }
 }

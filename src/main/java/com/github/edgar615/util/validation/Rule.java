@@ -1,7 +1,6 @@
 package com.github.edgar615.util.validation;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 校验规则.
@@ -24,13 +23,6 @@ public interface Rule {
    * @return 合法，返回true.
    */
   boolean isValid(Object property);
-
-  /**
-   * 返回校验规则的Map对象，用于JSON的序列化.
-   *
-   * @return map对象
-   */
-  Map<String, Object> toMap();
 
   /**
    * 邮箱校验.

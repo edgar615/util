@@ -1,8 +1,8 @@
 package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  * @author Edgar  Date 2016/1/6
  */
 class RegexRule implements Rule {
+
+  private static final String KEY = "regex";
 
   /**
    * 正则表达式
@@ -45,14 +47,32 @@ class RegexRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("regex", value);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("RegexRule")
         .add("value", value)
         .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() > 1) {
+        return new RegexRule(keyAndValue.get(1));
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof MinRule) {
+        return Lists.newArrayList(KEY, ((RegexRule) rule).value + "");
+      }
+      return Lists.newArrayList();
+    }
   }
 }

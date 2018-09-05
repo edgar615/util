@@ -1,8 +1,9 @@
 package com.github.edgar615.util.validation;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,8 @@ import java.util.regex.Pattern;
  * @create 2018-09-04 15:13
  **/
 class DecimalRule implements Rule {
+
+  private static final String KEY = "decimal";
 
   /**
    * 正则表达式
@@ -49,7 +52,32 @@ class DecimalRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("decimal", point);
+  public String toString() {
+    return MoreObjects.toStringHelper("DecimalRule")
+        .add("point", point)
+        .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() > 1) {
+        return new DecimalRule(Integer.parseInt(keyAndValue.get(1)));
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof DecimalRule) {
+        return Lists.newArrayList(KEY, ((DecimalRule) rule).point + "");
+      }
+      return Lists.newArrayList();
+    }
   }
 }

@@ -1,8 +1,8 @@
 package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  * 参数值等于某个值的校验.
@@ -12,6 +12,8 @@ import java.util.Map;
  * @author Edgar  Date 2016/1/6
  */
 class EqualsRule implements Rule {
+
+  private static final String KEY = "equals";
 
   /**
    * 比较的值.
@@ -40,14 +42,32 @@ class EqualsRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("equals", value);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("EqualsRule")
         .add("value", value)
         .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() > 1) {
+        return new EqualsRule(keyAndValue.get(1));
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof EqualsRule) {
+        return Lists.newArrayList(KEY, ((EqualsRule) rule).value);
+      }
+      return Lists.newArrayList();
+    }
   }
 }

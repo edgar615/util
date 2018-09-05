@@ -1,9 +1,9 @@
 package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.List;
 
 /**
  * 数值最大值的校验.
@@ -14,6 +14,7 @@ import java.util.Map;
  */
 class MinRule implements Rule {
 
+  private static final String KEY = "min";
   /**
    * 最小值.
    */
@@ -61,14 +62,32 @@ class MinRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("min", value);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("MinRule")
         .add("value", value)
         .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() > 1) {
+        return new MinRule(Integer.parseInt(keyAndValue.get(1)));
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof MinRule) {
+        return Lists.newArrayList(KEY, ((MinRule) rule).value + "");
+      }
+      return Lists.newArrayList();
+    }
   }
 }

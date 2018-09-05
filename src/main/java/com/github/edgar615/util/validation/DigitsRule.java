@@ -1,8 +1,9 @@
 package com.github.edgar615.util.validation;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,8 @@ class DigitsRule implements Rule {
    * 正则表达式
    */
   private static final String PATTERN = "[1-9][0-9]";
+
+  private static final String KEY = "digits";
 
   private final int length;
 
@@ -58,16 +61,48 @@ class DigitsRule implements Rule {
     return true;
   }
 
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper("DigitsRule")
+        .add("length", length)
+        .toString();
+  }
+
   private String pattern() {
     if (length == 0) {
       return PATTERN + "*";
     }
     int len = length - 1;
-    return PATTERN + "{" + len + "," + len +"}";
+    return PATTERN + "{" + len + "," + len + "}";
   }
 
-  @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("digits", length);
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() == 1) {
+        return new DigitsRule();
+      }
+      if (keyAndValue.size() > 1) {
+        return new DigitsRule(Integer.parseInt(keyAndValue.get(1)));
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof DigitsRule) {
+        int length = ((DigitsRule) rule).length;
+        if (length == 0) {
+          return Lists.newArrayList(KEY);
+        }
+        return Lists.newArrayList(KEY, ((DigitsRule) rule).length + "");
+      }
+      return Lists.newArrayList();
+    }
   }
 }

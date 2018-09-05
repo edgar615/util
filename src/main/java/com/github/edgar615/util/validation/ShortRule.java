@@ -1,8 +1,8 @@
 package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  * 校验是否是short.
@@ -12,6 +12,11 @@ import java.util.Map;
  * @author Edgar  Date 2016/1/6
  */
 class ShortRule implements Rule {
+
+  private static final String KEY = "short";
+
+  private static final String TRUE = "true";
+
 
   private ShortRule() {
   }
@@ -57,13 +62,34 @@ class ShortRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("short", true);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("ShortRule")
         .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() == 1) {
+        return new ShortRule();
+      }
+      if (TRUE.equalsIgnoreCase(keyAndValue.get(1))) {
+        return new ShortRule();
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof ShortRule) {
+        return Lists.newArrayList(KEY);
+      }
+      return Lists.newArrayList();
+    }
   }
 }

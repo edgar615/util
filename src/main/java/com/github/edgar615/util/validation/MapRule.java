@@ -1,7 +1,8 @@
 package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +13,9 @@ import java.util.Map;
  */
 class MapRule implements Rule {
 
+  private static final String KEY = "map";
+
+  private static final String TRUE = "true";
 
   private MapRule() {
   }
@@ -37,13 +41,34 @@ class MapRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("map", true);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("MapRule")
         .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() == 1) {
+        return new MapRule();
+      }
+      if (TRUE.equalsIgnoreCase(keyAndValue.get(1))) {
+        return new MapRule();
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof MapRule) {
+        return Lists.newArrayList(KEY);
+      }
+      return Lists.newArrayList();
+    }
   }
 }

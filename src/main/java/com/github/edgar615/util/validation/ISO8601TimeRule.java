@@ -1,8 +1,8 @@
 package com.github.edgar615.util.validation;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +20,10 @@ class ISO8601TimeRule implements Rule {
    */
   private static final Pattern PATTERN = Pattern.compile(
       "0[0-9]:[0-5][0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]:[0-5][0-9]");
+
+  private static final String KEY = "iso8601Time";
+
+  private static final String TRUE = "true";
 
   private ISO8601TimeRule() {
   }
@@ -44,14 +48,34 @@ class ISO8601TimeRule implements Rule {
   }
 
   @Override
-  public Map<String, Object> toMap() {
-    return ImmutableMap.of("iso8601Time", true);
-  }
-
-  @Override
   public String toString() {
     return MoreObjects.toStringHelper("ISO8601TimeRule")
-        .add("iso8601Time", true)
         .toString();
+  }
+
+  static class Parse implements RuleParse {
+
+    @Override
+    public Rule parse(List<String> keyAndValue) {
+      String key = keyAndValue.get(0);
+      if (!KEY.equals(key)) {
+        return null;
+      }
+      if (keyAndValue.size() == 1) {
+        return new ISO8601TimeRule();
+      }
+      if (TRUE.equalsIgnoreCase(keyAndValue.get(1))) {
+        return new ISO8601TimeRule();
+      }
+      return null;
+    }
+
+    @Override
+    public List<String> toParsableString(Rule rule) {
+      if (rule instanceof ISO8601DateTimeRule) {
+        return Lists.newArrayList(KEY);
+      }
+      return Lists.newArrayList();
+    }
   }
 }

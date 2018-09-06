@@ -191,7 +191,7 @@ public interface Rule {
    *
    * @return Rule
    */
-  static Rule integer() {
+  static Rule intRule() {
     return IntRule.create();
   }
 

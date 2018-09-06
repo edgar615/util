@@ -26,7 +26,7 @@ class IntRule implements Rule {
 
   @Override
   public String message() {
-    return "Int Required";
+    return "int Required";
   }
 
   @Override

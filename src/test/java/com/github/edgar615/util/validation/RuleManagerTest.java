@@ -30,7 +30,7 @@ public class RuleManagerTest {
     rules.add(Rule.equals("foo"));
     rules.add(Rule.fixLength(10));
     rules.add(Rule.floatRule());
-    rules.add(Rule.integer());
+    rules.add(Rule.intRule());
     rules.add(Rule.iso8601Date());
     rules.add(Rule.iso8601Datetime());
     rules.add(Rule.iso8601Time());
@@ -49,7 +49,7 @@ public class RuleManagerTest {
     rules.add(Rule.datetime());
     String str = RuleManager.instance().toParsableString(rules);
     String expected = "alphaNumber|alpha|alphaSpace|alphaUnderscore|bool|byte|decimal:2|digits:3"
-        + "|double|email|equals:foo|fixLength:10|float|integer|ISO8601Date|ISO8601Datetime|ISO8601Time"
+        + "|double|email|equals:foo|fixLength:10|float|int|ISO8601Date|ISO8601Datetime|ISO8601Time"
         + "|list|long|map|maxLength:5|max:100|minLength:12|min:66|optional:1,2,3|prohibited|regex:[0-9]+|required|short|datetime";
     Assert.assertEquals(expected, str);
   }
@@ -57,7 +57,7 @@ public class RuleManagerTest {
   @Test
   public void testParse() {
     String string = "alphaNumber|alpha|alphaSpace|alphaUnderscore|bool|byte|decimal:2|digits:3"
-        + "|double|email|equals:foo|fixLength:10|float|integer|ISO8601Date|ISO8601Datetime|ISO8601Time"
+        + "|double|email|equals:foo|fixLength:10|float|int|ISO8601Date|ISO8601Datetime|ISO8601Time"
         + "|list|long|map|maxLength:5|max:100|minLength:12|min:66|optional:1,2,3|prohibited|regex:[0-9]+|required|short|datetime";
     List<Rule> rules = RuleManager.instance().parse(string);
     Assert.assertTrue(rules.get(0) instanceof AlphaNumberRule);
@@ -77,27 +77,28 @@ public class RuleManagerTest {
     Assert.assertTrue(rules.get(11) instanceof FixLengthRule);
     Assert.assertEquals(((FixLengthRule) rules.get(11)).value(), 10);
     Assert.assertTrue(rules.get(12) instanceof FloatRule);
-    Assert.assertTrue(rules.get(13) instanceof ISO8601DateRule);
-    Assert.assertTrue(rules.get(14) instanceof ISO8601DateTimeRule);
-    Assert.assertTrue(rules.get(15) instanceof ISO8601TimeRule);
-    Assert.assertTrue(rules.get(16) instanceof ListRule);
-    Assert.assertTrue(rules.get(17) instanceof LongRule);
-    Assert.assertTrue(rules.get(18) instanceof MapRule);
-    Assert.assertTrue(rules.get(19) instanceof MaxLengthRule);
-    Assert.assertEquals(((MaxLengthRule) rules.get(19)).value(), 5);
-    Assert.assertTrue(rules.get(20) instanceof MaxRule);
-    Assert.assertEquals(((MaxRule) rules.get(20)).value(), 100);
-    Assert.assertTrue(rules.get(21) instanceof MinLengthRule);
-    Assert.assertEquals(((MinLengthRule) rules.get(21)).value(), 12);
-    Assert.assertTrue(rules.get(22) instanceof MinRule);
-    Assert.assertEquals(((MinRule) rules.get(22)).value(), 66);
-    Assert.assertTrue(rules.get(23) instanceof OptionalRule);
-    Assert.assertEquals(((OptionalRule) rules.get(23)).value().size(), 3);
-    Assert.assertTrue(rules.get(24) instanceof ProhibitedRule);
-    Assert.assertTrue(rules.get(25) instanceof RegexRule);
-    Assert.assertEquals(((RegexRule) rules.get(25)).value(), "[0-9]+");
-    Assert.assertTrue(rules.get(26) instanceof RequiredRule);
-    Assert.assertTrue(rules.get(27) instanceof ShortRule);
-    Assert.assertTrue(rules.get(28) instanceof DateTimeRule);
+    Assert.assertTrue(rules.get(13) instanceof IntRule);
+    Assert.assertTrue(rules.get(14) instanceof ISO8601DateRule);
+    Assert.assertTrue(rules.get(15) instanceof ISO8601DateTimeRule);
+    Assert.assertTrue(rules.get(16) instanceof ISO8601TimeRule);
+    Assert.assertTrue(rules.get(17) instanceof ListRule);
+    Assert.assertTrue(rules.get(18) instanceof LongRule);
+    Assert.assertTrue(rules.get(19) instanceof MapRule);
+    Assert.assertTrue(rules.get(20) instanceof MaxLengthRule);
+    Assert.assertEquals(((MaxLengthRule) rules.get(20)).value(), 5);
+    Assert.assertTrue(rules.get(21) instanceof MaxRule);
+    Assert.assertEquals(((MaxRule) rules.get(21)).value(), 100);
+    Assert.assertTrue(rules.get(22) instanceof MinLengthRule);
+    Assert.assertEquals(((MinLengthRule) rules.get(22)).value(), 12);
+    Assert.assertTrue(rules.get(23) instanceof MinRule);
+    Assert.assertEquals(((MinRule) rules.get(23)).value(), 66);
+    Assert.assertTrue(rules.get(24) instanceof OptionalRule);
+    Assert.assertEquals(((OptionalRule) rules.get(24)).value().size(), 3);
+    Assert.assertTrue(rules.get(25) instanceof ProhibitedRule);
+    Assert.assertTrue(rules.get(26) instanceof RegexRule);
+    Assert.assertEquals(((RegexRule) rules.get(26)).value(), "[0-9]+");
+    Assert.assertTrue(rules.get(27) instanceof RequiredRule);
+    Assert.assertTrue(rules.get(28) instanceof ShortRule);
+    Assert.assertTrue(rules.get(29) instanceof DateTimeRule);
   }
 }

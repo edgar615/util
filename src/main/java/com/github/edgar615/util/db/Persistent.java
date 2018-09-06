@@ -1,7 +1,6 @@
 package com.github.edgar615.util.db;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;

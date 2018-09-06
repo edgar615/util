@@ -8,8 +8,6 @@ import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.junit.Test;
 
 /**
@@ -220,7 +218,7 @@ public class RuleTest {
   @Test
   public void testInt() {
 
-    Rule rule = Rule.integer();
+    Rule rule = Rule.intRule();
     assertTrue(rule.isValid(5));
     assertTrue(rule.isValid("5"));
     assertTrue(rule.message(), rule.isValid("1111111111"));

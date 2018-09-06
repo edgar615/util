@@ -6,14 +6,11 @@ import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -92,14 +89,6 @@ class PropertyDescriptorCache<T> {
     return propertyDescriptorsByField.get(field);
   }
 
-  Set<Field> getFields() {
-    return propertyDescriptorsByField.keySet();
-  }
-
-  Set<Method> getMethods() {
-    return propertyDescriptorsByMethod.keySet();
-  }
-
   <A extends Annotation> Map<PropertyDescriptor, A> getDescriptorsForAnnotation(
       Class<A> annotationClass) {
     @SuppressWarnings("unchecked")
@@ -115,6 +104,14 @@ class PropertyDescriptorCache<T> {
           .computeIfAbsent(annotation.annotationType(), k -> new LinkedHashMap<>()) //
           .put(propertyDescriptor, annotation);
     }
+  }
+
+  Set<Field> getFields() {
+    return propertyDescriptorsByField.keySet();
+  }
+
+  Set<Method> getMethods() {
+    return propertyDescriptorsByMethod.keySet();
   }
 
   private PropertyDescriptor[] getAllPropertyDescriptors() {

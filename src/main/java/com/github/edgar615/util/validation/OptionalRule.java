@@ -50,6 +50,10 @@ class OptionalRule implements Rule {
         .toString();
   }
 
+  List<Object> value() {
+    return value;
+  }
+
   static class Parse implements RuleParse {
 
     @Override

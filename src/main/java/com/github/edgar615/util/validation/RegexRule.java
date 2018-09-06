@@ -53,6 +53,10 @@ class RegexRule implements Rule {
         .toString();
   }
 
+  String value() {
+    return value;
+  }
+
   static class Parse implements RuleParse {
 
     @Override
@@ -69,7 +73,7 @@ class RegexRule implements Rule {
 
     @Override
     public List<String> toParsableString(Rule rule) {
-      if (rule instanceof MinRule) {
+      if (rule instanceof RegexRule) {
         return Lists.newArrayList(KEY, ((RegexRule) rule).value + "");
       }
       return Lists.newArrayList();

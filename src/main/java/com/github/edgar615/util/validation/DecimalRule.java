@@ -58,6 +58,10 @@ class DecimalRule implements Rule {
         .toString();
   }
 
+  int point() {
+    return point;
+  }
+
   static class Parse implements RuleParse {
 
     @Override

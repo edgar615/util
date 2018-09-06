@@ -20,7 +20,7 @@ class ISO8601DateRule implements Rule {
    */
   private static final Pattern PATTERN = Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}");
 
-  private static final String KEY = "iso8601Date";
+  private static final String KEY = "ISO8601Date";
 
   private static final String TRUE = "true";
 
@@ -33,7 +33,7 @@ class ISO8601DateRule implements Rule {
 
   @Override
   public String message() {
-    return "Must match pattern: yyyy-MM-dd";
+    return "Must match pattern: 'yyyy-MM-dd'";
   }
 
   @Override

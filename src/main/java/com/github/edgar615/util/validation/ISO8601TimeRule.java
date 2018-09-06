@@ -21,7 +21,7 @@ class ISO8601TimeRule implements Rule {
   private static final Pattern PATTERN = Pattern.compile(
       "0[0-9]:[0-5][0-9]:[0-5][0-9]|1[0-9]:[0-5][0-9]:[0-5][0-9]|2[0-3]:[0-5][0-9]:[0-5][0-9]");
 
-  private static final String KEY = "iso8601Time";
+  private static final String KEY = "ISO8601Time";
 
   private static final String TRUE = "true";
 
@@ -34,7 +34,7 @@ class ISO8601TimeRule implements Rule {
 
   @Override
   public String message() {
-    return "Must match pattern: HH:mm:ss";
+    return "Must match pattern: 'HH:mm:ss'";
   }
 
   @Override

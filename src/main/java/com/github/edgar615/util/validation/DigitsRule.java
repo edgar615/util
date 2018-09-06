@@ -68,6 +68,10 @@ class DigitsRule implements Rule {
         .toString();
   }
 
+  int length() {
+    return length;
+  }
+
   private String pattern() {
     if (length == 0) {
       return PATTERN + "*";

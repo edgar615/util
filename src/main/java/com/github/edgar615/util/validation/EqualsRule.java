@@ -48,6 +48,10 @@ class EqualsRule implements Rule {
         .toString();
   }
 
+  String value() {
+    return value;
+  }
+
   static class Parse implements RuleParse {
 
     @Override

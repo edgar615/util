@@ -138,6 +138,17 @@ public interface Rule {
     return ISO8601DateTimeRule.create();
   }
 
+
+  /**
+   * 日期时间格式yyyy-MM-dd HH:mm:ss
+   *
+   * @return Rule
+   */
+  static Rule datetime() {
+    return DateTimeRule.create();
+  }
+
+
   /**
    * 禁止出现某个参数的校验
    *

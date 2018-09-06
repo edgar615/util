@@ -53,6 +53,10 @@ class MaxLengthRule implements Rule {
         .toString();
   }
 
+  int value() {
+    return value;
+  }
+
   static class Parse implements RuleParse {
 
     @Override

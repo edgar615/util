@@ -42,11 +42,11 @@
         <junit.version>4.11</junit.version>
         <assertj.core.version>3.6.2</assertj.core.version>
         <awaitility.version>2.0.0</awaitility.version>
-        <guava.version>21.0</guava.version>
+        <guava.version>26.0-jre</guava.version>
     </properties>
 
     <dependencies>
-        <!--log-->
+        <!--LOGGER-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

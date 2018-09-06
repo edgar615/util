@@ -1,10 +1,15 @@
 package com.github.edgar615.util.reflect;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import org.slf4j.Logger;
@@ -15,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ReflectUtils {
 
-  public static final Logger log = LoggerFactory.getLogger(ReflectUtils.class.getName());
+  public static final Logger LOGGER = LoggerFactory.getLogger(ReflectUtils.class.getName());
 
   /**
    * Constructor
@@ -58,7 +63,7 @@ public class ReflectUtils {
     try {
       cl = Thread.currentThread().getContextClassLoader();
     } catch (Throwable ex) {
-      log.debug("Cannot access thread context ClassLoader - falling back to system class loader",
+      LOGGER.debug("Cannot access thread context ClassLoader - falling back to system class loader",
           ex);
     }
     if (cl == null) {
@@ -209,5 +214,30 @@ public class ReflectUtils {
    */
   public static boolean isSubClassOrInterfaceOf(Class subclass, Class superclass) {
     return superclass.isAssignableFrom(subclass);
+  }
+
+  /**
+   * 获取所有的Field. 这个方法并没有使用缓存，所以大量使用的时候会有损耗，后期优化.
+   *
+   * @param type class对象
+   * @return Field的集合
+   */
+  public static Set<Field> getFields(Class<?> type, boolean withSuper) {
+    List<Field> allFields = new ArrayList<>();
+    collectFields(type, allFields, withSuper);
+    allFields.sort(Comparator.comparing(Field::getName));
+    return new LinkedHashSet<>(allFields);
+  }
+
+  private static void collectFields(Class<?> type, Collection<Field> collectedFields,
+      boolean withSuper) {
+    collectedFields.addAll(Arrays.asList(type.getFields()));
+    collectedFields.addAll(Arrays.asList(type.getDeclaredFields()));
+    if (withSuper && !type.equals(Object.class)) {
+      Class<?> superclass = type.getSuperclass();
+      if (superclass != null) {
+        collectFields(superclass, collectedFields, withSuper);
+      }
+    }
   }
 }

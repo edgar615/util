@@ -72,7 +72,7 @@ public class Log {
         logger.trace(logData.getLogFormat(), logData.getLogArgs().toArray());
       }
     } catch (Exception e) {
-      defaultLogger.error("log error", e);
+      defaultLogger.error("LOGGER error", e);
     }
   }
 
@@ -83,7 +83,7 @@ public class Log {
         logger.debug(logData.getLogFormat(), logData.getLogArgs().toArray());
       }
     } catch (Exception e) {
-      defaultLogger.error("log error", e);
+      defaultLogger.error("LOGGER error", e);
     }
   }
 
@@ -94,7 +94,7 @@ public class Log {
         logger.info(logData.getLogFormat(), logData.getLogArgs().toArray());
       }
     } catch (Exception e) {
-      defaultLogger.error("log error", e);
+      defaultLogger.error("LOGGER error", e);
     }
   }
 
@@ -105,7 +105,7 @@ public class Log {
         logger.warn(logData.getLogFormat(), logData.getLogArgs().toArray());
       }
     } catch (Exception e) {
-      defaultLogger.error("log error", e);
+      defaultLogger.error("LOGGER error", e);
     }
   }
 
@@ -116,7 +116,7 @@ public class Log {
         logger.error(logData.getLogFormat(), logData.getLogArgs().toArray());
       }
     } catch (Exception e) {
-      defaultLogger.error("log error", e);
+      defaultLogger.error("LOGGER error", e);
     }
   }
 
@@ -176,7 +176,7 @@ public class Log {
       }
       logFormat = logFormat + "[{}] [{}]";
       logArgs.add(logType);
-      logArgs.add(event == null ? "log" : event);
+      logArgs.add(event == null ? "LOGGER" : event);
 
       if (!Strings.isNullOrEmpty(message)) {
         logFormat += " " + message;

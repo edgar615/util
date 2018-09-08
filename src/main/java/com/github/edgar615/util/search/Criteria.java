@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author Edgar
  */
-public class Criteria {
+public class Criteria implements Expression {
 
   private final List<Criterion> criteria = new ArrayList<>();
 

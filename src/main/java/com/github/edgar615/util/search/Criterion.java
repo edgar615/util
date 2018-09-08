@@ -8,7 +8,7 @@ import com.google.common.base.MoreObjects;
  * @author Edgar
  * @version 1.0
  */
-public class Criterion {
+public class Criterion implements Expression {
 
   /**
    * 查询字段.

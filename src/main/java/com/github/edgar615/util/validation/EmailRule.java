@@ -106,7 +106,7 @@ class EmailRule implements Rule {
     return matcher.matches();
   }
 
-  static class Parse implements RuleParse {
+  static class Parser implements RuleParser {
 
     @Override
     public Rule parse(List<String> keyAndValue) {

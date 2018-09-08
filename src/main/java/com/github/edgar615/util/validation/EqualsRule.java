@@ -52,7 +52,7 @@ class EqualsRule implements Rule {
     return value;
   }
 
-  static class Parse implements RuleParse {
+  static class Parser implements RuleParser {
 
     @Override
     public Rule parse(List<String> keyAndValue) {

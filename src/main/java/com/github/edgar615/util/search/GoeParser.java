@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class GoeCreator implements CriterionCreator {
+class GoeParser implements CriterionParser {
 
 
   private static final String LT = "<";
@@ -21,7 +21,7 @@ class GoeCreator implements CriterionCreator {
         && !opValue.startsWith(LE)) {
       String value = opValue.substring(1).trim();
       Preconditions.checkArgument(opValue.length() > 1,
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.GE, value));
@@ -31,7 +31,7 @@ class GoeCreator implements CriterionCreator {
     if (opValue.startsWith(LE)) {
       String value = opValue.substring(2).trim();
       Preconditions.checkArgument(opValue.length() > 2,
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.GT, value));

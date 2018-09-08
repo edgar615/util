@@ -33,18 +33,19 @@ public class StringUtils {
   }
 
   /**
+   * 使用分隔符分隔字符串，并保留分隔符.
+   * <p>
    * https://stackoverflow.com/questions/2206378/how-to-split-a-string-but-also-keep-the-delimiters
    * <p>
-   * System.out.println(Arrays.toString("a;b;c;d".split("(?<=;)"))); System.out.println(Arrays.toString("a;b;c;d".split("(?=;)")));
+   * // <code>(?<=;)</code>会将分隔符与前一个字符串合并输出 <code>[a;, b;, c;, d]</code>
+   * System.out.println(Arrays.toString("a;b;c;d".split("(?<=;)"))); //
+   * <code>(?=;)</code>会将分隔符与后一个字符串合并输出 <code>[a, ;b, ;c, ;d]</code> System.out.println(Arrays.toString("a;b;c;d".split("(?=;)")));
+   * // <code>((?<=;)|(?=;))</code>会将分隔符独立作为一个字符串合并输出 <code>[a, ;, b, ;, c, ;, d]</code>
    * System.out.println(Arrays.toString("a;b;c;d".split("((?<=;)|(?=;))")));
    * <p>
-   * And you will get:
-   * <p>
-   * [a;, b;, c;, d] [a, ;b, ;c, ;d] [a, ;, b, ;, c, ;, d]
-   * <p>
-   * The last one is what you want.
-   * <p>
    * ((?<=;)|(?=;)) equals to select an empty character before ; or after ;.
+   *
+   * 为了满足不同的分隔符需求，可以使用format来实现，如<code>format.("((?<=%1$s)|(?=%1$s))", ";")</code>来实现.
    */
   public static List<String> splitRemainDelimiter(String string, String separator) {
     return Arrays.asList(string.split(String.format(WITH_DELIMITER, separator)));

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class BetweenCreator implements CriterionCreator {
+class BetweenParser implements CriterionParser {
 
   private static final String SPLIT = "..";
 
@@ -25,13 +25,13 @@ class BetweenCreator implements CriterionCreator {
           .trimResults()
           .splitToList(opValue);
       Preconditions.checkArgument(rangeList.size() == 2,
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       String start = rangeList.get(0);
       String end = rangeList.get(1);
       if (WILDCARD.equals(start) && WILDCARD.equals(end)) {
         Preconditions.checkArgument(rangeList.size() == 2,
-            "Problems parsing queryString: %s",
+            "Problems parsing query: %s",
             negation ? "-" + field : field + ":" + opValue);
       } else if (WILDCARD.equals(start)) {
         if (negation) {

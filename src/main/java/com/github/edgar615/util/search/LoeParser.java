@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class LoeCreator implements CriterionCreator {
+class LoeParser implements CriterionParser {
 
   private static final String GE = ">=";
   private static final String GT = ">";
@@ -21,7 +21,7 @@ class LoeCreator implements CriterionCreator {
         && !opValue.startsWith(GE)) {
       String value = opValue.substring(1).trim();
       Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.LE, value));
@@ -31,7 +31,7 @@ class LoeCreator implements CriterionCreator {
     if (opValue.startsWith(GE)) {
       String value = opValue.substring(2).trim();
       Preconditions.checkArgument(!Strings.isNullOrEmpty(value),
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       if (negation) {
         return Lists.newArrayList(new Criterion(field, Op.LT, value));

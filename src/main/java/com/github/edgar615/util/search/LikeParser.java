@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Edgar  Date 2017/5/16
  */
-class LikeCreator implements CriterionCreator {
+class LikeParser implements CriterionParser {
 
   private static final String WILDCARD = "*";
 
@@ -17,28 +17,28 @@ class LikeCreator implements CriterionCreator {
   public List<Criterion> create(String field, String opValue, boolean negation) {
     if (opValue.startsWith(WILDCARD) && opValue.endsWith(WILDCARD)) {
       Preconditions.checkArgument(opValue.length() > 2,
-          "Problems parsing queryString: %s", field + ":" + opValue);
+          "Problems parsing query: %s", field + ":" + opValue);
       Preconditions.checkArgument(!negation,
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       return Lists
           .newArrayList(new Criterion(field, Op.CN, opValue.substring(1, opValue.length() - 1)));
     }
     if (opValue.startsWith(WILDCARD) && !opValue.endsWith(WILDCARD)) {
       Preconditions.checkArgument(!negation,
-          "Problems parsing queryString: %s", field + ":" + opValue);
+          "Problems parsing query: %s", field + ":" + opValue);
       Preconditions.checkArgument(!negation,
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       return Lists
           .newArrayList(new Criterion(field, Op.EW, opValue.substring(1, opValue.length())));
     }
     if (!opValue.startsWith(WILDCARD) && opValue.endsWith(WILDCARD)) {
       Preconditions.checkArgument(!negation,
-          "Problems parsing queryString: %s",
+          "Problems parsing query: %s",
           negation ? "-" + field : field + ":" + opValue);
       Preconditions.checkArgument(!negation,
-          "Problems parsing queryString: %s", field + ":" + opValue);
+          "Problems parsing query: %s", field + ":" + opValue);
       return Lists
           .newArrayList(new Criterion(field, Op.SW, opValue.substring(0, opValue.length() - 1)));
     }

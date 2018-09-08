@@ -8,7 +8,7 @@ import java.util.List;
  * @author Edgar
  * @create 2018-09-05 20:23
  **/
-public interface RuleParse {
+public interface RuleParser {
 
   /**
    * 将字符串定义转换为rule.

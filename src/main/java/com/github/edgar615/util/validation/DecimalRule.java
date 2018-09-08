@@ -62,7 +62,7 @@ class DecimalRule implements Rule {
     return point;
   }
 
-  static class Parse implements RuleParse {
+  static class Parser implements RuleParser {
 
     @Override
     public Rule parse(List<String> keyAndValue) {

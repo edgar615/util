@@ -80,7 +80,7 @@ class DigitsRule implements Rule {
     return PATTERN + "{" + len + "," + len + "}";
   }
 
-  static class Parse implements RuleParse {
+  static class Parser implements RuleParser {
 
     @Override
     public Rule parse(List<String> keyAndValue) {

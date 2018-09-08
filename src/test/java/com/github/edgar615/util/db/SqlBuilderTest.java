@@ -139,4 +139,19 @@ public class SqlBuilderTest {
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
+
+  @Test
+  public void testFindByExample() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2,3));
+    SQLBindings sqlBindings = SqlBuilder.whereSql(example.criteria());
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("type in (?,?,?)",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
 }

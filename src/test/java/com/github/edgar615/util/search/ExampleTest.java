@@ -2,6 +2,8 @@ package com.github.edgar615.util.search;
 
 import com.github.edgar615.util.base.StringUtils;
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.ArrayList;
@@ -83,7 +85,6 @@ public class ExampleTest {
     Assert.assertTrue(example.criteria().contains(new Criterion("foo", Op.NE, "bar2")));
   }
 
-
   @Test
   public void testFromString() {
     Example example = Example.create().addQuery(null);
@@ -94,11 +95,13 @@ public class ExampleTest {
     Assert.assertTrue(example.criteria().isEmpty());
     example = Example.create().addQuery("    :foo    ");
     Assert.assertTrue(example.criteria().isEmpty());
-    String data = "foo:bar"
+    String data = "foo:  bar   "
+        + "type: 1,2,3 "
+        + "-subType: 1,2,3"
         + " stars:>10"
         + " created_on:>=13435454"
         + " deleted_on:<13435454"
-        + " applyNum:*..100"
+        + " applyNum:*..  100  "
         + " availableNum:100..*"
         + " addOn:1..10"
         + " username:edgar*"
@@ -114,6 +117,13 @@ public class ExampleTest {
     example = Example.create().addQuery(data);
     System.out.println(example.criteria());
     Assert.assertTrue(example.criteria().contains(new Criterion("foo", Op.EQ, "bar")));
+    boolean containsIn = example.criteria().stream()
+        .anyMatch(c -> c.field().equals("type") && c.op() == Op.IN);
+    Assert.assertTrue(containsIn);
+    boolean containsNotIn = example.criteria().stream()
+        .anyMatch(c -> c.field().equals("subType") && c.op() == Op.NOT_IN);
+    Assert.assertTrue(containsNotIn);
+//    Assert.assertTrue(example.criteria().contains(new Criterion("type", Op.IN, Lists.newArrayList(1,2,3))));
     Assert.assertTrue(example.criteria().contains(new Criterion("stars", Op.GT, "10")));
     Assert.assertTrue(example.criteria().contains(new Criterion("created_on", Op.GE, "13435454")));
     Assert.assertTrue(example.criteria().contains(new Criterion("deleted_on", Op.LT, "13435454")));

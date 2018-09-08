@@ -55,7 +55,7 @@ class ISO8601DateTimeRule implements Rule {
         .toString();
   }
 
-  static class Parse implements RuleParse {
+  static class Parser implements RuleParser {
 
     @Override
     public Rule parse(List<String> keyAndValue) {

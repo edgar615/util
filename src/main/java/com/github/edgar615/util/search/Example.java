@@ -42,6 +42,7 @@ public class Example {
    * <pre>
    * foo:bar foo=bar的条件
    * foo:"bar" foo="bar"的条件
+   * type:1,2,3 type in (1,2,3)的条件
    * stars:>10 stars > 10的条件
    * created:>=2012-04-30
    * created:>2012-04-29

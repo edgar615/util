@@ -1,6 +1,7 @@
 package com.github.edgar615.util.db;
 
 import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,14 @@ import java.util.Map;
  * @param <ID> the type of the identifier
  */
 public interface Persistent<ID> extends Serializable {
+
+  static <ID> Persistent create(Class<? extends Persistent<ID>> clazz) {
+    try {
+      return clazz.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   /**
    * Returns the id of the entity.
@@ -57,7 +66,7 @@ public interface Persistent<ID> extends Serializable {
 
   /**
    * 虚拟列，MySQL5.7新增，新增修改是要忽略这个属性.
-   *
+   * <p>
    * 可以通过反射获取到所有的属性，但是因为实体类可以自动生成，所以这个方法也可以自动生成，不再通过反射.
    */
   default List<String> virtualFields() {

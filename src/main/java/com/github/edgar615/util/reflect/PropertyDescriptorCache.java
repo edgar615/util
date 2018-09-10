@@ -41,6 +41,16 @@ class PropertyDescriptorCache<T> {
   private final Map<Method, PropertyDescriptor> propertyDescriptorsByMethod = new LinkedHashMap<>();
 
   /**
+   * Getter的缓存
+   */
+  private final Map<String, Method> getterByName = new LinkedHashMap<>();
+
+  /**
+   * Setter的缓存
+   */
+  private final Map<String, Method> setterByName = new LinkedHashMap<>();
+
+  /**
    * 按照注解的缓存
    */
   private final Map<Class<? extends Annotation>, Map<PropertyDescriptor, Annotation>> propertyDescriptorsByAnnotation = new LinkedHashMap<>();
@@ -54,12 +64,14 @@ class PropertyDescriptorCache<T> {
       Method readMethod = propertyDescriptor.getReadMethod();
       if (readMethod != null) {
         propertyDescriptorsByMethod.put(readMethod, propertyDescriptor);
+        getterByName.put(propertyDescriptor.getName(), readMethod);
         putAnnotations(propertyDescriptor, readMethod.getAnnotations());
       }
 
       Method writeMethod = propertyDescriptor.getWriteMethod();
       if (writeMethod != null) {
         propertyDescriptorsByMethod.put(writeMethod, propertyDescriptor);
+        setterByName.put(propertyDescriptor.getName(), writeMethod);
         putAnnotations(propertyDescriptor, writeMethod.getAnnotations());
       }
     }
@@ -112,6 +124,30 @@ class PropertyDescriptorCache<T> {
 
   Set<Method> getMethods() {
     return propertyDescriptorsByMethod.keySet();
+  }
+
+  Map<String, PropertyDescriptor> getPropertyDescriptorsByName() {
+    return propertyDescriptorsByName;
+  }
+
+  Map<Field, PropertyDescriptor> getPropertyDescriptorsByField() {
+    return propertyDescriptorsByField;
+  }
+
+  Map<Method, PropertyDescriptor> getPropertyDescriptorsByMethod() {
+    return propertyDescriptorsByMethod;
+  }
+
+  Map<String, Method> getGetterByName() {
+    return getterByName;
+  }
+
+  Map<String, Method> getSetterByName() {
+    return setterByName;
+  }
+
+  Map<Class<? extends Annotation>, Map<PropertyDescriptor, Annotation>> getPropertyDescriptorsByAnnotation() {
+    return propertyDescriptorsByAnnotation;
   }
 
   private PropertyDescriptor[] getAllPropertyDescriptors() {

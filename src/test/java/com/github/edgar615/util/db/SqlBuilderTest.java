@@ -1,12 +1,17 @@
 package com.github.edgar615.util.db;
 
 import com.github.edgar615.util.base.Randoms;
+import com.github.edgar615.util.base.StringUtils;
 import com.github.edgar615.util.search.Example;
+import com.github.edgar615.util.search.Select;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -45,7 +50,7 @@ public class SqlBuilderTest {
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);
-    SQLBindings sqlBindings = SqlBuilder.updateById(device, 1);
+    SQLBindings sqlBindings = SqlBuilder.updateById(device, null, null, 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("update device set barcode = ?,company_code = ? where device_id = ?",
@@ -73,11 +78,11 @@ public class SqlBuilderTest {
     Assert.assertEquals(1, sqlBindings.bindings().get(2));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testUpdateEmptyShouldFailed() {
     Device device = new Device();
-    SqlBuilder.updateById(device, 1);
-    Assert.fail();
+    SQLBindings sqlBindings = SqlBuilder.updateById(device, null, null, 1);
+    Assert.assertNull(sqlBindings);
   }
 
   @Test
@@ -85,7 +90,8 @@ public class SqlBuilderTest {
     SQLBindings sqlBindings = SqlBuilder.findById(Device.class, 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
-    Assert.assertEquals("select * from device where device_id = ?", sqlBindings.sql());
+    Assert.assertEquals("select " + allColumn() + " from device where device_id = ?",
+        sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
 
@@ -98,41 +104,15 @@ public class SqlBuilderTest {
     SQLBindings sqlBindings = SqlBuilder.findById(Device.class, 1, fields);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
-    Assert.assertEquals("select device_id,company_code from device where device_id = ?",
+    Assert.assertEquals("select device_id, company_code from device where device_id = ?",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
 
   @Test
-  public void testIgnoreNullValue() {
-    Example example = Example.create()
-        .equalsTo("foo", "bar")
-        .equalsTo("companyCode", null)
-        .notEqualsTo("companyCode", null)
-        .lessThan("companyCode", null)
-        .lessThanOrEqualTo("companyCode", null)
-        .greaterThan("companyCode", null)
-        .greaterThanOrEqualTo("companyCode", null)
-        .between("companyCode", null, null)
-        .between("companyCode", null, 1)
-        .between("companyCode", 1, null)
-        .startsWith("companyCode", null)
-        .endsWtih("companyCode", null)
-        .contains("companyCode", null)
-        .in("companyCode", null)
-        .notIn("companyCode", null)
-        .in("companyCode", Lists.newArrayList())
-        .notIn("companyCode", Lists.newArrayList());
-    System.out.println(SqlBuilder.whereSql(example.criteria()).sql());
-    System.out.println(SqlBuilder.whereSql(example.criteria()).bindings());
-  }
-
-  @Test
   public void testSetNull() {
-    SQLBindings sqlBindings = SqlBuilder.setNullById(Device.class, Lists.newArrayList("abc",
-        "userId",
-        "parentId")
-        , 1);
+    SQLBindings sqlBindings = SqlBuilder.updateById(new Device(), Maps.newHashMap(),
+        Lists.newArrayList("abc", "userId", "parentId"), 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("update device set user_id = null,parent_id = null where device_id = ?",
@@ -146,12 +126,134 @@ public class SqlBuilderTest {
     fields.add("deviceId");
     fields.add("companyCode");
     fields.add(Randoms.randomAlphabet(20));
-    Example example = Example.create().in("type", Lists.newArrayList(1, 2,3));
-    SQLBindings sqlBindings = SqlBuilder.whereSql(example.criteria());
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .desc("userId");
+    SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
-    Assert.assertEquals("type in (?,?,?)",
+    Assert.assertEquals("select " + allColumn()
+            + " from device where type in (?,?,?) and mac_address like ? order by user_id desc",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testFindByExampleWithField() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF");
+    example.addFields(fields);
+    SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals(
+        "select device_id, company_code from device where type in (?,?,?) and mac_address like ?",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testFindByExampleWithErrorField() {
+    List<String> fields = new ArrayList<>();
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF");
+    example.addFields(fields);
+    SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals(
+        "select " + allColumn() + " from device where type in (?,?,?) and mac_address like ?",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testFindByExampleLimit() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF");
+    SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example, 5, 10);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("select " + allColumn()
+            + " from device where type in (?,?,?) and mac_address like ? limit ?, ?",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testCountByExample() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .asc("userId");
+    SQLBindings sqlBindings = SqlBuilder.countByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("select count(*) from device where type in (?,?,?) and mac_address like ?",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testSelect() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Select<Integer, Device> select = Select.and(Device.class)
+        .in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .inner(
+            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+        .desc("userId");
+    SQLBindings sqlBindings = SqlBuilder.select(select);
+    Assert.assertEquals(
+        "select " + allColumn()
+            + " from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?) order by user_id desc",
+        sqlBindings.sql());
+    Assert.assertEquals(6, sqlBindings.bindings().size());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testSelectCount() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Select<Integer, Device> select = Select.and(Device.class)
+        .in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .inner(
+            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+        .desc("userId");
+    SQLBindings sqlBindings = SqlBuilder.countBySelect(select);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals(
+        "select count(*) from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?)",
+        sqlBindings.sql());
+    Assert.assertEquals(6, sqlBindings.bindings().size());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  private String allColumn() {
+    Device device = new Device();
+    List<String> fields = device.fields()
+        .stream().map(f -> StringUtils.underscoreName(f))
+        .collect(Collectors.toList());
+    return Joiner.on(", ").join(fields);
   }
 }

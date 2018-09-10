@@ -4,13 +4,11 @@ import com.github.edgar615.util.base.StringUtils;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import sun.invoke.empty.Empty;
 
 /**
  * Created by Edgar on 2017/5/15.
@@ -63,22 +61,25 @@ class SearchConvert {
 
     int cursor = 0;
     List<String> noSepatatorList = new ArrayList<>();
-    for (int i = 0; i < splitIndexes.size();i ++) {
+    for (int i = 0; i < splitIndexes.size(); i++) {
       int splitIndex = splitIndexes.get(i);
       String last = disassemblyList.get(splitIndex - 1);
       if (CharMatcher.whitespace().matchesAllOf(last)) {
-        noSepatatorList.add(Joiner.on(EMPTY).join(disassemblyList.subList(cursor, Math.max(splitIndex - 1, 0))));
+        noSepatatorList.add(
+            Joiner.on(EMPTY).join(disassemblyList.subList(cursor, Math.max(splitIndex - 1, 0))));
       } else {
         if (cursor == splitIndex - 1) {
           noSepatatorList.add(last);
         } else {
-          noSepatatorList.add(Joiner.on(EMPTY).join(disassemblyList.subList(cursor, Math.max(splitIndex - 2, 0))));
+          noSepatatorList.add(
+              Joiner.on(EMPTY).join(disassemblyList.subList(cursor, Math.max(splitIndex - 2, 0))));
           noSepatatorList.add(last);
         }
       }
       cursor = splitIndex + 1;
     }
-    noSepatatorList.add(Joiner.on(EMPTY).join(disassemblyList.subList(cursor, disassemblyList.size())));
+    noSepatatorList
+        .add(Joiner.on(EMPTY).join(disassemblyList.subList(cursor, disassemblyList.size())));
     List<Map.Entry<String, String>> params = new ArrayList<>();
     for (int i = 0; i < noSepatatorList.size() - 1; i = i + 2) {
       String key = noSepatatorList.get(i).trim();

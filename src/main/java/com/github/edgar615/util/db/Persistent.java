@@ -1,7 +1,6 @@
 package com.github.edgar615.util.db;
 
 import com.google.common.collect.Lists;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +12,6 @@ import java.util.Map;
  * @param <ID> the type of the identifier
  */
 public interface Persistent<ID> extends Serializable {
-
-  static <ID> Persistent create(Class<? extends Persistent<ID>> clazz) {
-    try {
-      return clazz.newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
 
   /**
    * Returns the id of the entity.
@@ -63,6 +54,14 @@ public interface Persistent<ID> extends Serializable {
    * 将map对象填充到实体中
    */
   void fromMap(Map<String, Object> map);
+
+  static <ID> Persistent create(Class<? extends Persistent<ID>> clazz) {
+    try {
+      return clazz.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   /**
    * 虚拟列，MySQL5.7新增，新增修改是要忽略这个属性.

@@ -5,6 +5,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,29 @@ public class BeanUtils {
 
   private BeanUtils() {
     throw new AssertionError("Not instantiable: " + BeanUtils.class);
+  }
+
+  public static Map<String, Object> toMap(Object obj) {
+    if (obj == null) {
+      return null;
+    }
+    Map<String, Object> map = new HashMap<>();
+    Map<String, Method> getterMethods = getCache(obj.getClass()).getGetterByName();
+    for (Map.Entry<String, Method> methods : getterMethods.entrySet()) {
+      String key = methods.getKey();
+      // 过滤class属性
+      if (!key.equals("class")) {
+        // 得到property对应的getter方法
+        try {
+          Method getter = methods.getValue();
+          Object value = getter.invoke(obj);
+          map.put(key, value);
+        } catch (Exception e) {
+          throw new ReflectionException(e);
+        }
+      }
+    }
+    return map;
   }
 
   /**

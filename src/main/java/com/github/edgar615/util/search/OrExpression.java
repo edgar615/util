@@ -12,7 +12,7 @@ public class OrExpression implements Expression {
 
   private final ExpressionOp op = ExpressionOp.OR;
 
-  public OrExpression(Expression left, Expression right) {
+  OrExpression(Expression left, Expression right) {
     this.left = left;
     this.right = right;
   }

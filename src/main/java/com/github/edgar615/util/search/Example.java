@@ -6,13 +6,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Edgar on 2017/5/19.
@@ -82,16 +81,6 @@ public class Example {
       return this;
     }
     addCriteria(SearchConvert.fromStr(query));
-    return this;
-  }
-
-  Example addCriteria(List<Criterion> criteria) {
-    this.criteria.addCriteria(criteria);
-    return this;
-  }
-
-  Example addCriterion(Criterion criterion) {
-    this.criteria.addCriterion(criterion);
     return this;
   }
 
@@ -193,6 +182,7 @@ public class Example {
    * 包含 like'%...%'查询
    *
    * <b>尽量少用</b>
+   *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
    * @return Example
@@ -249,7 +239,7 @@ public class Example {
   /**
    * in 查询
    *
-   * @param field  查询字段
+   * @param field 查询字段
    * @param values 比较值，如果为null或空，忽略这个查询
    * @return Example
    */
@@ -264,7 +254,7 @@ public class Example {
   /**
    * not in 查询
    *
-   * @param field  查询字段
+   * @param field 查询字段
    * @param values 比较值，如果为null或空，忽略这个查询
    * @return Example
    */
@@ -297,7 +287,7 @@ public class Example {
   /**
    * between查询
    *
-   * @param field  查询字段
+   * @param field 查询字段
    * @param value1 比较值，如果为null，忽略这个查询
    * @param value2 比较值，如果为null，忽略这个查询
    * @return Example
@@ -307,16 +297,16 @@ public class Example {
       return this;
     }
     if (Strings.isNullOrEmpty(value1.toString())
-            && Strings.isNullOrEmpty(value2.toString())) {
+        && Strings.isNullOrEmpty(value2.toString())) {
       return this;
     }
     if (Strings.isNullOrEmpty(value1.toString())
-            && !Strings.isNullOrEmpty(value2.toString())) {
+        && !Strings.isNullOrEmpty(value2.toString())) {
       criteria.lessThanOrEqualTo(field, value2);
       return this;
     }
     if (!Strings.isNullOrEmpty(value1.toString())
-            && Strings.isNullOrEmpty(value2.toString())) {
+        && Strings.isNullOrEmpty(value2.toString())) {
       criteria.greaterThanOrEqualTo(field, value1);
       return this;
     }
@@ -423,10 +413,15 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
-    orderBy.addAll(Splitter.on(",")
-            .trimResults()
-            .omitEmptyStrings()
-            .splitToList(field));
+    List<String> fields = Splitter.on(",").trimResults()
+        .omitEmptyStrings().splitToList(field);
+    for (String order : fields) {
+      if (order.startsWith(REVERSE_KEY)) {
+        desc(order.substring(1));
+      } else {
+        asc(order);
+      }
+    }
     return this;
   }
 
@@ -437,41 +432,41 @@ public class Example {
   public Example removeUndefinedField(List<String> definedFields) {
     Example copyExample = Example.create();
     this.criteria().stream()
-            .filter(c -> definedFields.contains(c.field()))
-            .forEach(c -> copyExample.addCriterion(c));
+        .filter(c -> definedFields.contains(c.field()))
+        .forEach(c -> copyExample.addCriterion(c));
     //日志
     List<Criterion> criterias = this.criteria().stream()
-            .filter(c -> !definedFields.contains(c.field()))
-            .collect(Collectors.toList());
+        .filter(c -> !definedFields.contains(c.field()))
+        .collect(Collectors.toList());
     if (!criterias.isEmpty()) {
       LOGGER.warn("remove undefined criterion:{}", criterias);
     }
     this.fields().stream()
-            .filter(f -> definedFields.contains(f))
-            .forEach(f -> copyExample.addField(f));
+        .filter(f -> definedFields.contains(f))
+        .forEach(f -> copyExample.addField(f));
     //日志
     List<String> fields = this.fields().stream()
-            .filter(f -> !definedFields.contains(f))
-            .collect(Collectors.toList());
+        .filter(f -> !definedFields.contains(f))
+        .collect(Collectors.toList());
     if (!fields.isEmpty()) {
       LOGGER.warn("remove undefined field:{}", fields);
     }
     this.orderBy().stream()
-            .filter(o -> {
-              if (o.startsWith(REVERSE_KEY)) {
-                return definedFields.contains(o.substring(1));
-              }
-              return definedFields.contains(o);
-            })
-            .forEach(o -> copyExample.orderBy(o));
+        .filter(o -> {
+          if (o.startsWith(REVERSE_KEY)) {
+            return definedFields.contains(o.substring(1));
+          }
+          return definedFields.contains(o);
+        })
+        .forEach(o -> copyExample.orderBy(o));
     List<String> orderBy = this.fields().stream()
-            .filter(o -> {
-              if (o.startsWith(REVERSE_KEY)) {
-                return !definedFields.contains(o.substring(1));
-              }
-              return !definedFields.contains(o);
-            })
-            .collect(Collectors.toList());
+        .filter(o -> {
+          if (o.startsWith(REVERSE_KEY)) {
+            return !definedFields.contains(o.substring(1));
+          }
+          return !definedFields.contains(o);
+        })
+        .collect(Collectors.toList());
     if (!orderBy.isEmpty()) {
       LOGGER.warn("remove undefined sort:{}", orderBy);
     }
@@ -481,9 +476,19 @@ public class Example {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper("Example")
-            .add("criteria", criteria)
-            .add("fields", fields)
-            .add("orderBy", orderBy)
-            .toString();
+        .add("criteria", criteria)
+        .add("fields", fields)
+        .add("orderBy", orderBy)
+        .toString();
+  }
+
+  Example addCriteria(List<Criterion> criteria) {
+    this.criteria.addCriteria(criteria);
+    return this;
+  }
+
+  Example addCriterion(Criterion criterion) {
+    this.criteria.addCriterion(criterion);
+    return this;
   }
 }

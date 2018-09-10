@@ -6,7 +6,7 @@ package com.github.edgar615.util.search;
  * @author Edgar
  * @create 2018-09-08 14:20
  **/
-public enum ExpressionOp {
+enum ExpressionOp {
 
   AND,
   OR;

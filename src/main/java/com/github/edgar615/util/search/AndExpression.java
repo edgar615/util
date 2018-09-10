@@ -12,7 +12,7 @@ public class AndExpression implements Expression {
 
   private final ExpressionOp op = ExpressionOp.AND;
 
-  public AndExpression(Expression left, Expression right) {
+  AndExpression(Expression left, Expression right) {
     this.left = left;
     this.right = right;
   }

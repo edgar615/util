@@ -99,13 +99,13 @@ public class SqlBuilder {
    * 根据条件查询.
    *
    * @param elementType 持久化对象 * @param example 返回的属性列表
-   * @param limit limit
    * @param offset offset
+   * @param limit limit
    * @param <ID> 主键类型
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings findByExample(Class<? extends Persistent<ID>> elementType,
-      Example example, long limit, long offset) {
+      Example example, long offset, long limit) {
     SQLBindings sqlBindings = findByExample(elementType, example);
     StringBuilder sql = new StringBuilder(sqlBindings.sql());
     sql.append(" limit ?, ?");
@@ -342,13 +342,13 @@ public class SqlBuilder {
    * 构建更复杂的SQL.一般用的很少，目前还不是很完善.
    *
    * @param select 查询条件
-   * @param limit limit
    * @param offset offset
+   * @param limit limit
    * @param <ID> 主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings select(Select<ID, ? extends Persistent<ID>> select, long limit,
-      long offset) {
+  public static <ID> SQLBindings select(Select<ID, ? extends Persistent<ID>> select, long offset,
+      long limit) {
     String selectedField;
     SQLBindings sqlBindings = select(select);
     StringBuilder sql = new StringBuilder(sqlBindings.sql());

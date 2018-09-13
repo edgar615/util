@@ -482,12 +482,12 @@ public class Example {
         .toString();
   }
 
-  Example addCriteria(List<Criterion> criteria) {
+  public Example addCriteria(List<Criterion> criteria) {
     this.criteria.addCriteria(criteria);
     return this;
   }
 
-  Example addCriterion(Criterion criterion) {
+  public Example addCriterion(Criterion criterion) {
     this.criteria.addCriterion(criterion);
     return this;
   }

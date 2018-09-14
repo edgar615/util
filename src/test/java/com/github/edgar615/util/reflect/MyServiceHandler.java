@@ -13,8 +13,15 @@ public class MyServiceHandler implements InvocationHandler {
 
   public Object invoke(Object proxy, Method method, Object[] args)
       throws Throwable {
-    System.out.println(1);
-    return method.invoke(target, args);
+    System.out.println(proxy.getClass().getName());
+    System.out.println(this.target.getClass().getName());
+    System.out.println(method.getName());
+    System.out.println(args);
+    Object result = method.invoke(target, args);
+    if ("hello".equals(result)) {
+      return "proxy";
+    }
+    return result;
   }
 
 }

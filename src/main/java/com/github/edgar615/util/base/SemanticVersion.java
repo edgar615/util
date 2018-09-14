@@ -17,6 +17,18 @@ package com.github.edgar615.util.base;
 
 /**
  * 从micronaut中拷贝，做了很小的调整.
+ *
+ * 参考 https://semver.org/
+ *
+ * Given a version number MAJOR.MINOR.PATCH, increment the:
+ *
+ * 1. MAJOR version when you make incompatible API changes,
+ *
+ * 2. MINOR version when you add functionality in a backwards-compatible manner, and
+ *
+ * 3. PATCH version when you make backwards-compatible bug fixes.
+ *
+ * @author Edgar
  */
 public class SemanticVersion implements Comparable<SemanticVersion> {
 

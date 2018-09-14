@@ -20,7 +20,11 @@ public class MyServiceProxy implements InvocationHandler, ObjectProxy<IMyService
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     System.out.println(1);
-    return method.invoke(target, args);
+    Object result = method.invoke(target, args);
+    if ("hello".equals(result)) {
+      return "proxy";
+    }
+    return result;
   }
 
   @Override

@@ -349,7 +349,6 @@ public class SqlBuilder {
    */
   public static <ID> SQLBindings select(Select<ID, ? extends Persistent<ID>> select, long offset,
       long limit) {
-    String selectedField;
     SQLBindings sqlBindings = select(select);
     StringBuilder sql = new StringBuilder(sqlBindings.sql());
     sql.append(" limit ?, ?");

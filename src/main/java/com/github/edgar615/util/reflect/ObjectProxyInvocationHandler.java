@@ -6,19 +6,23 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Very basic implementation of the proxy which simply delegates all calls to the proxied object.
+ * 代理类的通用父类.
  *
  * @author ypujante@linkedin.com
  */
 public class ObjectProxyInvocationHandler<T> implements ObjectProxy<T>, InvocationHandler {
 
+  /**
+   * 被代理的对象
+   */
   private final T proxiedObject;
 
-  /**
-   * Constructor
-   */
-  public ObjectProxyInvocationHandler(T proxiedObject) {
+  private ObjectProxyInvocationHandler(T proxiedObject) {
     this.proxiedObject = proxiedObject;
+  }
+
+  public static  <T> ObjectProxyInvocationHandler create(T proxiedObject) {
+    return new ObjectProxyInvocationHandler(proxiedObject);
   }
 
   /**
@@ -48,7 +52,9 @@ public class ObjectProxyInvocationHandler<T> implements ObjectProxy<T>, Invocati
   }
 
   /**
-   * @return the object proxied
+   * 返回被代理的对象.
+   *
+   * @return 被代理的对象
    */
   @Override
   public T getProxiedObject() {

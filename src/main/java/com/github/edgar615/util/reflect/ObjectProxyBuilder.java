@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 动态代理的实现.
+ */
 public class ObjectProxyBuilder {
 
   /**
-   * Convenient call which creates a proxy using the handler and the interface. It will also check
-   * that the object bien proxied (if implements <code>ObjectProxy</code>) properly implement the
-   * interface...
+   * 创建一个代理对象.
    *
-   * @return the proxy (which implement all the interface)
+   * @param handler InvocationHandler
+   * @param itface 需要代理的接口
+   * @return 代理对象.
    */
   @SuppressWarnings("unchecked")
   public static <T> T createProxy(InvocationHandler handler, Class<T> itface) {
@@ -25,16 +28,15 @@ public class ObjectProxyBuilder {
       }
     }
     return (T) Proxy.newProxyInstance(itface.getClassLoader(),
-        new Class<?>[]{itface},
-        handler);
+        new Class<?>[]{itface}, handler);
   }
 
   /**
-   * Convenient call which creates a proxy using the handler and the interfaces. It will also check
-   * that the object bien proxied (if implements <code>ObjectProxy</code>) properly implement the
-   * right interfaces...
+   * 创建一个代理对象.
    *
-   * @return the proxy (which implement all the provided interfaces)
+   * @param handler InvocationHandler
+   * @param itfaces 需要代理的接口数组
+   * @return 代理对象.
    */
   public static Object createProxy(InvocationHandler handler, Class<?>... itfaces) {
     if (handler instanceof ObjectProxy) {

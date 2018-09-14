@@ -17,7 +17,11 @@ public class ObjectProxyBuilderTest {
     IMyService myService = new MyServiceImpl();
     InvocationHandler handler = new MyServiceHandler(myService);
     IMyService proxy = ObjectProxyBuilder.createProxy(handler, IMyService.class);
-    proxy.say("hello");
+    String result = proxy.say("hello");
+    Assert.assertEquals("proxy", result);
+
+    result = proxy.say("foo");
+    Assert.assertEquals("foo", result);
   }
 
   @Test
@@ -25,7 +29,8 @@ public class ObjectProxyBuilderTest {
     IMyService myService = new MyServiceImpl();
     InvocationHandler handler = new MyServiceProxy(myService);
     IMyService proxy = ObjectProxyBuilder.createProxy(handler, IMyService.class);
-    proxy.say("hello");
+    String result = proxy.say("hello");
+    Assert.assertEquals("proxy", result);
   }
 
   @Test(expected = IllegalArgumentException.class)

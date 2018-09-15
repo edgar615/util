@@ -1,15 +1,15 @@
 package com.github.edgar615.util.interceptor;
 
-import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 拦截器的责任链.
+ * 拦截器的构建类.
  *
  * @author Edgar
- */
-public class InterceptorChain {
+ * @create 2018-09-15 10:13
+ **/
+public class InterceptedObjectBuilder {
 
   private final List<Interceptor> interceptors = new ArrayList<>();
 
@@ -17,10 +17,6 @@ public class InterceptorChain {
     Signature signature = interceptor.getClass().getAnnotation(Signature.class);
     System.out.println(signature);
     interceptors.add(interceptor);
-  }
-
-  public List<Interceptor> getInterceptors() {
-    return ImmutableList.copyOf(interceptors);
   }
 
 }

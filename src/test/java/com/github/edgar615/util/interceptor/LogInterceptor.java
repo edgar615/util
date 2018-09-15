@@ -1,7 +1,6 @@
 package com.github.edgar615.util.interceptor;
 
 import com.github.edgar615.util.db.Jdbc;
-import com.github.edgar615.util.reflect.Signature;
 
 /**
  * @author Edgar

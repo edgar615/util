@@ -2,12 +2,11 @@ package com.github.edgar615.util.interceptor;
 
 import com.github.edgar615.util.reflect.ObjectProxyBuilder;
 import com.github.edgar615.util.reflect.ReflectUtils;
-import com.github.edgar615.util.reflect.Signature;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * 可以被拦截的JDBC对象.
+ * 拦截器的JDK代理类.拦截器的核心类.
  *
  * @author Edgar
  * @create 2018-09-14 14:17

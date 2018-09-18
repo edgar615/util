@@ -6,7 +6,7 @@ import com.github.edgar615.util.db.Jdbc;
  * @author Edgar
  * @create 2018-09-14 16:33
  **/
-@Signature(type = Jdbc.class, method = "deleteById")
+@Signature(type = Jdbc.class, method = "deleteById", args = {Class.class, Object.class})
 public class LogInterceptor implements Interceptor {
 
   @Override

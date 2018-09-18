@@ -33,11 +33,37 @@ public class ObjectInterceptedJdkProxy implements InvocationHandler {
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    //TODO 根据方法查找是否有对应的拦截器，有的话通过CHAIN组装，没有的话直接执行，同时使用CACHE，可以稍微提升一点性能.
-    System.out.println(method.getName());
-    System.out.println(args.length);
     Invocation invocation = Invocation.create(target, method, args);
-    return interceptor.intercept(invocation);
+    if (checkProxy(invocation)) {
+      return interceptor.intercept(invocation);
+    }
+    return invocation.proceed();
+  }
+
+  public boolean checkProxy(Invocation invocation) {
+    Signature signature = interceptor.getClass().getAnnotation(Signature.class);
+    if (!ReflectUtils.isSubClassOrInterfaceOf(target.getClass(), signature.type())) {
+      return false;
+    }
+    if (invocation.method().isDefault()) {
+      return false;
+    }
+    String methodName = invocation.method().getName();
+    if (!methodName.equals(signature.method())) {
+      return false;
+    }
+    if (invocation.args() == null && signature.args().length == 0) {
+      return true;
+    } else if (signature.args().length != invocation.args().length) {
+      return false;
+    }
+    for (int i = 0; i < signature.args().length; i++) {
+      if (!ReflectUtils
+          .isSubClassOrInterfaceOf(invocation.args()[i].getClass(), signature.args()[i])) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

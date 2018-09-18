@@ -24,20 +24,34 @@ public class InterceptorTest {
   public void testChain() {
     Jdbc jdbc = new MockJdbc();
     Interceptor interceptor = new LogInterceptor();
-    InterceptorChain chain = new InterceptorChain();
-    chain.addInterceptor(interceptor);
-    chain.addInterceptor(new TestInterceptor());
-    Jdbc proxy = bind(chain, jdbc);
+    Jdbc proxy = (Jdbc) InterceptedObjectBuilder.create().addInterceptor(interceptor)
+        .addInterceptor(new CacheInterceptor())
+        .bind(jdbc);
     int result = proxy.deleteById(Device.class, 1);
     Assert.assertEquals(result, Integer.MAX_VALUE);
 
   }
 
-  public Jdbc bind(InterceptorChain chain, Jdbc jdbc) {
-    Jdbc proxy = jdbc;
-    for (Interceptor interceptor : chain.getInterceptors()) {
-      proxy = (Jdbc) ObjectInterceptedJdkProxy.create(proxy, interceptor);
-    }
-    return proxy;
+  @Test
+  public void testNoArgVoid() {
+    MessageService messageService = new MessageServiceImpl();
+    Interceptor interceptor = new NoArgInterceptor();
+    MessageService proxy = (MessageService) InterceptedObjectBuilder.create()
+        .addInterceptor(interceptor)
+        .bind(messageService);
+    proxy.say();
+    Assert.assertEquals(1, ((NoArgInterceptor) interceptor).count());
+  }
+
+  @Test
+  public void testChangeArgs() {
+    MessageService messageService = new MessageServiceImpl();
+    Interceptor interceptor = new ChangeArgInterceptor();
+    MessageService proxy = (MessageService) InterceptedObjectBuilder.create()
+        .addInterceptor(interceptor)
+        .bind(messageService);
+    String result = proxy.say("hello");
+    Assert.assertEquals(1, ((ChangeArgInterceptor) interceptor).count());
+    Assert.assertEquals("HELLO", result);
   }
 }

@@ -65,24 +65,14 @@ public class SqlBuilder {
   public static <ID> SQLBindings findByExample(Class<? extends Persistent<ID>> elementType,
       Example example) {
     example = removeUndefinedField(elementType, example);
-    String selectedField;
     Persistent<ID> domain = Persistent.create(elementType);
-    List<String> domainFields = domain.fields();
-    if (example.fields().isEmpty()) {
-      selectedField = Joiner.on(", ")
-          .join(domainFields.stream()
-              .map(f -> underscoreName(f))
-              .collect(Collectors.toList()));
-    } else {
-      selectedField = Joiner.on(", ")
-          .join(example.fields().stream()
-              .filter(f -> domainFields.contains(f))
-              .map(f -> underscoreName(f))
-              .collect(Collectors.toList()));
-    }
+    String selectedField = selectFields(domain, example.fields());
     StringBuilder sql = new StringBuilder();
-    sql.append("select ")
-        .append(selectedField)
+    sql.append("select ");
+    if (example.isDistinct()) {
+      sql.append("distinct ");
+    }
+    sql.append(selectedField)
         .append(" from ")
         .append(underscoreName(elementType.getSimpleName()));
     SQLBindings sqlBindings = SqlBuilder.whereSql(example.criteria());
@@ -126,7 +116,15 @@ public class SqlBuilder {
       Example example) {
     example = removeUndefinedField(elementType, example);
     StringBuilder sql = new StringBuilder();
-    sql.append("select count(*) from ")
+    sql.append("select ");
+    if (example.isDistinct()) {
+      Persistent<ID> domain = Persistent.create(elementType);
+      String selectedField = selectFields(domain, example.fields());
+      sql.append("count(distinct(").append(selectedField).append("))");
+    } else {
+      sql.append("count(*)");
+    }
+    sql.append(" from ")
         .append(underscoreName(elementType.getSimpleName()));
     SQLBindings sqlBindings = SqlBuilder.whereSql(example.criteria());
     if (!Strings.isNullOrEmpty(sqlBindings.sql())) {
@@ -306,24 +304,14 @@ public class SqlBuilder {
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings select(Select<ID, ? extends Persistent<ID>> select) {
-    String selectedField;
     Persistent<ID> domain = Persistent.create(select.getElementType());
-    List<String> domainFields = domain.fields();
-    if (select.fields().isEmpty()) {
-      selectedField = Joiner.on(", ")
-          .join(domainFields.stream()
-              .map(f -> underscoreName(f))
-              .collect(Collectors.toList()));
-    } else {
-      selectedField = Joiner.on(", ")
-          .join(select.fields().stream()
-              .filter(f -> domainFields.contains(f))
-              .map(f -> underscoreName(f))
-              .collect(Collectors.toList()));
-    }
+    String selectedField = selectFields(domain, select.fields());
     StringBuilder sql = new StringBuilder();
-    sql.append("select ")
-        .append(selectedField)
+    sql.append("select ");
+    if (select.isDistinct()) {
+      sql.append("distinct ");
+    }
+    sql.append(selectedField)
         .append(" from ")
         .append(underscoreName(select.getElementType().getSimpleName()));
     StringBuilder where = new StringBuilder();
@@ -367,7 +355,16 @@ public class SqlBuilder {
    */
   public static <ID> SQLBindings countBySelect(Select<ID, ? extends Persistent<ID>> select) {
     StringBuilder sql = new StringBuilder();
-    sql.append("select count(*) from ")
+    sql.append("select ");
+    if (select.isDistinct()) {
+      Persistent<ID> domain = Persistent.create(select.getElementType());
+      String selectedField = selectFields(domain, select.fields());
+      sql.append("count(distinct(").append(selectedField).append("))");
+    } else {
+      sql.append("count(*)");
+    }
+
+    sql.append(" from ")
         .append(underscoreName(select.getElementType().getSimpleName()));
     StringBuilder where = new StringBuilder();
     List<Object> bindings = new ArrayList<>();
@@ -376,6 +373,24 @@ public class SqlBuilder {
       sql.append(" where ").append(where.toString());
     }
     return SQLBindings.create(sql.toString(), bindings);
+  }
+
+  private static <ID> String selectFields(Persistent<ID> domain, List<String> fields) {
+    String selectedField;
+    List<String> domainFields = domain.fields();
+    if (fields.isEmpty()) {
+      selectedField = Joiner.on(", ")
+          .join(domainFields.stream()
+              .map(f -> underscoreName(f))
+              .collect(Collectors.toList()));
+    } else {
+      selectedField = Joiner.on(", ")
+          .join(fields.stream()
+              .filter(f -> domainFields.contains(f))
+              .map(f -> underscoreName(f))
+              .collect(Collectors.toList()));
+    }
+    return selectedField;
   }
 
   private static <ID> Example primaryKeyExample(Class<? extends Persistent<ID>> elementType,

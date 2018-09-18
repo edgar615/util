@@ -33,5 +33,5 @@ public @interface Signature {
    *
    * @return 参数类型
    */
-  Class<?>[] args() default {};
+  Class<?>[] args();
 }

@@ -24,6 +24,7 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
   private final Class<T> elementType;
   private Persistent persistent;
   private Expression expression;
+  private boolean distinct = false;
 
   private Select(Class<T> elementType, ExpressionOp op) {
     this.elementType = elementType;
@@ -73,12 +74,25 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     return Collections.unmodifiableList(fields);
   }
 
+  public boolean isDistinct() {
+    return distinct;
+  }
+
+  /**
+   * 设置distinct
+   * @return Select
+   */
+  public Select withDistinct() {
+    this.distinct = true;
+    return this;
+  }
+
   /**
    * = 查询
    *
    * @param field 查询字段
    * @param value 比较值
-   * @return Criteria
+   * @return Select
    */
   public Select equalsTo(String field, Object value) {
     return addCriterion(new Criterion(field, Op.EQ, value));

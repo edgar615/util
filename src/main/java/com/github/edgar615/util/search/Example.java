@@ -29,6 +29,8 @@ public class Example {
 
   private final List<String> orderBy = new ArrayList<>();
 
+  private boolean distinct = false;
+
   private Example() {
   }
 
@@ -86,6 +88,16 @@ public class Example {
 
   public List<Criterion> criteria() {
     return criteria.criteria();
+  }
+
+  /**
+   * 设置distinct
+   *
+   * @return Example
+   */
+  public Example withDistinct() {
+    this.distinct = true;
+    return this;
   }
 
   /**
@@ -431,6 +443,9 @@ public class Example {
 
   public Example removeUndefinedField(List<String> definedFields) {
     Example copyExample = Example.create();
+    if (isDistinct()) {
+      copyExample.withDistinct();
+    }
     this.criteria().stream()
         .filter(c -> definedFields.contains(c.field()))
         .forEach(c -> copyExample.addCriterion(c));
@@ -490,5 +505,9 @@ public class Example {
   public Example addCriterion(Criterion criterion) {
     this.criteria.addCriterion(criterion);
     return this;
+  }
+
+  public boolean isDistinct() {
+    return distinct;
   }
 }

@@ -122,10 +122,6 @@ public class SqlBuilderTest {
 
   @Test
   public void testFindByExample() {
-    List<String> fields = new ArrayList<>();
-    fields.add("deviceId");
-    fields.add("companyCode");
-    fields.add(Randoms.randomAlphabet(20));
     Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
         .desc("userId");
@@ -133,6 +129,21 @@ public class SqlBuilderTest {
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("select " + allColumn()
+            + " from device where type in (?,?,?) and mac_address like ? order by user_id desc",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testFindByExampleWithDistinct() {
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .desc("userId")
+        .withDistinct();
+    SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("select distinct " + allColumn()
             + " from device where type in (?,?,?) and mac_address like ? order by user_id desc",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
@@ -152,6 +163,25 @@ public class SqlBuilderTest {
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals(
         "select device_id, company_code from device where type in (?,?,?) and mac_address like ?",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testFindByExampleWithFieldAndDistinct() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .withDistinct();
+    example.addFields(fields);
+    SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals(
+        "select distinct device_id, company_code from device where type in (?,?,?) and mac_address like ?",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
@@ -197,11 +227,31 @@ public class SqlBuilderTest {
     fields.add(Randoms.randomAlphabet(20));
     Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
-        .asc("userId");
+        .asc("userId")
+        .addFields(fields);
     SQLBindings sqlBindings = SqlBuilder.countByExample(Device.class, example);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("select count(*) from device where type in (?,?,?) and mac_address like ?",
+        sqlBindings.sql());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testCountByExampleWithDistinct() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .asc("userId")
+        .addFields(fields)
+        .withDistinct();
+    SQLBindings sqlBindings = SqlBuilder.countByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("select count(distinct(device_id, company_code)) from device where type in (?,?,?) and mac_address like ?",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
@@ -228,6 +278,28 @@ public class SqlBuilderTest {
   }
 
   @Test
+  public void testSelectDistinct() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    fields.add(Randoms.randomAlphabet(20));
+    Select<Integer, Device> select = Select.and(Device.class)
+        .in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .inner(
+            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+        .desc("userId")
+        .withDistinct();
+    SQLBindings sqlBindings = SqlBuilder.select(select);
+    Assert.assertEquals(
+        "select distinct " + allColumn()
+            + " from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?) order by user_id desc",
+        sqlBindings.sql());
+    Assert.assertEquals(6, sqlBindings.bindings().size());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
   public void testSelectCount() {
     List<String> fields = new ArrayList<>();
     fields.add("deviceId");
@@ -244,6 +316,29 @@ public class SqlBuilderTest {
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals(
         "select count(*) from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?)",
+        sqlBindings.sql());
+    Assert.assertEquals(6, sqlBindings.bindings().size());
+    Assert.assertEquals(1, sqlBindings.bindings().get(0));
+  }
+
+  @Test
+  public void testSelectCountDistinct() {
+    List<String> fields = new ArrayList<>();
+    fields.add("deviceId");
+    fields.add("companyCode");
+    Select<Integer, Device> select = Select.and(Device.class)
+        .in("type", Lists.newArrayList(1, 2, 3))
+        .startsWith("macAddress", "FFFF")
+        .inner(
+            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+        .desc("userId")
+        .addFields(fields)
+        .withDistinct();
+    SQLBindings sqlBindings = SqlBuilder.countBySelect(select);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals(
+        "select count(distinct(device_id, company_code)) from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?)",
         sqlBindings.sql());
     Assert.assertEquals(6, sqlBindings.bindings().size());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));

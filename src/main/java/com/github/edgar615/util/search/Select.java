@@ -74,12 +74,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     return Collections.unmodifiableList(fields);
   }
 
-  public boolean isDistinct() {
-    return distinct;
-  }
-
   /**
    * 设置distinct
+   *
    * @return Select
    */
   public Select withDistinct() {
@@ -402,6 +399,10 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     } else if (op == ExpressionOp.OR) {
       expression = new OrExpression(expression, right);
     }
+  }
+
+  public boolean isDistinct() {
+    return distinct;
   }
 
   public Expression getExpression() {

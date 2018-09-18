@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ChangeArgInterceptor implements SubInterceptor {
 
   private final AtomicInteger count = new AtomicInteger();
+
   @Override
   public Object intercept(Invocation invocation) throws Throwable {
     count.incrementAndGet();

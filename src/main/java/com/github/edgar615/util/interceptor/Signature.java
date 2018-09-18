@@ -7,8 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *用来要定义拦截的方法，从Mybatis借鉴而来.
- *
+ * 用来要定义拦截的方法，从Mybatis借鉴而来.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
@@ -17,6 +16,7 @@ public @interface Signature {
 
   /**
    * 类
+   *
    * @return 类
    */
   Class<?> type();

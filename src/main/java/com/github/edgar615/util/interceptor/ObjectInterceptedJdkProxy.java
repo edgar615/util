@@ -17,6 +17,11 @@ public class ObjectInterceptedJdkProxy implements InvocationHandler {
 
   private final Interceptor interceptor;
 
+  private ObjectInterceptedJdkProxy(Object target, Interceptor interceptor) {
+    this.target = target;
+    this.interceptor = interceptor;
+  }
+
   public static Object create(Object target, Interceptor interceptor) {
     Class[] interfaces = ReflectUtils.extractAllInterfaces(target);
     if (interfaces.length == 0) {
@@ -24,11 +29,6 @@ public class ObjectInterceptedJdkProxy implements InvocationHandler {
     }
     return ObjectProxyBuilder
         .createProxy(new ObjectInterceptedJdkProxy(target, interceptor), interfaces);
-  }
-
-  private ObjectInterceptedJdkProxy(Object target, Interceptor interceptor) {
-    this.target = target;
-    this.interceptor = interceptor;
   }
 
   @Override

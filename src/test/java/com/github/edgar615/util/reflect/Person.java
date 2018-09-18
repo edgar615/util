@@ -2,6 +2,10 @@ package com.github.edgar615.util.reflect;
 
 public interface Person {
 
+  default String display() {
+    return String.format("%s (%s)", getName(), getAge());
+  }
+
   String getName();
 
   void setName(String name);
@@ -9,8 +13,4 @@ public interface Person {
   int getAge();
 
   void setAge(int age);
-
-  default String display() {
-    return String.format("%s (%s)", getName(), getAge());
-  }
 }

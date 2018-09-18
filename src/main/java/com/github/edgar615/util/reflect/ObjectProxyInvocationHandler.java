@@ -21,7 +21,7 @@ public class ObjectProxyInvocationHandler<T> implements ObjectProxy<T>, Invocati
     this.proxiedObject = proxiedObject;
   }
 
-  public static  <T> ObjectProxyInvocationHandler create(T proxiedObject) {
+  public static <T> ObjectProxyInvocationHandler create(T proxiedObject) {
     return new ObjectProxyInvocationHandler(proxiedObject);
   }
 

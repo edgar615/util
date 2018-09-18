@@ -251,7 +251,8 @@ public class SqlBuilderTest {
     SQLBindings sqlBindings = SqlBuilder.countByExample(Device.class, example);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
-    Assert.assertEquals("select count(distinct(device_id, company_code)) from device where type in (?,?,?) and mac_address like ?",
+    Assert.assertEquals(
+        "select count(distinct(device_id, company_code)) from device where type in (?,?,?) and mac_address like ?",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }

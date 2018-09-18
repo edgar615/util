@@ -65,7 +65,7 @@ class OptionalRule implements Rule {
       if (keyAndValue.size() > 1) {
         List<String> valueList = Splitter.on(SPLITTER).trimResults().omitEmptyStrings()
             .splitToList(keyAndValue.get(1));
-        return new OptionalRule(valueList.stream().map(s -> s).collect(Collectors.toList()));
+        return new OptionalRule(valueList.stream().collect(Collectors.toList()));
       }
       return null;
     }

@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @create 2018-09-18 13:37
  **/
 @Signature(type = MessageService.class, method = "say", args = {String.class})
-public class ChangeArgInterceptor implements Interceptor {
+public class ChangeArgInterceptor implements SubInterceptor {
 
   private final AtomicInteger count = new AtomicInteger();
   @Override

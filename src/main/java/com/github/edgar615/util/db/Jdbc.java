@@ -64,7 +64,7 @@ public interface Jdbc {
    * @return 修改记录数
    */
   <ID> int updateById(Persistent<ID> persistent,
-      Map<String, Integer> addOrSub,
+      Map<String, Number> addOrSub,
       List<String> nullFields,
       ID id);
 
@@ -79,7 +79,7 @@ public interface Jdbc {
    * @return 修改记录数
    */
   <ID> int updateByExample(Persistent<ID> persistent,
-      Map<String, Integer> addOrSub,
+      Map<String, Number> addOrSub,
       List<String> nullFields, Example example);
 
   /**

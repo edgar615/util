@@ -8,6 +8,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,13 +66,14 @@ public class SqlBuilderTest {
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);
-    Map<String, Integer> addOrSub = ImmutableMap.of("parentId", 1, "deviceCode", -2);
+    Map<String, Number> addOrSub = ImmutableMap.of("parentId", 1, "deviceCode", -2,
+        "type", new BigDecimal("1.0"), "addOn", new BigDecimal("-1.1"));
     List<String> fiedls = Lists.newArrayList("manufacturerName");
     SQLBindings sqlBindings = SqlBuilder.updateById(device, addOrSub, fiedls, 1);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals(
-        "update device set barcode = ?,company_code = ?,parent_id = parent_id + 1,device_code = device_code - 2,manufacturer_name = null where device_id = ?",
+        "update device set barcode = ?,company_code = ?,parent_id = parent_id + 1,device_code = device_code - 2,type = type + 1.0,add_on = add_on - 1.1,manufacturer_name = null where device_id = ?",
         sqlBindings.sql());
     Assert.assertEquals("barcode", sqlBindings.bindings().get(0));
     Assert.assertEquals(0, sqlBindings.bindings().get(1));

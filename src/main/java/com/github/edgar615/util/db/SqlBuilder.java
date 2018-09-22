@@ -11,6 +11,7 @@ import com.github.edgar615.util.search.Select;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -178,7 +179,7 @@ public class SqlBuilder {
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings updateById(Persistent<ID> persistent,
-      Map<String, Integer> addOrSub,
+      Map<String, Number> addOrSub,
       List<String> nullFields, ID id) {
     Example example = Example.create().equalsTo(persistent.primaryField(), id);
     return updateByExample(persistent, addOrSub, nullFields, example);
@@ -193,7 +194,7 @@ public class SqlBuilder {
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings updateByExample(Persistent<ID> persistent,
-      Map<String, Integer> addOrSub,
+      Map<String, Number> addOrSub,
       List<String> nullFields, Example example) {
     boolean noUpdated = persistent.toMap().values().stream()
         .allMatch(v -> v == null);
@@ -219,16 +220,18 @@ public class SqlBuilder {
       }
     });
     if (addOrSub != null) {
-      for (Map.Entry<String, Integer> entry : addOrSub.entrySet()) {
+      for (Map.Entry<String, Number> entry : addOrSub.entrySet()) {
         String key = entry.getKey();
         if (persistent.fields().contains(key)) {
           String underscoreKey = StringUtils.underscoreName(key);
-          if (entry.getValue() > 0) {
+          BigDecimal value = new BigDecimal(entry.getValue().toString());
+          if (value.compareTo(new BigDecimal(0)) > 0) {
             columns.add(
-                underscoreKey + " = " + underscoreKey + " + " + entry.getValue());
+                underscoreKey + " = " + underscoreKey + " + " + value);
           } else {
+            //int 以前这样取反的~(entry.getValue() - 1)
             columns.add(
-                underscoreKey + " = " + underscoreKey + " - " + ~(entry.getValue() - 1));
+                underscoreKey + " = " + underscoreKey + " - " + value.negate());
           }
         }
       }

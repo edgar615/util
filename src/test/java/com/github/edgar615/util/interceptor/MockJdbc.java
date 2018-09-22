@@ -35,13 +35,13 @@ public class MockJdbc implements Jdbc {
   }
 
   @Override
-  public <ID> int updateById(Persistent<ID> persistent, Map<String, Integer> addOrSub,
+  public <ID> int updateById(Persistent<ID> persistent, Map<String, Number> addOrSub,
       List<String> nullFields, ID id) {
     return 0;
   }
 
   @Override
-  public <ID> int updateByExample(Persistent<ID> persistent, Map<String, Integer> addOrSub,
+  public <ID> int updateByExample(Persistent<ID> persistent, Map<String, Number> addOrSub,
       List<String> nullFields, Example example) {
     return 0;
   }

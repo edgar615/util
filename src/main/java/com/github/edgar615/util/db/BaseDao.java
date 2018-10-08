@@ -30,6 +30,12 @@ public interface BaseDao<ID, T extends Persistent<ID>> {
   void insertAndGeneratedKey(T persistent);
 
   /**
+   * 批量插入
+   * @param persistentList 持久化对象的集合
+   */
+  void batchInsert(List<T> persistentList);
+
+  /**
    * 根据主键删除.
    *
    * @param id 主键

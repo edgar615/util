@@ -30,6 +30,11 @@ public class BaseDaoImpl<ID, T extends Persistent<ID>> implements BaseDao<ID, T>
   }
 
   @Override
+  public void batchInsert(List<T> persistentList) {
+    jdbc.batchInsert(persistentList);
+  }
+
+  @Override
   public int deleteById(ID id) {
     return jdbc.deleteById(elementType, id);
   }

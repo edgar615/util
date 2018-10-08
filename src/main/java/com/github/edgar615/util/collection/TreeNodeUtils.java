@@ -13,21 +13,21 @@ import java.util.stream.Collectors;
  */
 public class TreeNodeUtils {
 
-  public static <T, U extends TreeNode> List<U> createTree(List<T> datas, Function<T, U> function) {
+  public static <T, ID, U extends TreeNode<ID>> List<U> createTree(List<T> datas, Function<T, U> function) {
     List<U> nodes = datas
         .stream()
         .map(function)
         .collect(Collectors.toList());
 
     List<U> root = nodes.stream()
-        .filter(n -> n.getParentId() == -1)
+        .filter(n -> n.isRoot())
         .collect(Collectors.toList());
 
-    Map<Integer, List<TreeNode>> grouping = nodes.stream()
-        .filter(n -> n.getParentId() != -1)
+    Map<ID, List<U>> grouping = nodes.stream()
+        .filter(n -> !n.isRoot())
         .collect(Collectors.groupingBy(n -> n.getParentId()));
 
-    for (Integer parentId : grouping.keySet()) {
+    for (ID parentId : grouping.keySet()) {
       nodes.stream()
           .filter(n -> n.getId().equals(parentId))
           .forEach(n -> grouping.get(parentId).stream().forEach(c -> n.addChild(c)));

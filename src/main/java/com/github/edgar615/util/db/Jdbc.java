@@ -32,6 +32,14 @@ public interface Jdbc {
   <ID> void insertAndGeneratedKey(Persistent<ID> persistent);
 
   /**
+   * 批量插入
+   * @param persistentList 持久化对象的集合
+   * @param <ID> 主键列席
+   * @param <T> 持久化对象
+   */
+  <ID, T extends Persistent<ID>> void batchInsert(List<T> persistentList);
+
+  /**
    * 根据主键删除.
    *
    * @param elementType 持久化对象

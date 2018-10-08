@@ -23,6 +23,11 @@ public class MockJdbc implements Jdbc {
   }
 
   @Override
+  public <ID, T extends Persistent<ID>> void batchInsert(List<T> persistentList) {
+
+  }
+
+  @Override
   public <ID, T extends Persistent<ID>> int deleteById(Class<T> elementType, ID id) {
     System.out.println("deleteById");
     return deleteByExample(elementType, Example.create());

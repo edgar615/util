@@ -1,6 +1,6 @@
 package com.github.edgar615.util.db;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,7 +16,8 @@ public class SQLBindings {
 
   private SQLBindings(String sql, List<Object> bindings) {
     this.sql = sql;
-    this.bindings = ImmutableList.copyOf(bindings);
+    //ImmutableList不能包含null，改为使用JDK默认的不可修改集合
+    this.bindings = Collections.unmodifiableList(bindings);
   }
 
   public static SQLBindings create(String sql, List<Object> bindings) {

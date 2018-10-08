@@ -29,12 +29,28 @@ public class SqlBuilderTest {
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);
+    System.out.println(device.toMap());
     SQLBindings sqlBindings = SqlBuilder.insert(device);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("insert into device(barcode,company_code) values(?,?)", sqlBindings.sql());
     Assert.assertEquals("barcode", sqlBindings.bindings().get(0));
     Assert.assertEquals(0, sqlBindings.bindings().get(1));
+  }
+
+
+  @Test
+  public void testFullInsert() {
+
+    Device device = new Device();
+    device.setBarcode("barcode");
+    device.setCompanyCode(0);
+    SQLBindings sqlBindings = SqlBuilder.fullInsertSql(device);
+    String expected = "insert into device(device_id,user_id,parent_id,username,is_virtual,company_code,name,barcode,mac_address,encrypt_key,type,state,location,device_code,manufacturer_code,manufacturer_name,description,product_version,zigbee_version,zigbee_mac_address,main_feature,wifi_firm,wifi_version,server_address,public_ip,is_online,add_on,created_on) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    Assert.assertEquals(expected, sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("barcode", sqlBindings.bindings().get(7));
+    Assert.assertEquals(0, sqlBindings.bindings().get(5));
   }
 
   @Test

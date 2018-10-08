@@ -266,7 +266,7 @@ public class SqlBuilder {
   }
 
   /**
-   * insert.
+   * insert，忽略为null的属性.
    *
    * @param persistent 持久化对象
    * @param <ID> 主键类型
@@ -286,6 +286,38 @@ public class SqlBuilder {
         params.add(v);
       }
     });
+
+    String tableName = underscoreName(persistent.getClass().getSimpleName());
+    StringBuilder s = new StringBuilder();
+    s.append("insert into ")
+        .append(tableName)
+        .append("(")
+        .append(Joiner.on(",").join(columns))
+        .append(") values(")
+        .append(Joiner.on(",").join(prepare))
+        .append(")");
+    return SQLBindings.create(s.toString(), params);
+  }
+
+  /**
+   * 返回完整的INSERT SQL，包括所有的字段
+   * @param persistent 持久化对象
+   * @param <ID> 主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings fullInsertSql(Persistent<ID> persistent) {
+    List<String> virtualFields = persistent.virtualFields();
+    List<String> prepare = new ArrayList<>();
+    List<String> columns = new ArrayList<>();
+    List<Object> params = new ArrayList<>();
+    Map<String, Object> map = persistent.toMap();
+    persistent.fields()
+        .stream().filter(f -> !virtualFields.contains(f))
+        .forEach(f -> {
+          columns.add(underscoreName(f));
+          prepare.add("?");
+          params.add(map.get(f));
+        });
 
     String tableName = underscoreName(persistent.getClass().getSimpleName());
     StringBuilder s = new StringBuilder();

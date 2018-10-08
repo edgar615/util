@@ -2,13 +2,15 @@ package com.github.edgar615.util.collection;
 
 import java.util.List;
 
-public interface TreeNode {
+public interface TreeNode<T> {
 
   TreeNode addChild(TreeNode treeNode);
 
-  Integer getParentId();
+  T getParentId();
 
-  Integer getId();
+  T getId();
 
   List<TreeNode> getChildren();
+
+  boolean isRoot();
 }

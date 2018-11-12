@@ -57,11 +57,19 @@ public class Invocation {
    * 执行方法
    *
    * @return Object
-   * @throws InvocationTargetException 反射异常
-   * @throws IllegalAccessException 反射异常
+   * @throws Throwable 反射异常
    */
-  public Object proceed() throws InvocationTargetException, IllegalAccessException {
-    return method.invoke(target, args);
+  public Object proceed() throws Throwable {
+    try {
+      return method.invoke(target, args);
+    } catch (InvocationTargetException e) {
+      if (e.getCause() != null) {
+        throw e.getCause();
+      } else {
+        throw e;
+      }
+    }
+
   }
 
 }

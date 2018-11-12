@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface TreeNode<T> {
 
-  TreeNode addChild(TreeNode treeNode);
+  TreeNode<T> addChild(TreeNode<T> treeNode);
 
   T getParentId();
 
   T getId();
 
-  List<TreeNode> getChildren();
+  List<TreeNode<T>> getChildren();
 
   boolean isRoot();
 }

@@ -17,19 +17,20 @@ import java.util.stream.Collectors;
  */
 public class TreeNodeUtils {
 
-  public static <T, ID, U extends TreeNode<ID>> List<U> createTree(List<T> datas, Function<T, U> function) {
+  public static <T, ID, U extends TreeNode<ID>> List<U> createTree(List<T> datas,
+      Function<T, U> function) {
     List<U> nodes = datas
         .stream()
         .map(function)
         .collect(Collectors.toList());
 
-    Set<U> root = new HashSet<>();
+    List<U> root = new ArrayList<>();
 
     // 如果某个节点的没有父节点，拿它就是一个根节点
     for (U node : nodes) {
       boolean isRootNode = nodes.stream()
           .noneMatch(n -> n.getId().equals(node.getParentId()));
-      if (isRootNode) {
+      if (isRootNode && !root.contains(node)) {
         root.add(node);
       }
     }
@@ -43,7 +44,7 @@ public class TreeNodeUtils {
           .filter(n -> n.getId().equals(parentId))
           .forEach(n -> grouping.get(parentId).stream().forEach(c -> n.addChild(c)));
     }
-    return new ArrayList<>(root);
+    return root;
   }
 
   public static void levelTraverse(TreeNode node, Consumer<TreeNode> consumer) {

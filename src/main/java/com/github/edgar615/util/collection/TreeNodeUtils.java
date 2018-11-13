@@ -1,14 +1,18 @@
 package com.github.edgar615.util.collection;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * 树节点的工具
  * Created by Administrator on 2017/8/20.
  */
 public class TreeNodeUtils {
@@ -19,12 +23,19 @@ public class TreeNodeUtils {
         .map(function)
         .collect(Collectors.toList());
 
-    List<U> root = nodes.stream()
-        .filter(n -> n.isRoot())
-        .collect(Collectors.toList());
+    Set<U> root = new HashSet<>();
+
+    // 如果某个节点的没有父节点，拿它就是一个根节点
+    for (U node : nodes) {
+      boolean isRootNode = nodes.stream()
+          .noneMatch(n -> n.getId().equals(node.getParentId()));
+      if (isRootNode) {
+        root.add(node);
+      }
+    }
 
     Map<ID, List<U>> grouping = nodes.stream()
-        .filter(n -> !n.isRoot())
+        .filter(n -> !root.contains(n))
         .collect(Collectors.groupingBy(n -> n.getParentId()));
 
     for (ID parentId : grouping.keySet()) {
@@ -32,7 +43,7 @@ public class TreeNodeUtils {
           .filter(n -> n.getId().equals(parentId))
           .forEach(n -> grouping.get(parentId).stream().forEach(c -> n.addChild(c)));
     }
-    return root;
+    return new ArrayList<>(root);
   }
 
   public static void levelTraverse(TreeNode node, Consumer<TreeNode> consumer) {

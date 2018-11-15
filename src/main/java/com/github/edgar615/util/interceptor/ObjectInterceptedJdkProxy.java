@@ -58,8 +58,9 @@ public class ObjectInterceptedJdkProxy implements InvocationHandler {
       return false;
     }
     for (int i = 0; i < signature.args().length; i++) {
-      if (!ReflectUtils
-          .isSubClassOrInterfaceOf(invocation.args()[i].getClass(), signature.args()[i])) {
+      Object invocationArg = invocation.args()[i];
+      if (invocationArg != null && !ReflectUtils
+          .isSubClassOrInterfaceOf(invocationArg.getClass(), signature.args()[i])) {
         return false;
       }
     }

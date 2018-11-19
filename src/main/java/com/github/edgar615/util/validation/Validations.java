@@ -1,5 +1,6 @@
 package com.github.edgar615.util.validation;
 
+import com.github.edgar615.util.reflect.BeanUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -75,6 +76,16 @@ public class Validations {
     if (!error.isEmpty()) {
       throw new ValidationException(error);
     }
+  }
+
+  /**
+   * 校验JAVA BEAN
+   * @param target 被校验的对象
+   * @param rules 校验规则
+   */
+  public static void validate(Object target,Multimap<String, Rule> rules) {
+    Map<String, Object> map = BeanUtils.toMap(target);
+    validate(map, rules);
   }
 
   private static boolean checkRquired(Rule rule, List<String> values) {

@@ -216,7 +216,9 @@ public class Criteria implements Expression {
   }
 
   Criteria addCriteria(List<Criterion> criteria) {
-    this.criteria.addAll(criteria);
+    for (Criterion criterion: criteria) {
+      addCriterion(criterion);
+    }
     return this;
   }
 
@@ -229,7 +231,7 @@ public class Criteria implements Expression {
    */
   Criteria addCriterion(String field, Op op) {
     MorePreconditions.checkNotNullOrEmpty(field, "field cannot be null");
-    criteria.add(new Criterion(field, op));
+    addCriterion(new Criterion(field, op));
     return this;
   }
 
@@ -271,6 +273,9 @@ public class Criteria implements Expression {
 
   Criteria addCriterion(Criterion criterion) {
     Preconditions.checkNotNull(criterion, "value1 cannot be null");
+    if (this.criteria.contains(criterion)) {
+      return this;
+    }
     this.criteria.add(criterion);
     return this;
   }

@@ -364,6 +364,9 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
+    if (this.fields.contains(field)) {
+      return this;
+    }
     this.fields.add(field);
     return this;
   }
@@ -396,6 +399,9 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
+    if (orderBy.contains(field)) {
+      return this;
+    }
     orderBy.add(field);
     return this;
   }
@@ -411,7 +417,11 @@ public class Example {
       return this;
     }
     MorePreconditions.checkNoNullElements(fields, "field cannot be null");
-    orderBy.add("-" + field);
+    String newField = REVERSE_KEY + field;
+    if (orderBy.contains(newField)) {
+      return this;
+    }
+    orderBy.add(newField);
     return this;
   }
 
@@ -429,7 +439,7 @@ public class Example {
         .omitEmptyStrings().splitToList(field);
     for (String order : fields) {
       if (order.startsWith(REVERSE_KEY)) {
-        desc(order.substring(1));
+        desc(order.substring(REVERSE_KEY.length()));
       } else {
         asc(order);
       }

@@ -50,6 +50,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
+    if (this.fields.contains(field)) {
+      return this;
+    }
     if (persistent.fields().contains(field)) {
       this.fields.add(field);
     }
@@ -324,6 +327,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
+    if (orderBy.contains(field)) {
+      return this;
+    }
     if (persistent.fields().contains(field)) {
       orderBy.add(field);
     }
@@ -341,8 +347,12 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
       return this;
     }
     MorePreconditions.checkNoNullElements(fields, "field cannot be null");
+    String newField = REVERSE_KEY + field;
+    if (orderBy.contains(newField)) {
+      return this;
+    }
     if (persistent.fields().contains(field)) {
-      orderBy.add(REVERSE_KEY + field);
+      orderBy.add(newField);
     }
     return this;
   }
@@ -361,7 +371,7 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
         .omitEmptyStrings().splitToList(field);
     for (String order : fields) {
       if (order.startsWith(REVERSE_KEY)) {
-        desc(order);
+        desc(order.substring(REVERSE_KEY.length()));
       } else {
         asc(order);
       }

@@ -11,7 +11,7 @@ import org.junit.Test;
 public class EncryptUtilsTest {
 
   @Test
-  public void testHmac() throws IOException {
+  public void testHmac() throws Exception {
     String str =
         "appKey=XXXXX&body={\"username\":\"foo\","
             + "\"password\":\"bar\"}&nonce=123456&signMethod=HMACMD5&timestamp=1471958856&v=1.0";

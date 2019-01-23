@@ -1,5 +1,8 @@
 package com.github.edgar615.util.net;
 
+import java.math.BigInteger;
+import java.util.regex.Pattern;
+
 /**
  * IP工具.
  *
@@ -9,6 +12,59 @@ public class IPUtils {
 
   private IPUtils() {
     throw new AssertionError("Not instantiable: " + IPUtils.class);
+  }
+
+  //功能：判断IPv4地址的正则表达式：
+  private static final Pattern IPV4_REGEX =
+      Pattern.compile(
+          "^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+
+  //功能：判断标准IPv6地址的正则表达式
+  private static final Pattern IPV6_STD_REGEX =
+      Pattern.compile(
+          "^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
+
+  //功能：判断一般情况压缩的IPv6正则表达式
+  private static final Pattern IPV6_COMPRESS_REGEX =
+      Pattern.compile(
+          "^((?:[0-9A-Fa-f]{1,4}(:[0-9A-Fa-f]{1,4})*)?)::((?:([0-9A-Fa-f]{1,4}:)*[0-9A-Fa-f]{1,4})?)$");
+
+  /*由于IPv6压缩规则是必须要大于等于2个全0块才能压缩
+           不合法压缩 ： fe80:0000:8030:49ec:1fc6:57fa:ab52:fe69
+  ->           fe80::8030:49ec:1fc6:57fa:ab52:fe69
+          该不合法压缩地址直接压缩了处于第二个块的单独的一个全0块，
+          上述不合法地址不能通过一般情况的压缩正则表达式IPV6_COMPRESS_REGEX判断出其不合法
+          所以定义了如下专用于判断边界特殊压缩的正则表达式
+  (边界特殊压缩：开头或末尾为两个全0块，该压缩由于处于边界，且只压缩了2个全0块，不会导致':'数量变少)*/
+  //功能：抽取特殊的边界压缩情况
+  private static final Pattern IPV6_COMPRESS_REGEX_BORDER =
+      Pattern.compile(
+          "^(::(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4}){5})|((?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4}){5}::)$");
+
+  //判断是否为合法IPv4地址
+  public static boolean isIPv4Address(final String input) {
+    return IPV4_REGEX.matcher(input).matches();
+  }
+
+  //判断是否为合法IPv6地址
+  public static boolean isIPv6Address(final String input) {
+    int num = 0;
+    for (int i = 0; i < input.length(); i++) {
+      if (input.charAt(i) == ':') {
+        num++;
+      }
+    }
+    if (num > 7) {
+      return false;
+    }
+    if (IPV6_STD_REGEX.matcher(input).matches()) {
+      return true;
+    }
+    if (num == 7) {
+      return IPV6_COMPRESS_REGEX_BORDER.matcher(input).matches();
+    } else {
+      return IPV6_COMPRESS_REGEX.matcher(input).matches();
+    }
   }
 
   /**
@@ -47,4 +103,63 @@ public class IPUtils {
     return sb.toString();
   }
 
+  public static BigInteger ipv6ToNumber(String addr) {
+    int startIndex=addr.indexOf("::");
+
+    if(startIndex!=-1){
+
+
+      String firstStr=addr.substring(0,startIndex);
+      String secondStr=addr.substring(startIndex+2, addr.length());
+
+
+      BigInteger first=ipv6ToNumber(firstStr);
+
+      int x=countChar(addr, ':');
+
+      first=first.shiftLeft(16*(7-x)).add(ipv6ToNumber(secondStr));
+
+      return first;
+    }
+
+
+    String[] strArr = addr.split(":");
+
+    BigInteger retValue = BigInteger.valueOf(0);
+    for (int i=0;i<strArr.length;i++) {
+      BigInteger bi=new BigInteger(strArr[i], 16);
+      retValue = retValue.shiftLeft(16).add(bi);
+    }
+    return retValue;
+  }
+
+
+  public static String numberToIPv6(BigInteger ipNumber) {
+    String ipString ="";
+    BigInteger a=new BigInteger("FFFF", 16);
+
+    for (int i=0; i<8; i++) {
+      ipString=ipNumber.and(a).toString(16)+":"+ipString;
+
+      ipNumber = ipNumber.shiftRight(16);
+    }
+
+    return ipString.substring(0, ipString.length()-1);
+
+  }
+
+  private static int countChar(String str, char reg){
+    char[] ch=str.toCharArray();
+    int count=0;
+    for(int i=0; i<ch.length; ++i){
+      if(ch[i]==reg){
+        if(ch[i+1]==reg){
+          ++i;
+          continue;
+        }
+        ++count;
+      }
+    }
+    return count;
+  }
 }

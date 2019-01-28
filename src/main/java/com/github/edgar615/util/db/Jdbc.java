@@ -29,7 +29,7 @@ public interface Jdbc {
    * @param persistent 持久化对象
    * @param <ID> 主键类型
    */
-  <ID> void insertAndGeneratedKey(Persistent<ID> persistent);
+  <ID> ID insertAndGeneratedKey(Persistent<ID> persistent);
 
   /**
    * 批量插入

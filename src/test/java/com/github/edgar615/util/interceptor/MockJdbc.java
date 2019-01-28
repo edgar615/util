@@ -18,8 +18,8 @@ public class MockJdbc implements Jdbc {
   }
 
   @Override
-  public <ID> void insertAndGeneratedKey(Persistent<ID> persistent) {
-
+  public <ID> ID insertAndGeneratedKey(Persistent<ID> persistent) {
+    return null;
   }
 
   @Override

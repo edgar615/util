@@ -27,7 +27,7 @@ public interface BaseDao<ID, T extends Persistent<ID>> {
    *
    * @param persistent 持久化对象
    */
-  void insertAndGeneratedKey(T persistent);
+  ID insertAndGeneratedKey(T persistent);
 
   /**
    * 批量插入

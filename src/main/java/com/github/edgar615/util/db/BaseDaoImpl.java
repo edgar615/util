@@ -25,8 +25,8 @@ public class BaseDaoImpl<ID, T extends Persistent<ID>> implements BaseDao<ID, T>
   }
 
   @Override
-  public void insertAndGeneratedKey(T persistent) {
-    jdbc.insertAndGeneratedKey(persistent);
+  public ID insertAndGeneratedKey(T persistent) {
+    return jdbc.insertAndGeneratedKey(persistent);
   }
 
   @Override

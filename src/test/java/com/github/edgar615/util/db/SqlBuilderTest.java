@@ -3,7 +3,7 @@ package com.github.edgar615.util.db;
 import com.github.edgar615.util.base.Randoms;
 import com.github.edgar615.util.base.StringUtils;
 import com.github.edgar615.util.search.Example;
-import com.github.edgar615.util.search.Select;
+import com.github.edgar615.util.search.MoreExample;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -281,13 +281,13 @@ public class SqlBuilderTest {
     fields.add("deviceId");
     fields.add("companyCode");
     fields.add(Randoms.randomAlphabet(20));
-    Select<Integer, Device> select = Select.and(Device.class)
+    MoreExample moreExample = MoreExample.and()
         .in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
         .inner(
-            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+            MoreExample.or().equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
         .desc("userId");
-    SQLBindings sqlBindings = SqlBuilder.select(select);
+    SQLBindings sqlBindings = SqlBuilder.findByMoreExample(Device.class, moreExample);
     Assert.assertEquals(
         "select " + allColumn()
             + " from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?) order by user_id desc",
@@ -302,14 +302,14 @@ public class SqlBuilderTest {
     fields.add("deviceId");
     fields.add("companyCode");
     fields.add(Randoms.randomAlphabet(20));
-    Select<Integer, Device> select = Select.and(Device.class)
+    MoreExample moreExample = MoreExample.and()
         .in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
         .inner(
-            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+            MoreExample.or().equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
         .desc("userId")
         .withDistinct();
-    SQLBindings sqlBindings = SqlBuilder.select(select);
+    SQLBindings sqlBindings = SqlBuilder.findByMoreExample(Device.class, moreExample);
     Assert.assertEquals(
         "select distinct " + allColumn()
             + " from device where type in (?,?,?) and mac_address like ? and (company_code = ? or company_code = ?) order by user_id desc",
@@ -324,13 +324,13 @@ public class SqlBuilderTest {
     fields.add("deviceId");
     fields.add("companyCode");
     fields.add(Randoms.randomAlphabet(20));
-    Select<Integer, Device> select = Select.and(Device.class)
+    MoreExample moreExample = MoreExample.and()
         .in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
         .inner(
-            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+            MoreExample.or().equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
         .desc("userId");
-    SQLBindings sqlBindings = SqlBuilder.countBySelect(select);
+    SQLBindings sqlBindings = SqlBuilder.countByMoreExample(Device.class, moreExample);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals(
@@ -345,15 +345,15 @@ public class SqlBuilderTest {
     List<String> fields = new ArrayList<>();
     fields.add("deviceId");
     fields.add("companyCode");
-    Select<Integer, Device> select = Select.and(Device.class)
+    MoreExample moreExample = MoreExample.and()
         .in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
         .inner(
-            Select.or(Device.class).equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
+            MoreExample.or().equalsTo("companyCode", 0).equalsTo("companyCode", "999"))
         .desc("userId")
         .addFields(fields)
         .withDistinct();
-    SQLBindings sqlBindings = SqlBuilder.countBySelect(select);
+    SQLBindings sqlBindings = SqlBuilder.countByMoreExample(Device.class, moreExample);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals(

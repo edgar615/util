@@ -5,9 +5,9 @@ import com.github.edgar615.util.search.AndExpression;
 import com.github.edgar615.util.search.Criterion;
 import com.github.edgar615.util.search.Example;
 import com.github.edgar615.util.search.Expression;
+import com.github.edgar615.util.search.MoreExample;
 import com.github.edgar615.util.search.Op;
 import com.github.edgar615.util.search.OrExpression;
-import com.github.edgar615.util.search.Select;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -301,6 +301,7 @@ public class SqlBuilder {
 
   /**
    * 返回完整的INSERT SQL，包括所有的字段
+   *
    * @param persistent 持久化对象
    * @param <ID> 主键类型
    * @return {@link SQLBindings}
@@ -334,29 +335,31 @@ public class SqlBuilder {
   /**
    * 构建更复杂的SQL.一般用的很少，目前还不是很完善.
    *
-   * @param select 查询条件
+   * @param elementType 持久化对象
+   * @param moreExample 查询条件
    * @param <ID> 主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings select(Select<ID, ? extends Persistent<ID>> select) {
-    Persistent<ID> domain = Persistent.create(select.getElementType());
-    String selectedField = selectFields(domain, select.fields());
+  public static <ID> SQLBindings findByMoreExample(Class<? extends Persistent<ID>> elementType,
+      MoreExample moreExample) {
+    Persistent<ID> domain = Persistent.create(elementType);
+    String selectedField = selectFields(domain, moreExample.fields());
     StringBuilder sql = new StringBuilder();
     sql.append("select ");
-    if (select.isDistinct()) {
+    if (moreExample.isDistinct()) {
       sql.append("distinct ");
     }
     sql.append(selectedField)
         .append(" from ")
-        .append(underscoreName(select.getElementType().getSimpleName()));
+        .append(underscoreName(elementType.getSimpleName()));
     StringBuilder where = new StringBuilder();
     List<Object> bindings = new ArrayList<>();
-    sql(select.getExpression(), where, bindings);
+    sql(moreExample.getExpression(), where, bindings);
     if (!Strings.isNullOrEmpty(where.toString())) {
       sql.append(" where ").append(where.toString());
     }
-    if (!select.orderBy().isEmpty()) {
-      sql.append(SqlBuilder.orderSql(select.orderBy()));
+    if (!moreExample.orderBy().isEmpty()) {
+      sql.append(SqlBuilder.orderSql(moreExample.orderBy()));
     }
     return SQLBindings.create(sql.toString(), bindings);
   }
@@ -364,15 +367,17 @@ public class SqlBuilder {
   /**
    * 构建更复杂的SQL.一般用的很少，目前还不是很完善.
    *
-   * @param select 查询条件
+   * @param elementType 持久化对象
+   * @param moreExample 查询条件
    * @param offset offset
    * @param limit limit
    * @param <ID> 主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings select(Select<ID, ? extends Persistent<ID>> select, long offset,
+  public static <ID> SQLBindings findByMoreExample(Class<? extends Persistent<ID>> elementType,
+      MoreExample moreExample, long offset,
       long limit) {
-    SQLBindings sqlBindings = select(select);
+    SQLBindings sqlBindings = findByMoreExample(elementType, moreExample, offset, limit);
     StringBuilder sql = new StringBuilder(sqlBindings.sql());
     sql.append(" limit ?, ?");
     List<Object> args = new ArrayList<>(sqlBindings.bindings());
@@ -384,31 +389,140 @@ public class SqlBuilder {
   /**
    * 构建更复杂的SQL，查询总数.一般用的很少，目前还不是很完善.
    *
-   * @param select 查询条件
+   * @param moreExample 查询条件
    * @param <ID> 主键类型
    * @return {@link SQLBindings}
    */
-  public static <ID> SQLBindings countBySelect(Select<ID, ? extends Persistent<ID>> select) {
+  public static <ID> SQLBindings countByMoreExample(Class<? extends Persistent<ID>> elementType,
+      MoreExample moreExample) {
     StringBuilder sql = new StringBuilder();
     sql.append("select ");
-    if (select.isDistinct()) {
-      Persistent<ID> domain = Persistent.create(select.getElementType());
-      String selectedField = selectFields(domain, select.fields());
+    if (moreExample.isDistinct()) {
+      Persistent<ID> domain = Persistent.create(elementType);
+      String selectedField = selectFields(domain, moreExample.fields());
       sql.append("count(distinct(").append(selectedField).append("))");
     } else {
       sql.append("count(*)");
     }
 
     sql.append(" from ")
-        .append(underscoreName(select.getElementType().getSimpleName()));
+        .append(underscoreName(elementType.getSimpleName()));
     StringBuilder where = new StringBuilder();
     List<Object> bindings = new ArrayList<>();
-    sql(select.getExpression(), where, bindings);
+    sql(moreExample.getExpression(), where, bindings);
     if (!Strings.isNullOrEmpty(where.toString())) {
       sql.append(" where ").append(where.toString());
     }
     return SQLBindings.create(sql.toString(), bindings);
   }
+
+  /**
+   * 根据条件删除.
+   *
+   * @param elementType 持久化对象
+   * @param moreExample 条件
+   * @param <ID> 主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings deleteByMoreExample(Class<? extends Persistent<ID>> elementType,
+      MoreExample moreExample) {
+    StringBuilder where = new StringBuilder();
+    List<Object> bindings = new ArrayList<>();
+    sql(moreExample.getExpression(), where, bindings);
+    String tableName = StringUtils.underscoreName(elementType.getSimpleName());
+    StringBuilder sql = new StringBuilder("delete from ")
+        .append(tableName);
+    if (!Strings.isNullOrEmpty(where.toString())) {
+      sql.append(" where ")
+          .append(where.toString());
+    }
+
+    return SQLBindings.create(sql.toString(), bindings);
+  }
+
+  /**
+   * 根据条件更新,忽略实体中的null.
+   *
+   * @param persistent 持久化对象
+   * @param moreExample 条件
+   * @param <ID> 主键类型
+   * @return {@link SQLBindings}
+   */
+  public static <ID> SQLBindings updateByMoreExample(Persistent<ID> persistent,
+      Map<String, Number> addOrSub,
+      List<String> nullFields, MoreExample moreExample) {
+    boolean noUpdated = persistent.toMap().values().stream()
+        .allMatch(v -> v == null);
+    boolean noAddOrSub = addOrSub == null
+        || addOrSub.keySet().stream().allMatch(v -> !persistent.fields().contains(v));
+    boolean noNull = nullFields == null
+        || nullFields.stream().allMatch(v -> !persistent.fields().contains(v));
+    if (noUpdated && noAddOrSub && noNull) {
+      return null;
+    }
+
+    //对example做一次清洗，将表中不存在的条件删除，避免频繁出现500错误
+    Map<String, Object> map = persistent.toMap();
+    List<String> columns = new ArrayList<>();
+    List<Object> params = new ArrayList<>();
+    //忽略虚拟列
+    List<String> virtualFields = persistent.virtualFields();
+    map.forEach((k, v) -> {
+      if (v != null && !virtualFields.contains(k)) {
+        columns.add(StringUtils.underscoreName(k) + " = ?");
+        params.add(v);
+      }
+    });
+    if (addOrSub != null) {
+      for (Map.Entry<String, Number> entry : addOrSub.entrySet()) {
+        String key = entry.getKey();
+        if (persistent.fields().contains(key)) {
+          String underscoreKey = StringUtils.underscoreName(key);
+          BigDecimal value = new BigDecimal(entry.getValue().toString());
+          if (value.compareTo(new BigDecimal(0)) > 0) {
+            columns.add(
+                underscoreKey + " = " + underscoreKey + " + " + value);
+          } else {
+            //int 以前这样取反的~(entry.getValue() - 1)
+            columns.add(
+                underscoreKey + " = " + underscoreKey + " - " + value.negate());
+          }
+        }
+      }
+    }
+    if (nullFields != null) {
+      List<String> nullColumns = nullFields.stream()
+          .filter(f -> persistent.fields().contains(f))
+          .map(f -> StringUtils.underscoreName(f))
+          .map(f -> f + " = null")
+          .collect(Collectors.toList());
+      columns.addAll(nullColumns);
+    }
+
+    if (columns.isEmpty()) {
+      return null;
+    }
+
+    String tableName = StringUtils.underscoreName(persistent.getClass().getSimpleName());
+    StringBuilder sql = new StringBuilder();
+    sql.append("update ")
+        .append(tableName)
+        .append(" set ")
+        .append(Joiner.on(",").join(columns));
+    List<Object> args = new ArrayList<>(params);
+
+    StringBuilder where = new StringBuilder();
+    List<Object> bindings = new ArrayList<>();
+    sql(moreExample.getExpression(), where, bindings);
+
+    if (!Strings.isNullOrEmpty(where.toString())) {
+      sql.append(" where ")
+          .append(where.toString());
+      args.addAll(bindings);
+    }
+    return SQLBindings.create(sql.toString(), args);
+  }
+
 
   private static <ID> String selectFields(Persistent<ID> domain, List<String> fields) {
     String selectedField;
@@ -583,11 +697,11 @@ public class SqlBuilder {
       bindings.addAll(sqlBindings.bindings());
       return;
     }
-    if (expression instanceof Select) {
-      Select select = (Select) expression;
+    if (expression instanceof MoreExample) {
+      MoreExample moreExample = (MoreExample) expression;
       StringBuilder innerSql = new StringBuilder();
       List<Object> innerBindings = new ArrayList<>();
-      sql(select.getExpression(), innerSql, innerBindings);
+      sql(moreExample.getExpression(), innerSql, innerBindings);
       sql.append(innerSql);
       bindings.addAll(innerBindings);
       return;
@@ -602,13 +716,13 @@ public class SqlBuilder {
     List<Object> rightBindings = new ArrayList<>();
     sql(left, leftSql, leftBindings);
     sql(right, rightSql, rightBindings);
-    if (left instanceof Select) {
+    if (left instanceof MoreExample) {
       sql.append("(").append(leftSql).append(")");
     } else {
       sql.append(leftSql);
     }
     sql.append(" ").append(op).append(" ");
-    if (right instanceof Select) {
+    if (right instanceof MoreExample) {
       sql.append("(").append(rightSql).append(")");
     } else {
       sql.append(rightSql);

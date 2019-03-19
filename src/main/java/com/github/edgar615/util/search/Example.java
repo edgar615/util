@@ -23,7 +23,9 @@ public class Example {
   public static final String QUERY_SPLIT = ":";
   private static final Logger LOGGER = LoggerFactory.getLogger(Example.class);
   private static final String REVERSE_KEY = "-";
-  private final Criteria criteria = Criteria.create();
+  private final List<Criteria> oredCriteria = new ArrayList<>();
+
+  private final List<Expression> expressions = new ArrayList<>();
 
   private final List<String> fields = new ArrayList<>();
 
@@ -35,7 +37,9 @@ public class Example {
   }
 
   public static Example create() {
-    return new Example();
+    Example example = new Example();
+    example.oredCriteria.add(Criteria.and());
+    return example;
   }
 
   /**
@@ -87,7 +91,17 @@ public class Example {
   }
 
   public List<Criterion> criteria() {
-    return criteria.criteria();
+    return lastCriteria().criteria();
+  }
+
+  public Example and() {
+    oredCriteria.add(Criteria.and());
+    return this;
+  }
+
+  public Example or() {
+    oredCriteria.add(Criteria.or());
+    return this;
   }
 
   /**
@@ -114,7 +128,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.notEqualsTo(field, value);
+    lastCriteria().notEqualsTo(field, value);
     return this;
   }
 
@@ -132,7 +146,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.greaterThan(field, value);
+    lastCriteria().greaterThan(field, value);
     return this;
   }
 
@@ -150,7 +164,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.greaterThanOrEqualTo(field, value);
+    lastCriteria().greaterThanOrEqualTo(field, value);
     return this;
   }
 
@@ -168,7 +182,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.lessThan(field, value);
+    lastCriteria().lessThan(field, value);
     return this;
   }
 
@@ -186,7 +200,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.lessThanOrEqualTo(field, value);
+    lastCriteria().lessThanOrEqualTo(field, value);
     return this;
   }
 
@@ -206,7 +220,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.contains(field, value);
+    lastCriteria().contains(field, value);
     return this;
   }
 
@@ -224,7 +238,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.startsWith(field, value);
+    lastCriteria().startsWith(field, value);
     return this;
   }
 
@@ -244,7 +258,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.endsWtih(field, value);
+    lastCriteria().endsWtih(field, value);
     return this;
   }
 
@@ -259,7 +273,7 @@ public class Example {
     if (values == null || values.isEmpty()) {
       return this;
     }
-    criteria.in(field, values);
+    lastCriteria().in(field, values);
     return this;
   }
 
@@ -274,7 +288,7 @@ public class Example {
     if (values == null || values.isEmpty()) {
       return this;
     }
-    criteria.notIn(field, values);
+    lastCriteria().notIn(field, values);
     return this;
   }
 
@@ -292,7 +306,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    criteria.equalsTo(field, value);
+    lastCriteria().equalsTo(field, value);
     return this;
   }
 
@@ -314,15 +328,15 @@ public class Example {
     }
     if (Strings.isNullOrEmpty(value1.toString())
         && !Strings.isNullOrEmpty(value2.toString())) {
-      criteria.lessThanOrEqualTo(field, value2);
+      lastCriteria().lessThanOrEqualTo(field, value2);
       return this;
     }
     if (!Strings.isNullOrEmpty(value1.toString())
         && Strings.isNullOrEmpty(value2.toString())) {
-      criteria.greaterThanOrEqualTo(field, value1);
+      lastCriteria().greaterThanOrEqualTo(field, value1);
       return this;
     }
-    criteria.between(field, value1, value2);
+    lastCriteria().between(field, value1, value2);
     return this;
   }
 
@@ -336,7 +350,7 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
-    criteria.isNull(field);
+    lastCriteria().isNull(field);
     return this;
   }
 
@@ -350,7 +364,7 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
-    criteria.isNotNull(field);
+    lastCriteria().isNotNull(field);
     return this;
   }
 
@@ -459,7 +473,6 @@ public class Example {
     this.criteria().stream()
         .filter(c -> definedFields.contains(c.field()))
         .forEach(c -> copyExample.addCriterion(c));
-    //日志
     List<Criterion> criterias = this.criteria().stream()
         .filter(c -> !definedFields.contains(c.field()))
         .collect(Collectors.toList());
@@ -469,7 +482,6 @@ public class Example {
     this.fields().stream()
         .filter(f -> definedFields.contains(f))
         .forEach(f -> copyExample.addField(f));
-    //日志
     List<String> fields = this.fields().stream()
         .filter(f -> !definedFields.contains(f))
         .collect(Collectors.toList());
@@ -501,23 +513,31 @@ public class Example {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper("Example")
-        .add("criteria", criteria)
+        .add("oredCriteria", oredCriteria)
         .add("fields", fields)
         .add("orderBy", orderBy)
         .toString();
   }
 
   public Example addCriteria(List<Criterion> criteria) {
-    this.criteria.addCriteria(criteria);
+    this.lastCriteria().addCriteria(criteria);
     return this;
   }
 
   public Example addCriterion(Criterion criterion) {
-    this.criteria.addCriterion(criterion);
+    this.lastCriteria().addCriterion(criterion);
     return this;
   }
 
   public boolean isDistinct() {
     return distinct;
+  }
+
+  private Criteria lastCriteria() {
+    return oredCriteria.get(oredCriteria.size() - 1);
+  }
+
+  public List<Criteria> getOredCriteria() {
+    return oredCriteria;
   }
 }

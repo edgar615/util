@@ -15,29 +15,25 @@ import java.util.List;
  * @author Edgar
  * @create 2018-09-08 15:43
  **/
-public class Select<ID, T extends Persistent<ID>> implements Expression {
+public class MoreExample implements Expression {
 
   private static final String REVERSE_KEY = "-";
   private final ExpressionOp op;
   private final List<String> fields = new ArrayList<>();
   private final List<String> orderBy = new ArrayList<>();
-  private final Class<T> elementType;
-  private Persistent persistent;
   private Expression expression;
   private boolean distinct = false;
 
-  private Select(Class<T> elementType, ExpressionOp op) {
-    this.elementType = elementType;
-    this.persistent = Persistent.create(elementType);
+  private MoreExample(ExpressionOp op) {
     this.op = op;
   }
 
-  public static <ID, T extends Persistent<ID>> Select and(Class<T> beanClass) {
-    return new Select(beanClass, ExpressionOp.AND);
+  public static <ID, T extends Persistent<ID>> MoreExample and() {
+    return new MoreExample(ExpressionOp.AND);
   }
 
-  public static <ID, T extends Persistent<ID>> Select or(Class<T> beanClass) {
-    return new Select(beanClass, ExpressionOp.OR);
+  public static <ID, T extends Persistent<ID>> MoreExample or() {
+    return new MoreExample(ExpressionOp.OR);
   }
 
   /**
@@ -46,16 +42,14 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * @param field 字段
    * @return Example
    */
-  public Select addField(String field) {
+  public MoreExample addField(String field) {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
     if (this.fields.contains(field)) {
       return this;
     }
-    if (persistent.fields().contains(field)) {
-      this.fields.add(field);
-    }
+    this.fields.add(field);
     return this;
   }
 
@@ -65,7 +59,7 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * @param fields 字段的集合
    * @return Example
    */
-  public Select addFields(List<String> fields) {
+  public MoreExample addFields(List<String> fields) {
     if (fields == null || fields.isEmpty()) {
       return this;
     }
@@ -80,9 +74,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
   /**
    * 设置distinct
    *
-   * @return Select
+   * @return MoreExample
    */
-  public Select withDistinct() {
+  public MoreExample withDistinct() {
     this.distinct = true;
     return this;
   }
@@ -92,9 +86,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值
-   * @return Select
+   * @return MoreExample
    */
-  public Select equalsTo(String field, Object value) {
+  public MoreExample equalsTo(String field, Object value) {
     return addCriterion(new Criterion(field, Op.EQ, value));
   }
 
@@ -103,9 +97,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值 ，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select notEqualsTo(String field, Object value) {
+  public MoreExample notEqualsTo(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -120,9 +114,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select greaterThan(String field, Object value) {
+  public MoreExample greaterThan(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -137,9 +131,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select greaterThanOrEqualTo(String field, Object value) {
+  public MoreExample greaterThanOrEqualTo(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -154,9 +148,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select lessThan(String field, Object value) {
+  public MoreExample lessThan(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -171,9 +165,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select lessThanOrEqualTo(String field, Object value) {
+  public MoreExample lessThanOrEqualTo(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -188,9 +182,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select contains(String field, Object value) {
+  public MoreExample contains(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -205,9 +199,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select startsWith(String field, Object value) {
+  public MoreExample startsWith(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -224,9 +218,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param value 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select endsWtih(String field, Object value) {
+  public MoreExample endsWtih(String field, Object value) {
     if (value == null) {
       return this;
     }
@@ -241,9 +235,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param values 比较值，如果为null或空，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select in(String field, List<Object> values) {
+  public MoreExample in(String field, List<Object> values) {
     if (values == null || values.isEmpty()) {
       return this;
     }
@@ -255,9 +249,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    *
    * @param field 查询字段
    * @param values 比较值，如果为null或空，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select notIn(String field, List<Object> values) {
+  public MoreExample notIn(String field, List<Object> values) {
     if (values == null || values.isEmpty()) {
       return this;
     }
@@ -270,9 +264,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * @param field 查询字段
    * @param value1 比较值，如果为null，忽略这个查询
    * @param value2 比较值，如果为null，忽略这个查询
-   * @return Select
+   * @return MoreExample
    */
-  public Select between(String field, Object value1, Object value2) {
+  public MoreExample between(String field, Object value1, Object value2) {
     if (value1 == null || value2 == null) {
       return this;
     }
@@ -295,9 +289,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * is null查询
    *
    * @param field 查询字段
-   * @return Select
+   * @return MoreExample
    */
-  public Select isNull(String field) {
+  public MoreExample isNull(String field) {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
@@ -308,9 +302,9 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * is not null查询
    *
    * @param field 查询字段
-   * @return Select
+   * @return MoreExample
    */
-  public Select isNotNull(String field) {
+  public MoreExample isNotNull(String field) {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
@@ -323,16 +317,14 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * @param field 排序字段
    * @return Example
    */
-  public Select asc(String field) {
+  public MoreExample asc(String field) {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
     if (orderBy.contains(field)) {
       return this;
     }
-    if (persistent.fields().contains(field)) {
-      orderBy.add(field);
-    }
+    orderBy.add(field);
     return this;
   }
 
@@ -342,7 +334,7 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * @param field 排序字段
    * @return Example
    */
-  public Select desc(String field) {
+  public MoreExample desc(String field) {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
@@ -351,9 +343,7 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     if (orderBy.contains(newField)) {
       return this;
     }
-    if (persistent.fields().contains(field)) {
-      orderBy.add(newField);
-    }
+    orderBy.add(newField);
     return this;
   }
 
@@ -363,7 +353,7 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
    * @param field 多个排序用逗号,分隔，降序排序需要在字段前面加上-
    * @return Example
    */
-  public Select orderBy(String field) {
+  public MoreExample orderBy(String field) {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
@@ -383,21 +373,19 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     return ImmutableList.copyOf(orderBy);
   }
 
-  public Select ge(String field, Object value) {
+  public MoreExample ge(String field, Object value) {
     Criterion criterion = new Criterion(field, Op.GE, value);
     add(criterion);
     return this;
   }
 
-  public Select inner(Select select) {
-    add(select);
+  public MoreExample inner(MoreExample moreExample) {
+    add(moreExample);
     return this;
   }
 
-  private Select addCriterion(Criterion criterion) {
-    if (persistent.fields().contains(criterion.field())) {
-      add(criterion);
-    }
+  private MoreExample addCriterion(Criterion criterion) {
+    add(criterion);
     return this;
   }
 
@@ -419,7 +407,4 @@ public class Select<ID, T extends Persistent<ID>> implements Expression {
     return expression;
   }
 
-  public Class<T> getElementType() {
-    return elementType;
-  }
 }

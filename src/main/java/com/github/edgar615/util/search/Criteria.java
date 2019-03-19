@@ -19,8 +19,11 @@ public class Criteria implements Expression {
 
   private final List<Criterion> criteria = new ArrayList<>();
 
-  private Criteria() {
+  private final ExpressionOp expressionOp;
+
+  private Criteria(ExpressionOp expressionOp) {
     super();
+    this.expressionOp = expressionOp;
   }
 
   /**
@@ -29,11 +32,31 @@ public class Criteria implements Expression {
    * @return Criteria
    */
   public static Criteria create() {
-    return new Criteria();
+    return and();
+  }
+
+  /**
+   * 创建AND查询
+   * @return Criteria
+   */
+  public static Criteria and() {
+    return new Criteria(ExpressionOp.AND);
+  }
+
+  /**
+   * 创建OR查询
+   * @return Criteria
+   */
+  public static Criteria or() {
+    return new Criteria(ExpressionOp.OR);
   }
 
   public List<Criterion> criteria() {
     return ImmutableList.copyOf(criteria);
+  }
+
+  public ExpressionOp expressionOp() {
+    return expressionOp;
   }
 
   /**

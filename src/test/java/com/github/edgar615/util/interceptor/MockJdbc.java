@@ -3,6 +3,7 @@ package com.github.edgar615.util.interceptor;
 import com.github.edgar615.util.db.Jdbc;
 import com.github.edgar615.util.db.Persistent;
 import com.github.edgar615.util.search.Example;
+import com.github.edgar615.util.search.MoreExample;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +72,36 @@ public class MockJdbc implements Jdbc {
 
   @Override
   public <ID, T extends Persistent<ID>> int countByExample(Class<T> elementType, Example example) {
+    return 0;
+  }
+
+  @Override
+  public <ID, T extends Persistent<ID>> int deleteByMoreExample(Class<T> elementType,
+      MoreExample example) {
+    return 0;
+  }
+
+  @Override
+  public <ID> int updateByMoreExample(Persistent<ID> persistent, Map<String, Number> addOrSub,
+      List<String> nullFields, MoreExample example) {
+    return 0;
+  }
+
+  @Override
+  public <ID, T extends Persistent<ID>> List<T> findByMoreExample(Class<T> elementType,
+      MoreExample example) {
+    return null;
+  }
+
+  @Override
+  public <ID, T extends Persistent<ID>> List<T> findByMoreExample(Class<T> elementType,
+      MoreExample example, int start, int limit) {
+    return null;
+  }
+
+  @Override
+  public <ID, T extends Persistent<ID>> int countByMoreExample(Class<T> elementType,
+      MoreExample example) {
     return 0;
   }
 }

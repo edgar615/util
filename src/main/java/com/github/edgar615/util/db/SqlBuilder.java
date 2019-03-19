@@ -81,7 +81,7 @@ public class SqlBuilder {
       sql.append(" where ").append(sqlBindings.sql());
     }
     if (!example.orderBy().isEmpty()) {
-      sql.append(SqlBuilder.orderSql(example.orderBy()));
+      sql.append(SqlBuilder.orderSql(example));
     }
     return SQLBindings.create(sql.toString(), sqlBindings.bindings());
   }
@@ -359,7 +359,7 @@ public class SqlBuilder {
       sql.append(" where ").append(where.toString());
     }
     if (!moreExample.orderBy().isEmpty()) {
-      sql.append(SqlBuilder.orderSql(moreExample.orderBy()));
+      sql.append(SqlBuilder.orderSql(moreExample));
     }
     return SQLBindings.create(sql.toString(), bindings);
   }
@@ -548,19 +548,19 @@ public class SqlBuilder {
     return Example.create().equalsTo(domain.primaryField(), id);
   }
 
-  private static String orderSql(List<String> orderBy) {
-    if (orderBy.isEmpty()) {
+
+  private static String orderSql(MoreExample moreExample) {
+    if (moreExample.orderBy().isEmpty()) {
       return "";
     }
-    List<String> sql = orderBy.stream()
-        .distinct()
-        .map(o -> {
-          if (o.startsWith(REVERSE_KEY)) {
-            return underscoreName(o.substring(1)) + " desc";
-          }
-          return underscoreName(o);
-        }).collect(Collectors.toList());
-    return " order by " + Joiner.on(",").join(sql);
+    return " order by " + moreExample.orderSql();
+  }
+
+  private static String orderSql(Example example) {
+    if (example.orderBy().isEmpty()) {
+      return "";
+    }
+    return " order by " + example.orderSql();
   }
 
   private static SQLBindings whereSql(List<Criterion> criteria) {
@@ -602,51 +602,45 @@ public class SqlBuilder {
   private static SQLBindings criterion(Criterion criterion) {
     StringBuilder sql = new StringBuilder();
     List<Object> bindings = new ArrayList<>();
-
-    if (criterion.op() == Op.IS_NULL) {
-      sql.append(underscoreName(criterion.field())).append(" is null");
-    }
-    if (criterion.op() == Op.IS_NOT_NULL) {
-      sql.append(underscoreName(criterion.field())).append(" is not null");
-    }
+    sql.append(underscoreName(criterion.field())).append(criterion.condition());
     if (criterion.op() == Op.EQ) {
-      sql.append(underscoreName(criterion.field())).append(" = ?");
+      sql.append("?");
       bindings.add(criterion.value());
     }
     if (criterion.op() == Op.NE) {
-      sql.append(underscoreName(criterion.field())).append(" <> ?");
+      sql.append("?");
       bindings.add(criterion.value());
     }
     if (criterion.op() == Op.GT) {
-      sql.append(underscoreName(criterion.field())).append(" > ?");
+      sql.append("?");
       bindings.add(criterion.value());
     }
     if (criterion.op() == Op.GE) {
-      sql.append(underscoreName(criterion.field())).append(" >= ?");
+      sql.append("?");
       bindings.add(criterion.value());
     }
     if (criterion.op() == Op.LT) {
-      sql.append(underscoreName(criterion.field())).append(" < ?");
+      sql.append("?");
       bindings.add(criterion.value());
     }
     if (criterion.op() == Op.LE) {
-      sql.append(underscoreName(criterion.field())).append(" <= ?");
+      sql.append("?");
       bindings.add(criterion.value());
     }
     if (criterion.op() == Op.SW) {
-      sql.append(underscoreName(criterion.field())).append(" like ?");
+      sql.append("?");
       bindings.add(criterion.value() + "%");
     }
     if (criterion.op() == Op.EW) {
-      sql.append(underscoreName(criterion.field())).append(" like ?");
+      sql.append("?");
       bindings.add("%" + criterion.value());
     }
     if (criterion.op() == Op.CN) {
-      sql.append(underscoreName(criterion.field())).append(" like ?");
+      sql.append("?");
       bindings.add("%" + criterion.value() + "%");
     }
     if (criterion.op() == Op.BETWEEN) {
-      sql.append(underscoreName(criterion.field())).append(" between ? and ?");
+      sql.append("? and ?");
       bindings.add(criterion.value());
       bindings.add(criterion.secondValue());
     }
@@ -655,7 +649,7 @@ public class SqlBuilder {
       List<String> strings = values.stream()
           .map(v -> "?")
           .collect(Collectors.toList());
-      sql.append(underscoreName(criterion.field()) + " in ("
+      sql.append("("
           + Joiner.on(",").join(strings)
           + ")");
       bindings.addAll(values);
@@ -665,7 +659,7 @@ public class SqlBuilder {
       List<String> strings = values.stream()
           .map(v -> "?")
           .collect(Collectors.toList());
-      sql.append(underscoreName(criterion.field())).append(" not in (")
+      sql.append("(")
           .append(Joiner.on(",").join(strings)).append(")");
       bindings.addAll(values);
     }

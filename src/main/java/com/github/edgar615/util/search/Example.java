@@ -1,7 +1,9 @@
 package com.github.edgar615.util.search;
 
 import com.github.edgar615.util.base.MorePreconditions;
+import com.github.edgar615.util.base.StringUtils;
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -23,9 +25,7 @@ public class Example {
   public static final String QUERY_SPLIT = ":";
   private static final Logger LOGGER = LoggerFactory.getLogger(Example.class);
   private static final String REVERSE_KEY = "-";
-  private final List<Criteria> oredCriteria = new ArrayList<>();
-
-  private final List<Expression> expressions = new ArrayList<>();
+  private final Criteria criteria = Criteria.create();
 
   private final List<String> fields = new ArrayList<>();
 
@@ -37,9 +37,7 @@ public class Example {
   }
 
   public static Example create() {
-    Example example = new Example();
-    example.oredCriteria.add(Criteria.and());
-    return example;
+    return new Example();
   }
 
   /**
@@ -91,17 +89,7 @@ public class Example {
   }
 
   public List<Criterion> criteria() {
-    return lastCriteria().criteria();
-  }
-
-  public Example and() {
-    oredCriteria.add(Criteria.and());
-    return this;
-  }
-
-  public Example or() {
-    oredCriteria.add(Criteria.or());
-    return this;
+    return criteria.criteria();
   }
 
   /**
@@ -128,7 +116,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().notEqualsTo(field, value);
+    criteria.notEqualsTo(field, value);
     return this;
   }
 
@@ -146,7 +134,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().greaterThan(field, value);
+    criteria.greaterThan(field, value);
     return this;
   }
 
@@ -164,7 +152,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().greaterThanOrEqualTo(field, value);
+    criteria.greaterThanOrEqualTo(field, value);
     return this;
   }
 
@@ -182,7 +170,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().lessThan(field, value);
+    criteria.lessThan(field, value);
     return this;
   }
 
@@ -200,7 +188,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().lessThanOrEqualTo(field, value);
+    criteria.lessThanOrEqualTo(field, value);
     return this;
   }
 
@@ -220,7 +208,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().contains(field, value);
+    criteria.contains(field, value);
     return this;
   }
 
@@ -238,7 +226,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().startsWith(field, value);
+    criteria.startsWith(field, value);
     return this;
   }
 
@@ -258,7 +246,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().endsWtih(field, value);
+    criteria.endsWtih(field, value);
     return this;
   }
 
@@ -273,7 +261,7 @@ public class Example {
     if (values == null || values.isEmpty()) {
       return this;
     }
-    lastCriteria().in(field, values);
+    criteria.in(field, values);
     return this;
   }
 
@@ -288,7 +276,7 @@ public class Example {
     if (values == null || values.isEmpty()) {
       return this;
     }
-    lastCriteria().notIn(field, values);
+    criteria.notIn(field, values);
     return this;
   }
 
@@ -306,7 +294,7 @@ public class Example {
     if (Strings.isNullOrEmpty(value.toString())) {
       return this;
     }
-    lastCriteria().equalsTo(field, value);
+    criteria.equalsTo(field, value);
     return this;
   }
 
@@ -328,15 +316,15 @@ public class Example {
     }
     if (Strings.isNullOrEmpty(value1.toString())
         && !Strings.isNullOrEmpty(value2.toString())) {
-      lastCriteria().lessThanOrEqualTo(field, value2);
+      criteria.lessThanOrEqualTo(field, value2);
       return this;
     }
     if (!Strings.isNullOrEmpty(value1.toString())
         && Strings.isNullOrEmpty(value2.toString())) {
-      lastCriteria().greaterThanOrEqualTo(field, value1);
+      criteria.greaterThanOrEqualTo(field, value1);
       return this;
     }
-    lastCriteria().between(field, value1, value2);
+    criteria.between(field, value1, value2);
     return this;
   }
 
@@ -350,7 +338,7 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
-    lastCriteria().isNull(field);
+    criteria.isNull(field);
     return this;
   }
 
@@ -364,7 +352,7 @@ public class Example {
     if (Strings.isNullOrEmpty(field)) {
       return this;
     }
-    lastCriteria().isNotNull(field);
+    criteria.isNotNull(field);
     return this;
   }
 
@@ -465,6 +453,21 @@ public class Example {
     return ImmutableList.copyOf(orderBy);
   }
 
+  public String orderSql() {
+    if (orderBy.isEmpty()) {
+      return "";
+    }
+    List<String> sql = orderBy.stream()
+        .distinct()
+        .map(o -> {
+          if (o.startsWith(REVERSE_KEY)) {
+            return StringUtils.underscoreName(o.substring(1)) + " desc";
+          }
+          return StringUtils.underscoreName(o);
+        }).collect(Collectors.toList());
+    return Joiner.on(",").join(sql);
+  }
+
   public Example removeUndefinedField(List<String> definedFields) {
     Example copyExample = Example.create();
     if (isDistinct()) {
@@ -473,6 +476,7 @@ public class Example {
     this.criteria().stream()
         .filter(c -> definedFields.contains(c.field()))
         .forEach(c -> copyExample.addCriterion(c));
+    //日志
     List<Criterion> criterias = this.criteria().stream()
         .filter(c -> !definedFields.contains(c.field()))
         .collect(Collectors.toList());
@@ -482,6 +486,7 @@ public class Example {
     this.fields().stream()
         .filter(f -> definedFields.contains(f))
         .forEach(f -> copyExample.addField(f));
+    //日志
     List<String> fields = this.fields().stream()
         .filter(f -> !definedFields.contains(f))
         .collect(Collectors.toList());
@@ -513,19 +518,19 @@ public class Example {
   @Override
   public String toString() {
     return MoreObjects.toStringHelper("Example")
-        .add("oredCriteria", oredCriteria)
+        .add("criteria", criteria)
         .add("fields", fields)
         .add("orderBy", orderBy)
         .toString();
   }
 
   public Example addCriteria(List<Criterion> criteria) {
-    this.lastCriteria().addCriteria(criteria);
+    this.criteria.addCriteria(criteria);
     return this;
   }
 
   public Example addCriterion(Criterion criterion) {
-    this.lastCriteria().addCriterion(criterion);
+    this.criteria.addCriterion(criterion);
     return this;
   }
 
@@ -533,11 +538,4 @@ public class Example {
     return distinct;
   }
 
-  private Criteria lastCriteria() {
-    return oredCriteria.get(oredCriteria.size() - 1);
-  }
-
-  public List<Criteria> getOredCriteria() {
-    return oredCriteria;
-  }
 }

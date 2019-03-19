@@ -1,13 +1,16 @@
 package com.github.edgar615.util.search;
 
 import com.github.edgar615.util.base.MorePreconditions;
+import com.github.edgar615.util.base.StringUtils;
 import com.github.edgar615.util.db.Persistent;
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 偏复杂的查询. 一般用的很少，目前还不是很完善.
@@ -407,4 +410,18 @@ public class MoreExample implements Expression {
     return expression;
   }
 
+  public String orderSql() {
+    if (orderBy.isEmpty()) {
+      return "";
+    }
+    List<String> sql = orderBy.stream()
+        .distinct()
+        .map(o -> {
+          if (o.startsWith(REVERSE_KEY)) {
+            return StringUtils.underscoreName(o.substring(1)) + " desc";
+          }
+          return StringUtils.underscoreName(o);
+        }).collect(Collectors.toList());
+    return Joiner.on(",").join(sql);
+  }
 }

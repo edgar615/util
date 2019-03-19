@@ -1,6 +1,8 @@
 package com.github.edgar615.util.search;
 
+import com.github.edgar615.util.base.StringUtils;
 import com.google.common.base.MoreObjects;
+import java.util.List;
 
 /**
  * 查询标准.
@@ -61,6 +63,53 @@ public class Criterion implements Expression {
     return secondValue;
   }
 
+  public String condition() {
+
+    if (op == Op.IS_NULL) {
+      return " is null";
+    }
+    if (op == Op.IS_NOT_NULL) {
+      return " is not null";
+    }
+    if (op == Op.EQ) {
+      return " = ";
+    }
+    if (op == Op.NE) {
+      return " <> ";
+    }
+    if (op == Op.GT) {
+      return " > ";
+    }
+    if (op == Op.GE) {
+      return " >= ";
+    }
+    if (op == Op.LT) {
+      return " < ";
+    }
+    if (op == Op.LE) {
+      return " <= ";
+    }
+    if (op == Op.SW) {
+      return " like ";
+    }
+    if (op == Op.EW) {
+      return " like ";
+    }
+    if (op == Op.CN) {
+      return " like ";
+    }
+    if (op == Op.BETWEEN) {
+      return " between ";
+    }
+    if (op == Op.IN) {
+      return " in ";
+    }
+    if (op == Op.NOT_IN) {
+      return " not in ";
+    }
+    throw new UnsupportedOperationException(op.name());
+  }
+
   @Override
   public int hashCode() {
     int result = field.hashCode();
@@ -104,4 +153,47 @@ public class Criterion implements Expression {
         .add("secondValue", secondValue)
         .toString();
   }
+
+  // 为了兼容mybatis，实现的方法
+  public String underscoreFiled() {
+    return StringUtils.underscoreName(field);
+  }
+
+  public Object getLikeValue() {
+    if (op == Op.SW) {
+      return value+ "%";
+    }
+    if (op == Op.EW) {
+      return "%" + value;
+    }
+    if (op == Op.CN) {
+      return "%" + value + "%";
+    }
+    return value;
+  }
+
+  public Object getValue() {
+    return value;
+  }
+
+  public Object getSecondValue() {
+    return secondValue;
+  }
+
+  public boolean noValue() {
+    return value == null;
+  }
+
+  public boolean singleValue() {
+    return value != null && secondValue == null && !(value instanceof List);
+  }
+
+  public boolean betweenValue() {
+    return value != null && secondValue != null && op == Op.BETWEEN;
+  }
+
+  public boolean listValue() {
+    return value != null && value instanceof List;
+  }
+
 }

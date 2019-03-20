@@ -315,6 +315,23 @@ public class MoreExample implements Expression {
   }
 
   /**
+   * REGEXP 查询
+   *
+   * @param field 查询字段
+   * @param value 比较值，如果为null，忽略这个查询
+   * @return Example
+   */
+  public MoreExample regexp(String field, Object value) {
+    if (value == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
+    return addCriterion(new Criterion(field, Op.REGEXP, value));
+  }
+
+  /**
    * 增加生序排序
    *
    * @param field 排序字段

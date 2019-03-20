@@ -101,6 +101,9 @@ public class Criterion implements Expression {
     if (op == Op.BETWEEN) {
       return " between ";
     }
+    if (op == Op.REGEXP) {
+      return " regexp ";
+    }
     if (op == Op.IN) {
       return " in ";
     }

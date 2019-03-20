@@ -61,6 +61,11 @@ public enum Op {
   /**
    * between
    */
-  BETWEEN;
+  BETWEEN,
+
+  /**
+   * REGEXP
+   */
+  REGEXP;
 
 }

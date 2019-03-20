@@ -142,12 +142,13 @@ public class SqlBuilderTest {
   public void testFindByExample() {
     Example example = Example.create().in("type", Lists.newArrayList(1, 2, 3))
         .startsWith("macAddress", "FFFF")
+        .regexp("macAddress", "^F")
         .desc("userId");
     SQLBindings sqlBindings = SqlBuilder.findByExample(Device.class, example);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
     Assert.assertEquals("select " + allColumn()
-            + " from device where type in (?,?,?) and mac_address like ? order by user_id desc",
+            + " from device where type in (?,?,?) and mac_address like ? and mac_address regexp ? order by user_id desc",
         sqlBindings.sql());
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }

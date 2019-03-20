@@ -357,6 +357,24 @@ public class Example {
   }
 
   /**
+   * REGEXP 查询
+   *
+   * @param field 查询字段
+   * @param value 比较值，如果为null，忽略这个查询
+   * @return Example
+   */
+  public Example regexp(String field, Object value) {
+    if (value == null) {
+      return this;
+    }
+    if (Strings.isNullOrEmpty(value.toString())) {
+      return this;
+    }
+    criteria.regexp(field, value);
+    return this;
+  }
+
+  /**
    * 增加返回的字段
    *
    * @param field 字段

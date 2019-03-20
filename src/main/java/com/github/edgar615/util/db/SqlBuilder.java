@@ -603,48 +603,20 @@ public class SqlBuilder {
     StringBuilder sql = new StringBuilder();
     List<Object> bindings = new ArrayList<>();
     sql.append(underscoreName(criterion.field())).append(criterion.condition());
-    if (criterion.op() == Op.EQ) {
-      sql.append("?");
-      bindings.add(criterion.value());
-    }
-    if (criterion.op() == Op.NE) {
-      sql.append("?");
-      bindings.add(criterion.value());
-    }
-    if (criterion.op() == Op.GT) {
-      sql.append("?");
-      bindings.add(criterion.value());
-    }
-    if (criterion.op() == Op.GE) {
-      sql.append("?");
-      bindings.add(criterion.value());
-    }
-    if (criterion.op() == Op.LT) {
-      sql.append("?");
-      bindings.add(criterion.value());
-    }
-    if (criterion.op() == Op.LE) {
-      sql.append("?");
-      bindings.add(criterion.value());
-    }
     if (criterion.op() == Op.SW) {
       sql.append("?");
       bindings.add(criterion.value() + "%");
-    }
-    if (criterion.op() == Op.EW) {
+    } else     if (criterion.op() == Op.EW) {
       sql.append("?");
       bindings.add("%" + criterion.value());
-    }
-    if (criterion.op() == Op.CN) {
+    } else     if (criterion.op() == Op.CN) {
       sql.append("?");
       bindings.add("%" + criterion.value() + "%");
-    }
-    if (criterion.op() == Op.BETWEEN) {
+    } else     if (criterion.op() == Op.BETWEEN) {
       sql.append("? and ?");
       bindings.add(criterion.value());
       bindings.add(criterion.secondValue());
-    }
-    if (criterion.op() == Op.IN) {
+    } else     if (criterion.op() == Op.IN) {
       List<Object> values = (List<Object>) criterion.value();
       List<String> strings = values.stream()
           .map(v -> "?")
@@ -653,8 +625,7 @@ public class SqlBuilder {
           + Joiner.on(",").join(strings)
           + ")");
       bindings.addAll(values);
-    }
-    if (criterion.op() == Op.NOT_IN) {
+    } else     if (criterion.op() == Op.NOT_IN) {
       List<Object> values = (List<Object>) criterion.value();
       List<String> strings = values.stream()
           .map(v -> "?")
@@ -662,6 +633,9 @@ public class SqlBuilder {
       sql.append("(")
           .append(Joiner.on(",").join(strings)).append(")");
       bindings.addAll(values);
+    } else {
+      sql.append("?");
+      bindings.add(criterion.value());
     }
     return SQLBindings.create(sql.toString(), bindings);
   }

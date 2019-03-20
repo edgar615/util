@@ -208,6 +208,18 @@ public class Criteria implements Expression {
     return addCriterion(field, Op.IS_NOT_NULL);
   }
 
+
+  /**
+   * regexp 查询
+   * @param field 查询字段
+   * @param value 查询值
+   * @return Criteria
+   */
+  public Criteria regexp(String field, Object value) {
+    Preconditions.checkNotNull(value);
+    return addCriterion(field, Op.REGEXP, value);
+  }
+
   @Override
   public String toString() {
     return MoreObjects.toStringHelper("Criteria")
@@ -311,4 +323,5 @@ public class Criteria implements Expression {
     }
     return val;
   }
+
 }

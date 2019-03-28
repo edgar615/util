@@ -616,7 +616,11 @@ public class SqlBuilder {
       sql.append("? and ?");
       bindings.add(criterion.value());
       bindings.add(criterion.secondValue());
-    } else     if (criterion.op() == Op.IN) {
+    } else if (criterion.op() == Op.IS_NULL) {
+      // do nothing
+    } else if (criterion.op() == Op.IS_NOT_NULL) {
+      // do nothing
+    }  else     if (criterion.op() == Op.IN) {
       List<Object> values = (List<Object>) criterion.value();
       List<String> strings = values.stream()
           .map(v -> "?")

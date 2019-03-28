@@ -62,6 +62,19 @@ public class SqlBuilderTest {
     Assert.assertEquals(1, sqlBindings.bindings().get(0));
   }
 
+
+  @Test
+  public void testDeleteByExample() {
+    Example example = Example.create()
+        .isNull("macAddress");
+    SQLBindings sqlBindings = SqlBuilder.deleteByExample(Device.class, example);
+    System.out.println(sqlBindings.sql());
+    System.out.println(sqlBindings.bindings());
+    Assert.assertEquals("delete from device where mac_address is null",
+        sqlBindings.sql());
+    Assert.assertEquals(0, sqlBindings.bindings().size());
+  }
+
   @Test
   public void testUpdateById() {
     Device device = new Device();

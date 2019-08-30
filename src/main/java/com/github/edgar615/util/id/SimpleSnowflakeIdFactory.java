@@ -1,5 +1,7 @@
 package com.github.edgar615.util.id;
 
+import static com.github.edgar615.util.reflect.ReflectUtils.LOGGER;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -91,7 +93,21 @@ class SimpleSnowflakeIdFactory implements IdFactory<Long>, TimeExtracter<Long>, 
     long time = currentTime();
     if (time < lastTime) {
       //当前时间小于上次时间，说明时钟不对
-      throw new IllegalStateException("Clock moved backwards.");
+      long offset = lastTime - time;
+      if (offset <= 5) {
+        try {
+          wait(offset << 1);
+          time = currentTime();
+          if (time < lastTime) {
+            throw new IllegalStateException("Clock moved backwards.");
+          }
+        } catch (InterruptedException e) {
+          LOGGER.error("wait interrupted");
+          throw new IllegalStateException("Clock moved backwards.");
+        }
+      } else {
+        throw new IllegalStateException("Clock moved backwards.");
+      }
     }
     if (time == lastTime) {
       seqId = (seqId + 1) & SEQ_MASK;

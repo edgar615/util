@@ -179,18 +179,26 @@ public enum DefaultErrorCode implements ErrorCode {
   NOT_YOUR_RESOURCE(1032, "Not your resources"),
 
   /**
+   * 资源已被占用
+   */
+  RESOURCE_OCCUPIED(1033, "Resources occupied"),
+
+  /**
    * 事件超时.
    */
+  @Deprecated
   EVENTBUS_TIMOUT(1101, "Eventbus: Timeout"),
 
   /**
    * 事件被拒绝.
    */
+  @Deprecated
   EVENTBUS_REJECTED(1102, "Eventbus: Rejected"),
 
   /**
    * 未定义事件.
    */
+  @Deprecated
   EVENTBUS_NO_HANDLERS(1103, "Eventbus: Undefined Event");
 
   /**

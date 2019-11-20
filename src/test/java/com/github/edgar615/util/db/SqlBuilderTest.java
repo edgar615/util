@@ -43,7 +43,6 @@ public class SqlBuilderTest {
     Device device = new Device();
     device.setBarcode("barcode");
     device.setCompanyCode(0);
-    System.out.println(device.toMap());
     SQLBindings sqlBindings = SqlBuilder.insert(device);
     System.out.println(sqlBindings.sql());
     System.out.println(sqlBindings.bindings());
@@ -392,8 +391,7 @@ public class SqlBuilderTest {
   }
 
   private String allColumn() {
-    Device device = new Device();
-    List<String> fields = device.fields()
+    List<String> fields = new DeviceKit().fields()
         .stream().map(f -> StringUtils.underscoreName(f))
         .collect(Collectors.toList());
     return Joiner.on(", ").join(fields);

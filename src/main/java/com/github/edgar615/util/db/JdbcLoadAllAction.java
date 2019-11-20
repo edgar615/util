@@ -14,6 +14,7 @@
 
 package com.github.edgar615.util.db;
 
+import com.github.edgar615.util.reflect.ReflectionException;
 import com.github.edgar615.util.search.Example;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,8 @@ public class JdbcLoadAllAction<ID, T extends Persistent<ID>> implements LoadAllA
 
   private final Consumer<List<T>> consumer;
 
+  private PersistentKit<ID, T> kit;
+
   private JdbcLoadAllAction(Jdbc jdbc, Class<T> elementType, Example example, int limit,
                             Consumer<List<T>> consumer) {
     Objects.requireNonNull(jdbc);
@@ -49,6 +52,11 @@ public class JdbcLoadAllAction<ID, T extends Persistent<ID>> implements LoadAllA
     Objects.requireNonNull(consumer);
     this.jdbc = jdbc;
     this.elementType = elementType;
+    try {
+      this.kit = (PersistentKit<ID, T>) Class.forName(elementType.getName() + "Kit").newInstance();
+    } catch (Exception e) {
+      throw new ReflectionException("class not found");
+    }
     this.example = example;
     this.limit = limit;
     this.consumer = consumer;
@@ -69,9 +77,9 @@ public class JdbcLoadAllAction<ID, T extends Persistent<ID>> implements LoadAllA
     newExample.addFields(example.fields());
     Persistent persistent = newDomain(elementType);
     if (startPk != null) {
-      newExample.greaterThan(persistent.primaryField(), startPk);
+      newExample.greaterThan(kit.primaryField(), startPk);
     }
-    newExample.asc(persistent.primaryField());
+    newExample.asc(kit.primaryField());
     List<T> elements = jdbc.findByExample(elementType, newExample, 0, limit);
     if (elements == null || elements.isEmpty()) {
       return;

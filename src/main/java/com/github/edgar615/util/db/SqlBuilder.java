@@ -27,8 +27,10 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -195,7 +197,7 @@ public class SqlBuilder {
   public static <ID> SQLBindings updateById(Persistent<ID> persistent,
       Map<String, Number> addOrSub,
       List<String> nullFields, ID id) {
-    Example example = Example.create().equalsTo(persistent.primaryField(), id);
+    Example example = Example.create().equalsTo(createKit(persistent.getClass()).primaryField(), id);
     return updateByExample(persistent, addOrSub, nullFields, example);
   }
 
@@ -210,23 +212,25 @@ public class SqlBuilder {
   public static <ID> SQLBindings updateByExample(Persistent<ID> persistent,
       Map<String, Number> addOrSub,
       List<String> nullFields, Example example) {
-    boolean noUpdated = persistent.toMap().values().stream()
+    PersistentKit kit = createKit(persistent.getClass());
+    Map<String, Object> map = new TreeMap<>();
+    kit.toMap(persistent, map);
+    boolean noUpdated = map.values().stream()
         .allMatch(v -> v == null);
     boolean noAddOrSub = addOrSub == null
-        || addOrSub.keySet().stream().allMatch(v -> !persistent.fields().contains(v));
+        || addOrSub.keySet().stream().allMatch(v -> !kit.fields().contains(v));
     boolean noNull = nullFields == null
-        || nullFields.stream().allMatch(v -> !persistent.fields().contains(v));
+        || nullFields.stream().allMatch(v -> !kit.fields().contains(v));
     if (noUpdated && noAddOrSub && noNull) {
       return null;
     }
 
     //对example做一次清洗，将表中不存在的条件删除，避免频繁出现500错误
-    example = example.removeUndefinedField(persistent.fields());
-    Map<String, Object> map = persistent.toMap();
+    example = example.removeUndefinedField(kit.fields());
     List<String> columns = new ArrayList<>();
     List<Object> params = new ArrayList<>();
     //忽略虚拟列
-    List<String> virtualFields = persistent.virtualFields();
+    List<String> virtualFields = kit.virtualFields();
     map.forEach((k, v) -> {
       if (v != null && !virtualFields.contains(k)) {
         columns.add(StringUtils.underscoreName(k) + " = ?");
@@ -236,7 +240,7 @@ public class SqlBuilder {
     if (addOrSub != null) {
       for (Map.Entry<String, Number> entry : addOrSub.entrySet()) {
         String key = entry.getKey();
-        if (persistent.fields().contains(key)) {
+        if (kit.fields().contains(key)) {
           String underscoreKey = StringUtils.underscoreName(key);
           BigDecimal value = new BigDecimal(entry.getValue().toString());
           if (value.compareTo(new BigDecimal(0)) > 0) {
@@ -252,7 +256,7 @@ public class SqlBuilder {
     }
     if (nullFields != null) {
       List<String> nullColumns = nullFields.stream()
-          .filter(f -> persistent.fields().contains(f))
+          .filter(f -> kit.fields().contains(f))
           .map(f -> StringUtils.underscoreName(f))
           .map(f -> f + " = null")
           .collect(Collectors.toList());
@@ -288,11 +292,13 @@ public class SqlBuilder {
    */
 
   public static <ID> SQLBindings insert(Persistent<ID> persistent) {
-    Map<String, Object> map = persistent.toMap();
+    PersistentKit kit = createKit(persistent.getClass());
+    Map<String, Object> map = new TreeMap<>();
+    kit.toMap(persistent, map);
     List<String> columns = new ArrayList<>();
     List<String> prepare = new ArrayList<>();
     List<Object> params = new ArrayList<>();
-    List<String> virtualFields = persistent.virtualFields();
+    List<String> virtualFields = kit.virtualFields();
     map.forEach((k, v) -> {
       if (v != null && !virtualFields.contains(k)) {
         columns.add(underscoreName(k));
@@ -321,17 +327,19 @@ public class SqlBuilder {
    * @return {@link SQLBindings}
    */
   public static <ID> SQLBindings fullInsertSql(Persistent<ID> persistent) {
-    List<String> virtualFields = persistent.virtualFields();
+    PersistentKit kit = createKit(persistent.getClass());
+    Map<String, Object> map = new HashMap<>();
+    kit.toMap(persistent, map);
+    List<String> virtualFields = kit.virtualFields();
     List<String> prepare = new ArrayList<>();
     List<String> columns = new ArrayList<>();
     List<Object> params = new ArrayList<>();
-    Map<String, Object> map = persistent.toMap();
-    persistent.fields()
+    kit.fields()
         .stream().filter(f -> !virtualFields.contains(f))
         .forEach(f -> {
-          columns.add(underscoreName(f));
+          columns.add(underscoreName(f.toString()));
           prepare.add("?");
-          params.add(map.get(f));
+          params.add(map.get(f.toString()));
         });
 
     String tableName = underscoreName(persistent.getClass().getSimpleName());
@@ -465,22 +473,24 @@ public class SqlBuilder {
   public static <ID> SQLBindings updateByMoreExample(Persistent<ID> persistent,
       Map<String, Number> addOrSub,
       List<String> nullFields, MoreExample moreExample) {
-    boolean noUpdated = persistent.toMap().values().stream()
+    PersistentKit kit = createKit(persistent.getClass());
+    Map<String, Object> map = new HashMap<>();
+    kit.toMap(persistent, map);
+    boolean noUpdated = map.values().stream()
         .allMatch(v -> v == null);
     boolean noAddOrSub = addOrSub == null
-        || addOrSub.keySet().stream().allMatch(v -> !persistent.fields().contains(v));
+        || addOrSub.keySet().stream().allMatch(v -> !kit.fields().contains(v));
     boolean noNull = nullFields == null
-        || nullFields.stream().allMatch(v -> !persistent.fields().contains(v));
+        || nullFields.stream().allMatch(v -> !kit.fields().contains(v));
     if (noUpdated && noAddOrSub && noNull) {
       return null;
     }
 
     //对example做一次清洗，将表中不存在的条件删除，避免频繁出现500错误
-    Map<String, Object> map = persistent.toMap();
     List<String> columns = new ArrayList<>();
     List<Object> params = new ArrayList<>();
     //忽略虚拟列
-    List<String> virtualFields = persistent.virtualFields();
+    List<String> virtualFields = kit.virtualFields();
     map.forEach((k, v) -> {
       if (v != null && !virtualFields.contains(k)) {
         columns.add(StringUtils.underscoreName(k) + " = ?");
@@ -490,7 +500,7 @@ public class SqlBuilder {
     if (addOrSub != null) {
       for (Map.Entry<String, Number> entry : addOrSub.entrySet()) {
         String key = entry.getKey();
-        if (persistent.fields().contains(key)) {
+        if (kit.fields().contains(key)) {
           String underscoreKey = StringUtils.underscoreName(key);
           BigDecimal value = new BigDecimal(entry.getValue().toString());
           if (value.compareTo(new BigDecimal(0)) > 0) {
@@ -506,7 +516,7 @@ public class SqlBuilder {
     }
     if (nullFields != null) {
       List<String> nullColumns = nullFields.stream()
-          .filter(f -> persistent.fields().contains(f))
+          .filter(f -> kit.fields().contains(f))
           .map(f -> StringUtils.underscoreName(f))
           .map(f -> f + " = null")
           .collect(Collectors.toList());
@@ -538,9 +548,12 @@ public class SqlBuilder {
   }
 
 
-  private static <ID> String selectFields(Persistent<ID> domain, List<String> fields) {
+  private static <ID> String selectFields(Persistent<ID> persistent, List<String> fields) {
     String selectedField;
-    List<String> domainFields = domain.fields();
+    PersistentKit kit = createKit(persistent.getClass());
+    Map<String, Object> map = new HashMap<>();
+    kit.toMap(persistent, map);
+    List<String> domainFields = kit.fields();
     if (fields.isEmpty()) {
       selectedField = Joiner.on(", ")
           .join(domainFields.stream()
@@ -558,8 +571,7 @@ public class SqlBuilder {
 
   private static <ID> Example primaryKeyExample(Class<? extends Persistent<ID>> elementType,
       ID id) {
-    Persistent<ID> domain = Persistent.create(elementType);
-    return Example.create().equalsTo(domain.primaryField(), id);
+    return Example.create().equalsTo(createKit(elementType).primaryField(), id);
   }
 
 
@@ -591,8 +603,7 @@ public class SqlBuilder {
   private static <ID, T extends Persistent<ID>> List<String> removeUndefinedColumn(
       Class<T> elementType,
       List<String> fields) {
-    Persistent<ID> persistent = Persistent.create(elementType);
-    List<String> domainColumns = persistent.fields();
+    List<String> domainColumns = createKit(elementType).fields();
     return fields.stream()
         .filter(f -> domainColumns.contains(f))
         .collect(Collectors.toList());
@@ -601,8 +612,7 @@ public class SqlBuilder {
   private static <ID, T extends Persistent<ID>> Example removeUndefinedField(Class<T> elementType,
       Example example) {
     //对example做一次清洗，将表中不存在的条件删除，避免频繁出现500错误
-    Persistent<ID> persistent = Persistent.create(elementType);
-    example = example.removeUndefinedField(persistent.fields());
+    example = example.removeUndefinedField(createKit(elementType).fields());
     return example;
   }
 
@@ -721,6 +731,14 @@ public class SqlBuilder {
 
   private static String underscoreName(String name) {
     return StringUtils.underscoreName(name);
+  }
+
+  private static PersistentKit createKit(Class<? extends Persistent> clazz) {
+    try {
+      return (PersistentKit) Class.forName(clazz.getName() + "Kit").newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

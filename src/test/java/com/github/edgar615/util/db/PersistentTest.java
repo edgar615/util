@@ -27,8 +27,7 @@ public class PersistentTest {
 
   @Test
   public void testPrimaryKey() {
-    Device device = new Device();
-    String primaryKey = device.primaryField();
+    String primaryKey = new DeviceKit().primaryField();
     Assert.assertEquals("deviceId", primaryKey);
   }
 

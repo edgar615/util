@@ -42,21 +42,20 @@ public class Paginations {
         pagination.getTotalRecords(), mapRecords);
   }
 
-  public static <T extends Persistent> Pagination<Map> transformToMap(
-      Pagination<T> pagination) {
-    return transform(pagination, p -> p.toMap());
-  }
-
-  public static <T extends Persistent> Pagination<Map> transformToMap(
-      Pagination<T> pagination, Consumer<Map> consumer) {
-    List<Map> mapRecords =
-        pagination.getRecords().stream()
-            .map(r -> r.toMap())
-            .collect(Collectors.toList());
-    mapRecords.forEach(m -> consumer.accept(m));
-
-    return Pagination.newInstance(pagination.getPage(), pagination.getPageSize(),
-        pagination.getTotalRecords(), mapRecords);
-  }
+//  public static <T extends Persistent> Pagination<Map> transformToMap(
+//      Pagination<T> pagination) {
+//    return transform(pagination, p -> p.kit().toMap());
+//  }
+//
+//  public static <T extends Persistent> Pagination<Map> transformToMap(
+//      Pagination<T> pagination, Consumer<Map> consumer) {
+//    List<Map> mapRecords =
+//        pagination.getRecords().stream()
+//            .map(r -> r.kit().toMap())
+//            .collect(Collectors.toList());
+//    mapRecords.forEach(m -> consumer.accept(m));
+//    return Pagination.newInstance(pagination.getPage(), pagination.getPageSize(),
+//        pagination.getTotalRecords(), mapRecords);
+//  }
 
 }

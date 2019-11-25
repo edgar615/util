@@ -17,7 +17,6 @@ package com.github.edgar615.util.lifecycle;
 /**
  * 表明这个类是可以启动的类.
  *
- * @author ypujante@linkedin.com
  */
 public interface Startable {
 

@@ -19,7 +19,6 @@ import java.util.Map;
 /**
  * 表明这个类是可以配置的类.
  *
- * @author ypujante@linkedin.com
  */
 public interface Configurable {
 

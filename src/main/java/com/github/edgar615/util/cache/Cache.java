@@ -17,6 +17,8 @@ package com.github.edgar615.util.cache;
 /**
  * 缓存的接口.
  *
+ * 这个接口仅仅是用来模拟实现cache，实际上各种开源框架已经有了很完美的cache实现。所以在实际工作中不建议用这个cache
+ *
  * @author Edgar
  */
 public interface Cache<K, V> {

@@ -95,7 +95,6 @@ public class ShellSortAlgorithm implements SortAlgorithm {
       } else {
         gap = (int) Math.floor(gap / 2);
       }
-      System.out.println(list);
     }
   }
 }

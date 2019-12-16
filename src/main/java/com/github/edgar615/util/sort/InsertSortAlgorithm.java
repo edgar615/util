@@ -67,6 +67,237 @@ public class InsertSortAlgorithm implements SortAlgorithm {
     }
   }
 
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(byte[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      byte insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(char[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      char insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(short[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      short insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(int[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      int insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(long[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      long insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(float[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      float insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(double[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      double insertion = array[i];
+      int low = binaraySearch(array, i - 1, insertion);
+      for (int j = i; j > low; j--) {
+        array[j] = array[j - 1];
+      }
+      array[low] = insertion;
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(byte[] array, int high, byte target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      byte obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(char[] array, int high, char target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      char obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(short[] array, int high, short target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      short obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(int[] array, int high, int target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      int obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(long[] array, int high, long target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      long obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(float[] array, int high, float target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      float obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  public int binaraySearch(double[] array, int high, double target) {
+    int low = 0;
+    while (low <= high) {
+      int middle = low + (high - low) / 2;
+      double obj = array[middle];
+      if (target > obj) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+    return low;
+  }
+
   private <T extends Comparable<? super T>> int binaraySearch(List<T> list, int high, T target) {
     int low = 0;
     while (low <= high) {

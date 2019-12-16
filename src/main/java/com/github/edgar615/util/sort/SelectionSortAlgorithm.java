@@ -72,4 +72,164 @@ public class SelectionSortAlgorithm implements SortAlgorithm {
       }
     }
   }
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(byte[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        byte prev = array[minIndex];
+        byte next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        byte temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(char[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        char prev = array[minIndex];
+        char next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        char temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(short[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        short prev = array[minIndex];
+        short next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        short temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(int[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        int prev = array[minIndex];
+        int next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        int temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(long[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        long prev = array[minIndex];
+        long next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        long temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(float[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        float prev = array[minIndex];
+        float next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        float temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(double[] array) {
+    int len = array.length;
+    for (int i = 0; i < len; i++) {
+      int minIndex = i;
+      for (int j = i + 1; j < len; j++) {
+        double prev = array[minIndex];
+        double next = array[j];
+        if (prev > next) {
+          minIndex = j;
+        }
+      }
+      if (minIndex != i) {
+        double temp = array[minIndex];
+        array[minIndex] = array[i];
+        array[i] = temp;
+      }
+    }
+  }
 }

@@ -97,4 +97,179 @@ public class ShellSortAlgorithm implements SortAlgorithm {
       }
     }
   }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(byte[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        byte tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(char[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        char tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(short[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        short tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(int[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        int tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(long[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        long tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(float[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        float tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(double[] array) {
+    int len = array.length;
+    int gap = (int) Math.floor(len / 2);
+    while (gap > 0) {
+      for (int i = gap; i < len; i++) {
+        double tmp = array[i];
+        int j = i - gap;
+        while (j >= 0 && array[j] > tmp) {
+          array[j + gap] = array[j];
+          j -= gap;
+        }
+        array[j + gap] = tmp;
+      }
+      if (gap == 1) {
+        gap = 0;
+      } else {
+        gap = (int) Math.floor(gap / 2);
+      }
+    }
+  }
 }

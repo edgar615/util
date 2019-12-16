@@ -18,8 +18,24 @@ import java.util.List;
 
 /**
  * 排序算法
+ *
+ * 基础类型的方法都是通过javapoet生成的
  */
 public interface SortAlgorithm {
 
   <T extends Comparable<? super T>> void sort(List<T> list);
+
+  default void sort(byte[] array) {}
+
+  default void sort(char[] array) {}
+
+  default void sort(short[] array) {}
+
+  default void sort(int[] array) {}
+
+  default void sort(long[] array) {}
+
+  default void sort(float[] array) {}
+
+  default void sort(double[] array) {}
 }

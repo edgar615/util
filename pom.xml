@@ -43,6 +43,7 @@
         <assertj.core.version>3.6.2</assertj.core.version>
         <awaitility.version>2.0.0</awaitility.version>
         <guava.version>26.0-jre</guava.version>
+        <javapoet.version>1.11.1</javapoet.version>
     </properties>
 
     <dependencies>
@@ -70,6 +71,11 @@
             <artifactId>awaitility</artifactId>
             <version>${awaitility.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+            <version>${javapoet.version}</version>
         </dependency>
 
         <dependency>

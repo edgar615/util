@@ -77,4 +77,172 @@ class BubbleSortAlgorithm implements SortAlgorithm {
     }
   }
 
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(byte[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        byte prev = array[j];
+        byte next = array[j + 1];
+        if (prev > next) {
+          byte temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(char[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        char prev = array[j];
+        char next = array[j + 1];
+        if (prev > next) {
+          char temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(short[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        short prev = array[j];
+        short next = array[j + 1];
+        if (prev > next) {
+          short temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(int[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        int prev = array[j];
+        int next = array[j + 1];
+        if (prev > next) {
+          int temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(long[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        long prev = array[j];
+        long next = array[j + 1];
+        if (prev > next) {
+          long temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(float[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        float prev = array[j];
+        float next = array[j + 1];
+        if (prev > next) {
+          float temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(double[] array) {
+    int len = array.length;
+    for (int i = 1; i < len; i++) {
+      boolean complete = true;
+      for (int j = 0; j < len - 1; j++) {
+        double prev = array[j];
+        double next = array[j + 1];
+        if (prev > next) {
+          double temp = prev;
+          array[j] = next;
+          array[j + 1] = temp;
+          complete = false;
+        }
+      }
+      if (complete) {
+        break;
+      }
+    }
+  }
+
 }

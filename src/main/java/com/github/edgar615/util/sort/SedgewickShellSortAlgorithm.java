@@ -43,6 +43,167 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(byte[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        byte tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(char[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        char tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(short[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        short tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(int[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        int tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(long[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        long tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(float[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        float tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
+   * codegen by javapoet
+   */
+  @Override
+  public void sort(double[] array) {
+    int len = array.length;
+    int[] gapArray = genGap(len);
+    for (int s = gapArray.length - 1; s >= 0; s --) {
+      int gap = gapArray[s];
+      for (int i = gap; i < len; i++) {
+        double tmp = array[i];
+        int j = i;
+        while (j >= gap && array[j - gap] > tmp) {
+          array[j] = array[j - gap];
+          j -= gap;
+        }
+        if (i != j) {
+          array[j] = tmp;
+        }
+      }
+    }
+  }
+
+  /**
    * 生成gap
    */
   public int[] genGap(int len) {

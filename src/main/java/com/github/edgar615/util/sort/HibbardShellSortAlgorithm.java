@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 使用Hibbard增量的希尔排序
  */
-class HibbardShellSortAlgorithm implements SortAlgorithm {
+public class HibbardShellSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

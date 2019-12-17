@@ -228,72 +228,9 @@ public class Sorts {
   }
 
   /**
-   * 使用默认增量的希尔排序
-   */
-  public static <T extends Comparable<? super T>> void shell(List<T> list) {
-    new ShellSortAlgorithm().sort(list);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(byte[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(char[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(short[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(int[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(long[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(float[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 希尔排序
-   * codegen by javapoet
-   */
-  public static void shell(double[] array) {
-    new ShellSortAlgorithm().sort(array);
-  }
-
-  /**
    * 使用Sedgewick增量的希尔排序
    */
-  public static <T extends Comparable<? super T>> void shellSedgewick(List<T> list) {
+  public static <T extends Comparable<? super T>> void shell(List<T> list) {
     new SedgewickShellSortAlgorithm().sort(list);
   }
 
@@ -301,7 +238,7 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(byte[] array) {
+  public static void shell(byte[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
   }
 
@@ -309,7 +246,7 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(char[] array) {
+  public static void shell(char[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
   }
 
@@ -317,7 +254,7 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(short[] array) {
+  public static void shell(short[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
   }
 
@@ -325,7 +262,7 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(int[] array) {
+  public static void shell(int[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
   }
 
@@ -333,7 +270,7 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(long[] array) {
+  public static void shell(long[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
   }
 
@@ -341,7 +278,7 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(float[] array) {
+  public static void shell(float[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
   }
 
@@ -349,203 +286,14 @@ public class Sorts {
    * 使用Sedgewick增量的希尔排序
    * codegen by javapoet
    */
-  public static void shellSedgewick(double[] array) {
+  public static void shell(double[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   */
-  public static <T extends Comparable<? super T>> void shellHibbard(List<T> list) {
-    new HibbardShellSortAlgorithm().sort(list);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(byte[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(char[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(short[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(int[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(long[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(float[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Hibbard增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellHibbard(double[] array) {
-    new HibbardShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   */
-  public static <T extends Comparable<? super T>> void shellKnuth(List<T> list) {
-    new KnuthShellSortAlgorithm().sort(list);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(byte[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(char[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(short[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(int[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(long[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(float[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 使用Knuth增量的希尔排序
-   * codegen by javapoet
-   */
-  public static void shellKnuth(double[] array) {
-    new KnuthShellSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   */
-  public static <T extends Comparable<? super T>> void merge(List<T> list) {
-    new MergeSortAlgorithm().sort(list);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(byte[] array) {
-    new MergeSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(char[] array) {
-    new MergeSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(short[] array) {
-    new MergeSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(int[] array) {
-    new MergeSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(long[] array) {
-    new MergeSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(float[] array) {
-    new MergeSortAlgorithm().sort(array);
-  }
-
-  /**
-   * 递归方式的归并排序
-   * codegen by javapoet
-   */
-  public static void merge(double[] array) {
-    new MergeSortAlgorithm().sort(array);
   }
 
   /**
    * 迭代方式的归并排序
    */
-  public static <T extends Comparable<? super T>> void mergeIterator(List<T> list) {
+  public static <T extends Comparable<? super T>> void merge(List<T> list) {
     new IteratorMergeSortAlgorithm().sort(list);
   }
 
@@ -553,7 +301,7 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(byte[] array) {
+  public static void merge(byte[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
 
@@ -561,7 +309,7 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(char[] array) {
+  public static void merge(char[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
 
@@ -569,7 +317,7 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(short[] array) {
+  public static void merge(short[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
 
@@ -577,7 +325,7 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(int[] array) {
+  public static void merge(int[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
 
@@ -585,7 +333,7 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(long[] array) {
+  public static void merge(long[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
 
@@ -593,7 +341,7 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(float[] array) {
+  public static void merge(float[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
 
@@ -601,7 +349,71 @@ public class Sorts {
    * 迭代方式的归并排序
    * codegen by javapoet
    */
-  public static void mergeIterator(double[] array) {
+  public static void merge(double[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
   }
+
+  /**
+   * 快速排序
+   */
+  public static <T extends Comparable<? super T>> void quick(List<T> list) {
+    new QuickSortAlgorithm().sort(list);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(byte[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(char[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(short[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(int[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(long[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(float[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 快速排序
+   * codegen by javapoet
+   */
+  public static void quick(double[] array) {
+    new QuickSortAlgorithm().sort(array);
+  }
+
 }

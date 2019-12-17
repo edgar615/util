@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 使用Knuth增量的希尔排序
  */
-class KnuthShellSortAlgorithm implements SortAlgorithm {
+public class KnuthShellSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

@@ -31,96 +31,96 @@ public class SortTest {
 //    List<Integer> list = Lists.newArrayList(20,40,30,10,60,50);
     List<Integer> list = Lists
         .newArrayList(45, 84, 77, 83, 55, 49, 91, 64, 91, 5, 37, 31, 70, 38, 51);
-    Sorts.bubble(list);
+    new BubbleSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
   }
 
   @Test
   public void testBubble2() {
     List<Integer> list = fillList();
-    Sorts.bubble(list);
+    new BubbleSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.bubble(array);
+    new BubbleSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testInsert() {
     List<Integer> list = fillList();
-    Sorts.insert(list);
+    new InsertSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.insert(array);
+    new InsertSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testSelection() {
     List<Integer> list = fillList();
-    Sorts.selection(list);
+    new SelectionSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.selection(array);
+    new SelectionSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testShell() {
     List<Integer> list = fillList();
-    Sorts.shell(list);
+    new ShellSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.shell(array);
+    new ShellSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testShellSedgewick() {
     List<Integer> list = fillList();
-    Sorts.shellSedgewick(list);
+    new SedgewickShellSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.shellHibbard(array);
+    new SedgewickShellSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testShellHibbard() {
     List<Integer> list = fillList();
-    Sorts.shellHibbard(list);
+    new HibbardShellSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.shellHibbard(array);
+    new HibbardShellSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testShellKnuth() {
     List<Integer> list = fillList();
-    Sorts.shellKnuth(list);
+    new KnuthShellSortAlgorithm().sort(list);
     System.out.println(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.shellKnuth(array);
+    new KnuthShellSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
   public void testMerge() {
     List<Integer> list = fillList();
-    Sorts.merge(list);
+    new MergeSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.merge(array);
+    new MergeSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
@@ -128,11 +128,59 @@ public class SortTest {
   public void testMergeIterator() {
     List<Integer> list = fillList();
 //    List<Integer> list = Lists.newArrayList(45,84,77,83,55,49,91,64,91,5,37,31,70,38,51,14,34);
-    Sorts.mergeIterator(list);
+    new IteratorMergeSortAlgorithm().sort(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
 
     int[] array = fillArray();
-    Sorts.mergeIterator(array);
+    new IteratorMergeSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
+  @Test
+  public void testLomutoQuick() {
+    List<Integer> list = fillList();
+//    List<Integer> list = Lists.newArrayList(45,84,77,83,55,49,91,5,37,31,70,38,51,14,34);
+    new LomutoQuickSortAlgorithm().sort(list);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+    System.out.println(list);
+
+    int[] array = fillArray();
+    new LomutoQuickSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
+  @Test
+  public void testHoareQuick() {
+    List<Integer> list = fillList();
+    new HoareQuickSortAlgorithm().sort(list);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+
+    int[] array = fillArray();
+    new HoareQuickSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
+  @Test
+  public void testMedianOfThreeQuick() {
+    List<Integer> list = fillList();
+    new MedianOfThreeQuickSortAlgorithm().sort(list);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+
+    int[] array = fillArray();
+    new MedianOfThreeQuickSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
+  @Test
+  public void testQuick() {
+    List<Integer> list = fillList();
+//    List<Integer> list = Lists.newArrayList(5, 4, 7, 8, 2, 7, 8, 5, 6, 3);
+    new QuickSortAlgorithm().sort(list);
+    System.out.println(list);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+
+    int[] array = fillArray();
+    new QuickSortAlgorithm().sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 

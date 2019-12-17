@@ -73,7 +73,7 @@ import java.util.List;
  *   <li>稳定性：不稳定</li>
  * </ul>
  */
-class ShellSortAlgorithm implements SortAlgorithm {
+public class ShellSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

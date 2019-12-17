@@ -54,7 +54,7 @@ import java.util.List;
  *
  *
  */
-class BubbleSortAlgorithm implements SortAlgorithm {
+public class BubbleSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

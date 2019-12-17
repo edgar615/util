@@ -48,7 +48,7 @@ import java.util.List;
  * <li>稳定性：稳定</li>
  * </ul>
  */
-class MergeSortAlgorithm implements SortAlgorithm {
+public class MergeSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {
@@ -64,7 +64,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
   }
 
   @Override
-  public  void sort(byte[] array) {
+  public void sort(byte[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -74,7 +74,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
   }
 
   @Override
-  public  void sort(char[] array) {
+  public void sort(char[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -84,7 +84,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
   }
 
   @Override
-  public  void sort(short[] array) {
+  public void sort(short[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -95,7 +95,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
 
 
   @Override
-  public  void sort(int[] array) {
+  public void sort(int[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -106,7 +106,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
 
 
   @Override
-  public  void sort(long[] array) {
+  public void sort(long[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -117,7 +117,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
 
 
   @Override
-  public  void sort(float[] array) {
+  public void sort(float[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -128,7 +128,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
 
 
   @Override
-  public  void sort(double[] array) {
+  public void sort(double[] array) {
     int len = array.length;
     if (len < 2) {
       return;
@@ -149,7 +149,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(list, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(byte[] array, int low, int high,byte[] aux) {
+  private void mergeSort(byte[] array, int low, int high, byte[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;
@@ -160,7 +160,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(array, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(char[] array, int low, int high,char[] aux) {
+  private void mergeSort(char[] array, int low, int high, char[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;
@@ -171,7 +171,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(array, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(short[] array, int low, int high,short[] aux) {
+  private void mergeSort(short[] array, int low, int high, short[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;
@@ -182,7 +182,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(array, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(int[] array, int low, int high,int[] aux) {
+  private void mergeSort(int[] array, int low, int high, int[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;
@@ -193,7 +193,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(array, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(long[] array, int low, int high,long[] aux) {
+  private void mergeSort(long[] array, int low, int high, long[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;
@@ -204,7 +204,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(array, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(float[] array, int low, int high,float[] aux) {
+  private void mergeSort(float[] array, int low, int high, float[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;
@@ -215,7 +215,7 @@ class MergeSortAlgorithm implements SortAlgorithm {
     merge(array, low, mid, high, aux);  // 单趟合并
   }
 
-  private void mergeSort(double[] array, int low, int high,double[] aux) {
+  private void mergeSort(double[] array, int low, int high, double[] aux) {
     // 终止递归的条件
     if (low == high) {
       return;

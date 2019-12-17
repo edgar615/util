@@ -26,7 +26,7 @@ import java.util.List;
  * <li>3. 重复步骤2，直到所有元素排序完毕，即序列数为1</li>
  * </ul>
  */
-class IteratorMergeSortAlgorithm extends MergeSortAlgorithm {
+public class IteratorMergeSortAlgorithm extends MergeSortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

@@ -51,7 +51,7 @@ import java.util.List;
  * <li>稳定性：不稳定</li>
  * </ul>
  */
-class SelectionSortAlgorithm implements SortAlgorithm {
+public class SelectionSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

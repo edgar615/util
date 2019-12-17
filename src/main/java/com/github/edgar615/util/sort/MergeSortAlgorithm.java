@@ -48,7 +48,7 @@ import java.util.List;
  * <li>稳定性：稳定</li>
  * </ul>
  */
-public class MergeSortAlgorithm implements SortAlgorithm {
+class MergeSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {
@@ -57,10 +57,84 @@ public class MergeSortAlgorithm implements SortAlgorithm {
       return;
     }
     List<T> aux = new ArrayList<>(len);
-    for (int i = 0; i < len; i ++) {
+    for (int i = 0; i < len; i++) {
       aux.add(null);
     }
     mergeSort(list, 0, len - 1, aux);
+  }
+
+  @Override
+  public  void sort(byte[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    byte[] aux = new byte[len];
+    mergeSort(array, 0, len - 1, aux);
+  }
+
+  @Override
+  public  void sort(char[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    char[] aux = new char[len];
+    mergeSort(array, 0, len - 1, aux);
+  }
+
+  @Override
+  public  void sort(short[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    short[] aux = new short[len];
+    mergeSort(array, 0, len - 1, aux);
+  }
+
+
+  @Override
+  public  void sort(int[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    int[] aux = new int[len];
+    mergeSort(array, 0, len - 1, aux);
+  }
+
+
+  @Override
+  public  void sort(long[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    long[] aux = new long[len];
+    mergeSort(array, 0, len - 1, aux);
+  }
+
+
+  @Override
+  public  void sort(float[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    float[] aux = new float[len];
+    mergeSort(array, 0, len - 1, aux);
+  }
+
+
+  @Override
+  public  void sort(double[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    double[] aux = new double[len];
+    mergeSort(array, 0, len - 1, aux);
   }
 
   private <T extends Comparable<? super T>> void mergeSort(List<T> list, int low, int high,
@@ -75,8 +149,85 @@ public class MergeSortAlgorithm implements SortAlgorithm {
     merge(list, low, mid, high, aux);  // 单趟合并
   }
 
+  private void mergeSort(byte[] array, int low, int high,byte[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
 
-  protected  <T extends Comparable<? super T>> void merge(List<T> list, int low, int mid, int high,
+  private void mergeSort(char[] array, int low, int high,char[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
+
+  private void mergeSort(short[] array, int low, int high,short[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
+
+  private void mergeSort(int[] array, int low, int high,int[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
+
+  private void mergeSort(long[] array, int low, int high,long[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
+
+  private void mergeSort(float[] array, int low, int high,float[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
+
+  private void mergeSort(double[] array, int low, int high,double[] aux) {
+    // 终止递归的条件
+    if (low == high) {
+      return;
+    }
+    int mid = (int) Math.floor((high - low) / 2) + low;
+    mergeSort(array, low, mid, aux);  // 对左半边递归
+    mergeSort(array, mid + 1, high, aux);  // 对右半边递归
+    merge(array, low, mid, high, aux);  // 单趟合并
+  }
+
+
+  protected <T extends Comparable<? super T>> void merge(List<T> list, int low, int mid, int high,
       List<T> aux) {
     int i = low;
     int j = mid + 1;
@@ -86,10 +237,10 @@ public class MergeSortAlgorithm implements SortAlgorithm {
       T right = list.get(j);
       if (left.compareTo(right) <= 0) {
         aux.set(k, left);
-        i ++;
+        i++;
       } else {
         aux.set(k, right);
-        j ++;
+        j++;
       }
       k++;
     }
@@ -104,8 +255,232 @@ public class MergeSortAlgorithm implements SortAlgorithm {
       j++;
     }
     // 将排好序的序列放回源队列
-    for (int start = low; start <= high; start ++) {
+    for (int start = low; start <= high; start++) {
       list.set(start, aux.get(start));
+    }
+  }
+
+  protected void merge(byte[] array, int low, int mid, int high, byte[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      byte left = array[i];
+      byte right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
+    }
+  }
+
+  protected void merge(char[] array, int low, int mid, int high, char[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      char left = array[i];
+      char right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
+    }
+  }
+
+  protected void merge(short[] array, int low, int mid, int high, short[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      short left = array[i];
+      short right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
+    }
+  }
+
+  protected void merge(int[] array, int low, int mid, int high, int[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      int left = array[i];
+      int right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
+    }
+  }
+
+  protected void merge(long[] array, int low, int mid, int high, long[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      long left = array[i];
+      long right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
+    }
+  }
+
+  protected void merge(float[] array, int low, int mid, int high, float[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      float left = array[i];
+      float right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
+    }
+  }
+
+  protected void merge(double[] array, int low, int mid, int high, double[] aux) {
+    int i = low;
+    int j = mid + 1;
+    int k = low;
+    while (i <= mid && j <= high) {
+      double left = array[i];
+      double right = array[j];
+      if (left <= right) {
+        aux[k] = left;
+        i++;
+      } else {
+        aux[k] = right;
+        j++;
+      }
+      k++;
+    }
+    while (i <= mid) {
+      aux[k] = array[i];
+      k++;
+      i++;
+    }
+    while (j <= high) {
+      aux[k] = array[j];
+      k++;
+      j++;
+    }
+    // 将排好序的序列放回源队列
+    for (int start = low; start <= high; start++) {
+      array[start] = aux[start];
     }
   }
 

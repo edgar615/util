@@ -118,6 +118,10 @@ public class SortTest {
     List<Integer> list = fillList();
     Sorts.merge(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+
+    int[] array = fillArray();
+    Sorts.merge(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   @Test
@@ -126,6 +130,10 @@ public class SortTest {
 //    List<Integer> list = Lists.newArrayList(45,84,77,83,55,49,91,64,91,5,37,31,70,38,51,14,34);
     Sorts.mergeIterator(list);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+
+    int[] array = fillArray();
+    Sorts.mergeIterator(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
   private List<Integer> fillList() {

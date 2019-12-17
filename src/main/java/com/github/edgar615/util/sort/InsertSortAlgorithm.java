@@ -50,7 +50,7 @@ import java.util.List;
  *   <li>稳定性：稳定</li>
  * </ul>
  */
-public class InsertSortAlgorithm implements SortAlgorithm {
+class InsertSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

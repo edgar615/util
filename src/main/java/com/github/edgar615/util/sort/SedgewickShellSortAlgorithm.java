@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 使用Sedgewick增量的希尔排序
  */
-public class SedgewickShellSortAlgorithm implements SortAlgorithm {
+class SedgewickShellSortAlgorithm implements SortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {

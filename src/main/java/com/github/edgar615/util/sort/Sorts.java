@@ -487,9 +487,121 @@ public class Sorts {
   }
 
   /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(byte[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(char[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(short[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(int[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(long[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(float[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 递归方式的归并排序
+   * codegen by javapoet
+   */
+  public static void merge(double[] array) {
+    new MergeSortAlgorithm().sort(array);
+  }
+
+  /**
    * 迭代方式的归并排序
    */
   public static <T extends Comparable<? super T>> void mergeIterator(List<T> list) {
     new IteratorMergeSortAlgorithm().sort(list);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(byte[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(char[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(short[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(int[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(long[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(float[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
+  }
+
+  /**
+   * 迭代方式的归并排序
+   * codegen by javapoet
+   */
+  public static void mergeIterator(double[] array) {
+    new IteratorMergeSortAlgorithm().sort(array);
   }
 }

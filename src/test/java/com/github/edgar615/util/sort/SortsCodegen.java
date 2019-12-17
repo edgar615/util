@@ -172,6 +172,44 @@ public class SortsCodegen {
     javaFile.writeTo(System.out);
   }
 
+  @Test
+  public void testMergeSort() throws IOException {
+    TypeSpec sortType = TypeSpec.classBuilder("Sorts")
+        .addModifiers(Modifier.PUBLIC)
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, byte[].class, "递归方式的归并排序"))
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, char[].class, "递归方式的归并排序"))
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, short[].class, "递归方式的归并排序"))
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, int[].class, "递归方式的归并排序"))
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, long[].class, "递归方式的归并排序"))
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, float[].class, "递归方式的归并排序"))
+        .addMethod(createMethod("merge", MergeSortAlgorithm.class, double[].class, "递归方式的归并排序"))
+        .build();
+
+    JavaFile javaFile = JavaFile.builder("com.github.edgar615.util.sort", sortType)
+        .build();
+
+    javaFile.writeTo(System.out);
+  }
+
+  @Test
+  public void testMergeIterator() throws IOException {
+    TypeSpec sortType = TypeSpec.classBuilder("Sorts")
+        .addModifiers(Modifier.PUBLIC)
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, byte[].class, "迭代方式的归并排序"))
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, char[].class, "迭代方式的归并排序"))
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, short[].class, "迭代方式的归并排序"))
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, int[].class, "迭代方式的归并排序"))
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, long[].class, "迭代方式的归并排序"))
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, float[].class, "迭代方式的归并排序"))
+        .addMethod(createMethod("mergeIterator", IteratorMergeSortAlgorithm.class, double[].class, "迭代方式的归并排序"))
+        .build();
+
+    JavaFile javaFile = JavaFile.builder("com.github.edgar615.util.sort", sortType)
+        .build();
+
+    javaFile.writeTo(System.out);
+  }
+
   private MethodSpec createMethod(String methodName, Type sortClassType, Type arrayType, String comment) {
     return MethodSpec.methodBuilder(methodName)
         .addModifiers(Modifier.PUBLIC,Modifier.STATIC)

@@ -25,9 +25,8 @@ import java.util.List;
  * <li>2. 若此时序列数不是1个则将上述序列再次归并，形成`ceil(n/4)`个序列，每个序列包含四/三个元素</li>
  * <li>3. 重复步骤2，直到所有元素排序完毕，即序列数为1</li>
  * </ul>
- *
  */
-public class IteratorMergeSortAlgorithm extends MergeSortAlgorithm {
+class IteratorMergeSortAlgorithm extends MergeSortAlgorithm {
 
   @Override
   public <T extends Comparable<? super T>> void sort(List<T> list) {
@@ -36,7 +35,7 @@ public class IteratorMergeSortAlgorithm extends MergeSortAlgorithm {
       return;
     }
     List<T> aux = new ArrayList<>(len);
-    for (int i = 0; i < len; i ++) {
+    for (int i = 0; i < len; i++) {
       aux.add(null);
     }
     for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
@@ -50,4 +49,132 @@ public class IteratorMergeSortAlgorithm extends MergeSortAlgorithm {
     }
   }
 
+  @Override
+  public void sort(byte[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    byte[] aux = new byte[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
+
+  @Override
+  public void sort(char[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    char[] aux = new char[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
+
+  @Override
+  public void sort(short[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    short[] aux = new short[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
+
+  @Override
+  public void sort(int[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    int[] aux = new int[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
+
+
+  @Override
+  public void sort(long[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    long[] aux = new long[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
+
+
+  @Override
+  public void sort(float[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    float[] aux = new float[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
+
+
+  @Override
+  public void sort(double[] array) {
+    int len = array.length;
+    if (len < 2) {
+      return;
+    }
+    double[] aux = new double[len];
+    for (int subLen = 1; subLen < len; subLen = subLen + subLen) {
+      // 相邻归并
+      for (int low = 0; low < len; low = low + subLen + subLen) {
+        int high = Math.min(low + subLen + subLen - 1, len - 1);
+        int mid = (int) Math.floor((subLen + subLen - 1) / 2) + low;
+        mid = Math.min(mid, high);
+        merge(array, low, mid, high, aux);
+      }
+    }
+  }
 }

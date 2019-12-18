@@ -184,6 +184,20 @@ public class SortTest {
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
+  @Test
+  public void testHeap() {
+//    List<Integer> list = fillList();
+////    List<Integer> list = Lists.newArrayList(5, 4, 7, 8, 2, 7, 8, 5, 6, 3);
+//    new QuickSortAlgorithm().sort(list);
+//    System.out.println(list);
+//    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
+
+//    int[] array = fillArray();
+    int[] array = new int[] {7,5,19,8,4,1,20,13,16};
+    new HeapSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
   private List<Integer> fillList() {
     List<Integer> list = new ArrayList<>();
     for (int i = 0; i < 884; i++) {

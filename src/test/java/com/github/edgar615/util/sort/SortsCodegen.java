@@ -268,12 +268,32 @@ public class SortsCodegen {
     javaFile.writeTo(System.out);
   }
 
+
+  @Test
+  public void testHeap() throws IOException {
+    TypeSpec sortType = TypeSpec.classBuilder("Sorts")
+        .addModifiers(Modifier.PUBLIC)
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, byte[].class, "堆排序"))
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, char[].class, "堆排序"))
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, short[].class, "堆排序"))
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, int[].class, "堆排序"))
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, long[].class, "堆排序"))
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, float[].class, "堆排序"))
+        .addMethod(createMethod("heap", HeapSortAlgorithm.class, double[].class, "堆排序"))
+        .build();
+
+    JavaFile javaFile = JavaFile.builder("com.github.edgar615.util.sort", sortType)
+        .build();
+
+    javaFile.writeTo(System.out);
+  }
+
   private MethodSpec createMethod(String methodName, Type sortClassType, Type arrayType, String comment) {
     return MethodSpec.methodBuilder(methodName)
         .addModifiers(Modifier.PUBLIC,Modifier.STATIC)
         .returns(void.class)
         .addJavadoc(comment)
-        .addJavadoc("\ncodegen by javapoet\n")
+        .addJavadoc("\n")
         .addParameter(arrayType, "array")
         .addStatement("new $T().sort(array)", sortClassType)
         .build();

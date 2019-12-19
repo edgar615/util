@@ -43,7 +43,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(byte[] array) {
@@ -66,7 +66,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(char[] array) {
@@ -89,7 +89,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(short[] array) {
@@ -112,7 +112,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(int[] array) {
@@ -135,7 +135,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(long[] array) {
@@ -158,7 +158,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(float[] array) {
@@ -181,7 +181,7 @@ public class SedgewickShellSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(double[] array) {

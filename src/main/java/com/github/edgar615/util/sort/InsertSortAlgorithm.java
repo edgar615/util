@@ -68,7 +68,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(byte[] array) {
@@ -84,7 +84,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(char[] array) {
@@ -100,7 +100,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(short[] array) {
@@ -116,7 +116,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(int[] array) {
@@ -132,7 +132,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(long[] array) {
@@ -148,7 +148,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(float[] array) {
@@ -164,7 +164,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   @Override
   public void sort(double[] array) {
@@ -180,7 +180,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(byte[] array, int high, byte target) {
     int low = 0;
@@ -197,7 +197,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(char[] array, int high, char target) {
     int low = 0;
@@ -214,7 +214,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(short[] array, int high, short target) {
     int low = 0;
@@ -231,7 +231,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(int[] array, int high, int target) {
     int low = 0;
@@ -248,7 +248,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(long[] array, int high, long target) {
     int low = 0;
@@ -265,7 +265,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(float[] array, int high, float target) {
     int low = 0;
@@ -282,7 +282,7 @@ public class InsertSortAlgorithm implements SortAlgorithm {
   }
 
   /**
-   * codegen by javapoet
+   *
    */
   public int binaraySearch(double[] array, int high, double target) {
     int low = 0;

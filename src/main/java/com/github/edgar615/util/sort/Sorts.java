@@ -34,7 +34,6 @@ import java.util.List;
  * 排序算法
  *
  * 基础类型的方法都是通过javapoet生成的
- *
  */
 public class Sorts {
 
@@ -47,7 +46,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(byte[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -55,7 +53,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(char[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -63,7 +60,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(short[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -71,7 +67,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(int[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -79,7 +74,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(long[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -87,7 +81,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(float[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -95,7 +88,6 @@ public class Sorts {
 
   /**
    * 冒泡排序
-   *
    */
   public static void bubble(double[] array) {
     new BubbleSortAlgorithm().sort(array);
@@ -110,7 +102,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(byte[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -118,7 +109,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(char[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -126,7 +116,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(short[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -134,7 +123,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(int[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -142,7 +130,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(long[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -150,7 +137,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(float[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -158,7 +144,6 @@ public class Sorts {
 
   /**
    * 插入排序
-   *
    */
   public static void insert(double[] array) {
     new InsertSortAlgorithm().sort(array);
@@ -173,7 +158,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(byte[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -181,7 +165,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(char[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -189,7 +172,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(short[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -197,7 +179,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(int[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -205,7 +186,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(long[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -213,7 +193,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(float[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -221,7 +200,6 @@ public class Sorts {
 
   /**
    * 选择排序
-   *
    */
   public static void selection(double[] array) {
     new SelectionSortAlgorithm().sort(array);
@@ -236,7 +214,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(byte[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -244,7 +221,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(char[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -252,7 +228,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(short[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -260,7 +235,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(int[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -268,7 +242,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(long[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -276,7 +249,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(float[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -284,7 +256,6 @@ public class Sorts {
 
   /**
    * 使用Sedgewick增量的希尔排序
-   *
    */
   public static void shell(double[] array) {
     new SedgewickShellSortAlgorithm().sort(array);
@@ -299,7 +270,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(byte[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -307,7 +277,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(char[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -315,7 +284,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(short[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -323,7 +291,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(int[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -331,7 +298,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(long[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -339,7 +305,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(float[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -347,7 +312,6 @@ public class Sorts {
 
   /**
    * 迭代方式的归并排序
-   *
    */
   public static void merge(double[] array) {
     new IteratorMergeSortAlgorithm().sort(array);
@@ -362,7 +326,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(byte[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -370,7 +333,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(char[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -378,7 +340,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(short[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -386,7 +347,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(int[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -394,7 +354,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(long[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -402,7 +361,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(float[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -410,7 +368,6 @@ public class Sorts {
 
   /**
    * 快速排序
-   *
    */
   public static void quick(double[] array) {
     new QuickSortAlgorithm().sort(array);
@@ -418,7 +375,6 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(byte[] array) {
     new HeapSortAlgorithm().sort(array);
@@ -426,7 +382,6 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(char[] array) {
     new HeapSortAlgorithm().sort(array);
@@ -434,7 +389,6 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(short[] array) {
     new HeapSortAlgorithm().sort(array);
@@ -442,7 +396,6 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(int[] array) {
     new HeapSortAlgorithm().sort(array);
@@ -450,7 +403,6 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(long[] array) {
     new HeapSortAlgorithm().sort(array);
@@ -458,7 +410,6 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(float[] array) {
     new HeapSortAlgorithm().sort(array);
@@ -466,9 +417,16 @@ public class Sorts {
 
   /**
    * 堆排序
-   *
    */
   public static void heap(double[] array) {
     new HeapSortAlgorithm().sort(array);
   }
+
+  /**
+   * 计数排序
+   */
+  public static void counting(int[] array) {
+    new CountingSortAlgorithm().sort(array);
+  }
+
 }

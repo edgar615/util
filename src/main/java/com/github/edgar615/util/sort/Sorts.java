@@ -429,4 +429,11 @@ public class Sorts {
     new CountingSortAlgorithm().sort(array);
   }
 
+  /**
+   * 桶排序
+   */
+  public static void bucket(int[] array, int bucketStep) {
+    new BucketSortAlgorithm(bucketStep).sort(array);
+  }
+
 }

@@ -200,15 +200,17 @@ public class SortTest {
 
   @Test
   public void testCounting() {
-//    List<Integer> list = fillList();
-////    List<Integer> list = Lists.newArrayList(5, 4, 7, 8, 2, 7, 8, 5, 6, 3);
-//    new HeapSortAlgorithm().sort(list);
-//    System.out.println(list);
-//    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(list));
-
     int[] array = fillArray();
 //    int[] array = new int[] {2, 8, 5, 1, 10, 5, 9, 9, 3, 5, 6, 6, 2, 8, 2};
     new CountingSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
+  @Test
+  public void testBucket() {
+    int[] array = fillArray();
+//    int[] array = new int[] {2, 8, 5, 1, 10, 5, 9, 9, 3, 5, 6, 6, 2, 8, 2};
+    new BucketSortAlgorithm(25).sort(array);
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 

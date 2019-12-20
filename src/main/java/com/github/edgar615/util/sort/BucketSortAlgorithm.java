@@ -100,16 +100,4 @@ public class BucketSortAlgorithm implements SortAlgorithm {
     return arr;
   }
 
-
-  // 把桶內元素插入排序
-  private void insertSort(List<Integer> bucket) {
-    for (int i = 1; i < bucket.size(); i++) {
-      int temp = bucket.get(i);
-      int j = i - 1;
-      for (; j >= 0 && bucket.get(j) > temp; j--) {
-        bucket.set(j + 1, bucket.get(j));
-      }
-      bucket.set(j + 1, temp);
-    }
-  }
 }

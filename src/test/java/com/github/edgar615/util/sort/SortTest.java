@@ -214,6 +214,14 @@ public class SortTest {
     Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
   }
 
+  @Test
+  public void testRadix() {
+//    int[] array = fillArray();
+    int[] array = new int[] {7, 37, 68, 123, 134, 221, 387, 468, 769};
+    new RadixSortAlgorithm().sort(array);
+    Assert.assertTrue(Ordering.<Integer>natural().isOrdered(arrayToList(array)));
+  }
+
   private List<Integer> fillList() {
     List<Integer> list = new ArrayList<>();
     for (int i = 0; i < 884; i++) {

@@ -17,6 +17,31 @@ package com.github.edgar615.util.sort;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 桶排序
+ *
+ * 桶排序（Bucket sort）或所谓的箱排序，是一个排序算法，工作的原理是将数组分到有限数量的桶里。每个桶再个别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序）。
+ * 桶排序是鸽巢排序的一种归纳结果。当要被排序的数组内的数值是均匀分配的时候，桶排序使用线性时间O( n )。但桶排序并不是比较排序，他不受到` O ( n log n )下限的影响。
+ *
+ * 算法步骤
+ *
+ * <ul>
+ *   <li>1.找到最大元素与最小元素</li>
+ *   <li>2.根据桶的个数计算每个桶的范围</li>
+ *   <li>3.根据数值大小分配到不同的桶</li>
+ *   <li>4.对桶内元素进行排序</li>
+ *   <li>5.按照桶范围依次输出桶内元素</li>
+ * </ul>
+ *
+ * <ul>
+ * <li>平均时间复杂度：O(n + k)</li>
+ * <li>最好情况：O(n + k)</li>
+ * <li>最坏情况：O(n ^ n)</li>
+ * <li>空间复杂度：O(n + k)</li>
+ * <li>内存占用：Out-place：占用额外内存</li>
+ * <li>稳定性：稳定</li>
+ * </ul>
+ */
 public class BucketSortAlgorithm implements SortAlgorithm {
 
   private final int bucketStep;

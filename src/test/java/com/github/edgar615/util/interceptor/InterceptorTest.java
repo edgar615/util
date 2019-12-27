@@ -14,8 +14,7 @@
 
 package com.github.edgar615.util.interceptor;
 
-import com.github.edgar615.util.db.Device;
-import com.github.edgar615.util.db.Jdbc;
+import com.github.edgar615.util.reflect.Device;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,21 +26,21 @@ public class InterceptorTest {
 
   @Test
   public void test() {
-    Jdbc jdbc = new MockJdbc();
+    DeviceDao deviceDao = new MockDeviceDao();
     Interceptor interceptor = new LogInterceptor();
-    Jdbc proxy = (Jdbc) ObjectInterceptedJdkProxy.create(jdbc, interceptor);
-    int result = proxy.deleteById(Device.class, 1);
+    DeviceDao proxy = (DeviceDao) ObjectInterceptedJdkProxy.create(deviceDao, interceptor);
+    int result = proxy.deleteById(Device.class, 1L);
     Assert.assertEquals(result, 0);
   }
 
   @Test
   public void testChain() {
-    Jdbc jdbc = new MockJdbc();
+    DeviceDao deviceDao = new MockDeviceDao();
     Interceptor interceptor = new LogInterceptor();
-    Jdbc proxy = (Jdbc) InterceptedObjectBuilder.create().addInterceptor(interceptor)
+    DeviceDao proxy = (DeviceDao) InterceptedObjectBuilder.create().addInterceptor(interceptor)
         .addInterceptor(new CacheInterceptor())
-        .bind(jdbc);
-    int result = proxy.deleteById(Device.class, 1);
+        .bind(deviceDao);
+    int result = proxy.deleteById(Device.class, 1L);
     Assert.assertEquals(result, Integer.MAX_VALUE);
 
   }

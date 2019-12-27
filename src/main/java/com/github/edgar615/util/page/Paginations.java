@@ -12,11 +12,9 @@
  * limitations under the License.
  */
 
-package com.github.edgar615.util.db;
+package com.github.edgar615.util.page;
 
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,7 @@ public class Paginations {
   }
 
 
-  public static <T extends Persistent, V> Pagination<V> transform(
+  public static <T, V> Pagination<V> transform(
       Pagination<T> pagination, Function<T, V> function) {
     List<V> mapRecords =
         pagination.getRecords().stream()

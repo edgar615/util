@@ -11,35 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.github.edgar615.util.search;
+package com.github.edgar615.util.function;
 
 /**
- * @author Edgar
- * @create 2018-09-08 16:35
- **/
-public class AndExpression implements Expression {
+ * Created by Edgar on 2018/5/18.
+ *
+ * @author Edgar  Date 2018/5/18
+ */
+@FunctionalInterface
+public interface LoadAllAction {
 
-  private final Expression left;
-
-  private final Expression right;
-
-  private final ExpressionOp op = ExpressionOp.AND;
-
-  AndExpression(Expression left, Expression right) {
-    this.left = left;
-    this.right = right;
-  }
-
-  public Expression getLeft() {
-    return left;
-  }
-
-  public Expression getRight() {
-    return right;
-  }
-
-  public ExpressionOp getOp() {
-    return op;
-  }
+  void execute();
 }

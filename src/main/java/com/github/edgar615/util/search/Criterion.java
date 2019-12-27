@@ -24,7 +24,7 @@ import java.util.List;
  * @author Edgar
  * @version 1.0
  */
-public class Criterion implements Expression {
+public class Criterion {
 
   /**
    * 查询字段.

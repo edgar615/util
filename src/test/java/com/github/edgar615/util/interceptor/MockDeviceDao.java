@@ -12,14 +12,28 @@
  * limitations under the License.
  */
 
-package com.github.edgar615.util.search;
+package com.github.edgar615.util.interceptor;
+
+import com.github.edgar615.util.reflect.Device;
+import com.github.edgar615.util.search.Example;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 查询条件.
- *
  * @author Edgar
- * @create 2018-09-08 14:21
+ * @create 2018-09-14 16:32
  **/
-public interface Expression {
+public class MockDeviceDao implements DeviceDao {
 
+
+  public  int deleteByExample(Class<Device> elementType, Example example) {
+    System.out.println("deleteByExample");
+    return 0;
+  }
+
+  @Override
+  public int deleteById(Class<Device> elementType, Long id) {
+    System.out.println("deleteById");
+    return deleteByExample(elementType, Example.create());
+  }
 }

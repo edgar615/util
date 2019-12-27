@@ -29,7 +29,7 @@ import java.util.Map;
  *
  * @author Edgar
  */
-public class Criteria implements Expression {
+public class Criteria {
 
   private final List<Criterion> criteria = new ArrayList<>();
 

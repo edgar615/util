@@ -12,38 +12,25 @@
  * limitations under the License.
  */
 
-package com.github.edgar615.util.db;
+package com.github.edgar615.util.interceptor;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import com.github.edgar615.util.reflect.Device;
 
 /**
- * 实体类的接口.
+ * 数据访问层的接口.
  *
- * @param <ID> the type of the identifier
+ * @author Edgar  Date 2017/5/22
  */
-public interface Persistent<ID> extends Serializable {
+public interface DeviceDao {
 
   /**
-   * Returns the id of the entity.
+   * 根据主键删除.
    *
-   * @return the id
+   * @param elementType 持久化对象
+   * @param id 主键
+   * @return 删除记录数
    */
-  ID id();
+  int deleteById(Class<Device> elementType, Long id);
 
-  static <ID> Persistent create(Class<? extends Persistent<ID>> clazz) {
-    try {
-      return clazz.newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
 
-  void setId(ID id);
-
-  /**
-   * 设置自增主键
-   */
-  void setGeneratedKey(Number key);
 }

@@ -14,8 +14,6 @@
 
 package com.github.edgar615.util.reflect;
 
-import com.github.edgar615.util.db.Device;
-import com.github.edgar615.util.db.PrimaryKey;
 import org.junit.Test;
 
 /**

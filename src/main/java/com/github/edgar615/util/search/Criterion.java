@@ -77,6 +77,7 @@ public class Criterion {
     return secondValue;
   }
 
+  @Deprecated
   public String condition() {
 
     if (op == Op.IS_NULL) {
@@ -172,10 +173,12 @@ public class Criterion {
   }
 
   // 为了兼容mybatis，实现的方法
+  @Deprecated
   public String underscoreFiled() {
     return StringUtils.underscoreName(field);
   }
 
+  @Deprecated
   public Object getLikeValue() {
     if (op == Op.SW) {
       return value+ "%";

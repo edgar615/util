@@ -215,7 +215,7 @@ public class Example {
    * @param value 比较值，如果为null，忽略这个查询
    * @return Example
    */
-  public Example contains(String field, Object value) {
+  public Example contains(String field, String value) {
     if (value == null) {
       return this;
     }
@@ -233,7 +233,7 @@ public class Example {
    * @param value 比较值，如果为null，忽略这个查询
    * @return Example
    */
-  public Example startsWith(String field, Object value) {
+  public Example startsWith(String field, String value) {
     if (value == null) {
       return this;
     }
@@ -253,7 +253,7 @@ public class Example {
    * @param value 比较值，如果为null，忽略这个查询
    * @return Example
    */
-  public Example endsWtih(String field, Object value) {
+  public Example endsWtih(String field, String value) {
     if (value == null) {
       return this;
     }
@@ -485,6 +485,7 @@ public class Example {
     return ImmutableList.copyOf(orderBy);
   }
 
+  @Deprecated
   public String orderSql() {
     if (orderBy.isEmpty()) {
       return "";

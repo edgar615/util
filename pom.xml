@@ -71,11 +71,6 @@
             <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-            <version>${javapoet.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>

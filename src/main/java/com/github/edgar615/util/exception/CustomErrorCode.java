@@ -24,7 +24,7 @@ public class CustomErrorCode implements ErrorCode {
   private final int number;
   private final String message;
 
-  CustomErrorCode(int number, String message) {
+  protected CustomErrorCode(int number, String message) {
     this.number = number;
     this.message = message;
   }

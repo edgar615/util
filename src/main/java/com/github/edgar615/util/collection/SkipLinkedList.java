@@ -14,6 +14,8 @@
 
 package com.github.edgar615.util.collection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -75,7 +77,7 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
     }
     // 如果新构建的level大于原head的层级，需要使用新的层级作为head，原head作为新head的down节点
     if (level > head.level) {
-      head = new Node(null, null, level, null,null, null, head);
+      head = new Node(null, null, level, null, null, null, head);
     }
 
     // 从第一个节点开始
@@ -145,7 +147,7 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
       current = current.up;
     }
 
-    size --;
+    size--;
     return node.value;
   }
 
@@ -155,6 +157,31 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
     return size;
   }
 
+  @Override
+  public List<V> findRange(K start, K end) {
+    List<V> list = new ArrayList<>();
+    Node current = head;
+    Node first;
+    Node last;
+    Node maxLevelNodeForStart;
+    // 找到第一个值
+    while (current != null) {
+      // 如果next的值大于当前要查询的值，说明当前的值在左边，下降继续查找
+      if (current.next == null || current.next.key.compareTo(start) > 0) {
+        current = current.down;
+        continue;
+      } else if (current.next.key.equals(start) && current.level > 0) {
+        current = current.down;
+        continue;
+      }else if (current.next.key.equals(start)) {
+        first = current.next;
+        break;
+      }
+      first = current;
+    }
+    return null;
+  }
+
   private Node search(K key) {
     Node current = head;
     while (current != null) {
@@ -162,11 +189,11 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
       if (current.next == null || current.next.key.compareTo(key) > 0) {
         current = current.down;
         continue;
-        // 如果找到相同的key，但是value=null，继续下降直接返回
-      } else if (current.next.key.equals(key) && current.next.value == null) {
+        // 如果找到相同的key，但是不是最后一级，继续下降直接返回（数据永远存在最后一级）
+      } else if (current.next.key.equals(key) && current.level > 0) {
         current = current.down;
         continue;
-      } else if (current.next.key.equals(key) && current.next.value != null) {
+      } else if (current.next.key.equals(key)) {
         return current.next;
       }
       // 继续向后查找

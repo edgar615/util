@@ -14,6 +14,8 @@
 
 package com.github.edgar615.util.collection;
 
+import java.util.List;
+
 public interface SkipList<K extends Comparable<K>, V> {
 
   V add(K key, V value);
@@ -23,4 +25,6 @@ public interface SkipList<K extends Comparable<K>, V> {
   V remove(K key);
 
   long size();
+
+  List<V> findRange(K start, K end);
 }

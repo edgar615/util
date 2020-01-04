@@ -182,26 +182,64 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
     return null;
   }
 
-  private Node search(K key) {
+  private Node searchFloor(K key) {
     Node current = head;
     while (current != null) {
-      // 如果next的值大于当前要查询的值，说明当前的值在左边，然后就下降，继续查找
-      if (current.next == null || current.next.key.compareTo(key) > 0) {
+      // 数据永远存在最后一级
+      if (current.level == 0 && key.equals(current.key)) {
+        return current;
+        // 如果最后一级的key已经大于当前要查询的值，说明没有找到数据，停止查找
+      } else if (current.level == 0 && (current.key == null || current.key.compareTo(key) < 0)) {
+        return current.next;
+        // 如果next的值大于当前要查询的值，说明当前的值在左边，然后就下降，继续查找
+      } else if (current.next == null || current.next.key.compareTo(key) > 0) {
         current = current.down;
         continue;
         // 如果找到相同的key，但是不是最后一级，继续下降直接返回（数据永远存在最后一级）
       } else if (current.next.key.equals(key) && current.level > 0) {
-        current = current.down;
+        current = current.next.down;
         continue;
-      } else if (current.next.key.equals(key)) {
-        return current.next;
       }
       // 继续向后查找
       current = current.next;
     }
     // 到这一步说明没找到
+    return current;
+  }
+
+  private Node search(K key) {
+    Node current = searchFloor(key);
+    if (current != null && current.key != null && current.key.equals(key)) {
+      return current;
+    }
+    // 到这一步说明没找到
     return null;
   }
+
+//  private Node search(K key) {
+//    Node current = head;
+//    while (current != null) {
+//      // 数据永远存在最后一级
+//      if (current.level == 0 && key.equals(current.key)) {
+//        return current;
+//        // 如果最后一级的key已经大于当前要查询的值，说明没有找到数据，停止查找
+//      } else if (current.level == 0 && current.key != null && current.key.compareTo(key) > 0) {
+//        return null;
+//        // 如果next的值大于当前要查询的值，说明当前的值在左边，然后就下降，继续查找
+//      } else if (current.next == null || current.next.key.compareTo(key) > 0) {
+//        current = current.down;
+//        continue;
+//        // 如果找到相同的key，但是不是最后一级，继续下降直接返回（数据永远存在最后一级）
+//      } else if (current.next.key.equals(key) && current.level > 0) {
+//        current = current.next.down;
+//        continue;
+//      }
+//      // 继续向后查找
+//      current = current.next;
+//    }
+//    // 到这一步说明没找到
+//    return null;
+//  }
 
   /**
    * 通过随机函数，决定新节点的层级，随机 level 次，如果是奇数层数 +1，防止伪随机

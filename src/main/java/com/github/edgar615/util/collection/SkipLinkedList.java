@@ -162,11 +162,7 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
     List<V> list = new ArrayList<>();
     Node floor = searchFloor(start);
     Node current;
-    // 从第一个开始
-    if (floor == null || floor.key == null) {
-
-    }
-    if (floor != null && floor.key != null && floor.key.equals(start)) {
+    if (floor != null && floor.key != null && floor.key.compareTo(start) >= 0) {
       current = floor;
     } else {
       current = floor.next;

@@ -30,6 +30,7 @@ package com.github.edgar615.util.collection;
 
 import com.github.edgar615.util.base.Randoms;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.junit.Assert;
@@ -74,5 +75,27 @@ public class SkipLinkedListTest {
       }
     }
     Assert.assertEquals(map.size(), skipList.size() + count);
+  }
+
+  @Test
+  public void testFindRange() {
+    SkipLinkedList<Integer, Integer> skipList = new SkipLinkedList<>();
+    for (int i = 0; i < 100; i ++) {
+      if (i > 25 && i < 35) {
+
+      } else if (i > 40 && i < 50) {
+
+      } else {
+        skipList.add(i,i);
+      }
+    }
+    List<Integer> range = skipList.findRange(10, 25);
+    System.out.println(range);
+    range = skipList.findRange(10, 30);
+    System.out.println(range);
+    range = skipList.findRange(10, 55);
+    System.out.println(range);
+    range = skipList.findRange(-1, 5);
+    System.out.println(range);
   }
 }

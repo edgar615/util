@@ -160,26 +160,27 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
   @Override
   public List<V> findRange(K start, K end) {
     List<V> list = new ArrayList<>();
-    Node current = head;
-    Node first;
-    Node last;
-    Node maxLevelNodeForStart;
-    // 找到第一个值
+    Node floor = searchFloor(start);
+    Node current;
+    // 从第一个开始
+    if (floor == null || floor.key == null) {
+
+    }
+    if (floor != null && floor.key != null && floor.key.equals(start)) {
+      current = floor;
+    } else {
+      current = floor.next;
+    }
+    list.add(current.value);
     while (current != null) {
-      // 如果next的值大于当前要查询的值，说明当前的值在左边，下降继续查找
-      if (current.next == null || current.next.key.compareTo(start) > 0) {
-        current = current.down;
-        continue;
-      } else if (current.next.key.equals(start) && current.level > 0) {
-        current = current.down;
-        continue;
-      }else if (current.next.key.equals(start)) {
-        first = current.next;
+      if (current.next != null && current.next.key.compareTo(end) <= 0) {
+        list.add(current.next.value);
+        current = current.next;
+      } else {
         break;
       }
-      first = current;
     }
-    return null;
+    return list;
   }
 
   private Node searchFloor(K key) {

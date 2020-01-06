@@ -91,13 +91,28 @@ public class SkipLinkedListTest {
         skipList.add(i,i);
       }
     }
+
     List<Integer> range = skipList.findRange(10, 25);
+    Assert.assertEquals(16, range.size());
+    Assert.assertEquals(10, range.get(0), 0);
+    Assert.assertEquals(25, range.get(15), 0);
     System.out.println(range);
     range = skipList.findRange(10, 30);
+    Assert.assertEquals(16, range.size());
+    Assert.assertEquals(10, range.get(0), 0);
+    Assert.assertEquals(25, range.get(15), 0);
     System.out.println(range);
     range = skipList.findRange(10, 55);
+    Assert.assertEquals(28, range.size());
+    Assert.assertEquals(10, range.get(0), 0);
+    Assert.assertEquals(25, range.get(15), 0);
+    Assert.assertEquals(50, range.get(22), 0);
+    Assert.assertEquals(55, range.get(27), 0);
     System.out.println(range);
     range = skipList.findRange(-1, 5);
+    Assert.assertEquals(6, range.size());
+    Assert.assertEquals(0, range.get(0), 0);
+    Assert.assertEquals(5, range.get(5), 0);
     System.out.println(range);
   }
 }

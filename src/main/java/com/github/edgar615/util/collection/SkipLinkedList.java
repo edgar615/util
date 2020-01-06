@@ -195,7 +195,7 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
       } else if (current.level == 0 && (current.key != null && current.key.compareTo(key) > 0)) {
         return current.prev;
         // 如果next的值大于当前要查询的值，说明当前的值在左边，然后就下降，继续查找
-      } else if (current.next == null || current.next.key.compareTo(key) > 0) {
+      } else if ((current.next == null || current.next.key.compareTo(key) > 0) && current.level > 0) {
         current = current.down;
         continue;
         // 如果找到相同的key，但是不是最后一级，继续下降直接返回（数据永远存在最后一级）

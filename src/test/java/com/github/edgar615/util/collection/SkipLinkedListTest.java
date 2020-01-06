@@ -48,6 +48,8 @@ public class SkipLinkedListTest {
       map.put(num % k, num % k);
       skipList.add(num % k, num % k);
     }
+    System.out.println(map.size());
+    System.out.println(skipList.size());
     Assert.assertEquals(map.size(), skipList.size());
     for (int i : map.keySet()) {
       Assert.assertEquals(map.get(i), skipList.get(i), 0);

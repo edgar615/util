@@ -15,8 +15,10 @@
 package com.github.edgar615.util.collection;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * 跳表的链表实现
@@ -64,12 +66,6 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
 
   @Override
   public V add(K key, V value) {
-    Node node;
-    if ((node = search(key)) != null) {
-      V _value = node.value;
-      node.value = value;
-      return _value;
-    }
     // 计算层级，最多值加一层，不会出现跳跃的情况
     long level = randomLevel();
     if (level > levelCount) {
@@ -94,14 +90,15 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
           if (0 == current.level) {
             _value = value;
           }
-          Node newNode = new Node(key, _value, current.level, null, current.next, null, null);
-          if (last != null) {
-            last.down = newNode;
-            newNode.up = last;
-          }
+          Node newNode = new Node(key, _value, current.level, current, current.next, last, null);
           // 追加当前节点
           current.next = newNode;
-          newNode.prev = current;
+          if (last != null) {
+            last.down = newNode;
+          }
+          if (current.next != null) {
+            current.next.prev = newNode;
+          }
           // 记录新插入的节点，它的down应该指向下层新插入的节点
           last = newNode;
         }
@@ -109,9 +106,18 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
         current = current.down;
         continue;
         // 进入了同一层级，如果找到相同的key，直接更新
-      } else if (current.next.key.equals(key) && current.next.value == null) {
+      } else if (current.next.key.equals(key) && current.level > 0) {
+        // 记录层级关系，这句写漏了，调了两天才找到，泪奔
+        if (last != null) {
+          last.down = current.next;
+          current.next.up = last;
+        }
         current = current.down;
         continue;
+      } else if (current.next.key.equals(key) && current.level == 0) {
+        V oldValue =  current.next.value;
+        current.next.value = value;
+        return oldValue;
       }
       // 同一层级，到这一步，说明新插入的值大于当前节点，那就继续向后遍历查询
       current = current.next;
@@ -186,8 +192,8 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
       if (current.level == 0 && key.equals(current.key)) {
         return current;
         // 如果最后一级的key已经大于当前要查询的值，说明没有找到数据，停止查找
-      } else if (current.level == 0 && (current.key == null || current.key.compareTo(key) < 0)) {
-        return current.next;
+      } else if (current.level == 0 && (current.key != null && current.key.compareTo(key) > 0)) {
+        return current.prev;
         // 如果next的值大于当前要查询的值，说明当前的值在左边，然后就下降，继续查找
       } else if (current.next == null || current.next.key.compareTo(key) > 0) {
         current = current.down;

@@ -15,15 +15,13 @@
 package com.github.edgar615.util.collection;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * 跳表的链表实现
  */
-public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V> {
+public class LinkedSkipList<K extends Comparable<K>, V> implements SkipList<K, V> {
 
   /**
    * 默认层级
@@ -55,11 +53,11 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
    */
   private Random random = new Random();
 
-  public SkipLinkedList() {
+  public LinkedSkipList() {
     this(MAX_LEVEL);
   }
 
-  public SkipLinkedList(int maxLevel) {
+  public LinkedSkipList(int maxLevel) {
     this.maxLevel = maxLevel;
     this.head = new Node(null, null, 0, null, null, null, null);
   }
@@ -86,18 +84,20 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
         // 如果新层级是否大于等于当前层级，在这个层级插入该节点（跳表的特性）
         if (level >= current.level) {
           // 为节省空间，只在最后一个层级的节点插入value
+          // 好像想多了，这样应该并没有节省多少空间，暂时没有验证，等后面验证了再调整
           V _value = null;
           if (0 == current.level) {
             _value = value;
           }
           Node newNode = new Node(key, _value, current.level, current, current.next, last, null);
           // 追加当前节点
+          Node next = current.next;
           current.next = newNode;
           if (last != null) {
             last.down = newNode;
           }
-          if (current.next != null) {
-            current.next.prev = newNode;
+          if (next != null) {
+            next.prev = newNode;
           }
           // 记录新插入的节点，它的down应该指向下层新插入的节点
           last = newNode;
@@ -140,17 +140,21 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
     }
     // 找到的node永远是最后一级
     Node next = node.next;
-    next.prev = node.prev;
+    if (next != null) {
+      next.prev = node.prev;
+    }
     node.prev.next = next;
 
     Node current = node;
     // 依次删除层级
     while (current.up != null) {
-      current.up.down = current.down;
-      if (current.down != null) {
-        current.down.up = current.up;
-      }
       current = current.up;
+      next = current.next;
+      current.prev.next = next;
+      if (next != null) {
+        next.prev = current.prev;
+      }
+      current.down = null;
     }
 
     size--;
@@ -218,31 +222,6 @@ public class SkipLinkedList<K extends Comparable<K>, V> implements SkipList<K, V
     // 到这一步说明没找到
     return null;
   }
-
-//  private Node search(K key) {
-//    Node current = head;
-//    while (current != null) {
-//      // 数据永远存在最后一级
-//      if (current.level == 0 && key.equals(current.key)) {
-//        return current;
-//        // 如果最后一级的key已经大于当前要查询的值，说明没有找到数据，停止查找
-//      } else if (current.level == 0 && current.key != null && current.key.compareTo(key) > 0) {
-//        return null;
-//        // 如果next的值大于当前要查询的值，说明当前的值在左边，然后就下降，继续查找
-//      } else if (current.next == null || current.next.key.compareTo(key) > 0) {
-//        current = current.down;
-//        continue;
-//        // 如果找到相同的key，但是不是最后一级，继续下降直接返回（数据永远存在最后一级）
-//      } else if (current.next.key.equals(key) && current.level > 0) {
-//        current = current.next.down;
-//        continue;
-//      }
-//      // 继续向后查找
-//      current = current.next;
-//    }
-//    // 到这一步说明没找到
-//    return null;
-//  }
 
   /**
    * 通过随机函数，决定新节点的层级，随机 level 次，如果是奇数层数 +1，防止伪随机

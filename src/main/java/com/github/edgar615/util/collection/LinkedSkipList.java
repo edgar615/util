@@ -174,7 +174,7 @@ public class LinkedSkipList<K extends Comparable<K>, V> implements SkipList<K, V
     if (current == null) {
       return new ArrayList<>();
     }
-    if (current.key != null) {
+    if (current.key != null && current.key.compareTo(start) >= 0) {
       list.add(current.value);
     }
 

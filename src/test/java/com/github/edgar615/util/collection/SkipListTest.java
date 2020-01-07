@@ -130,6 +130,16 @@ public class SkipListTest {
     range = skipList.findRange(200, 300);
     System.out.println(range);
     Assert.assertEquals(0, range.size());
+
+    range = skipList.findRange(26, 30);
+    System.out.println(range);
+    Assert.assertEquals(0, range.size());
+
+    range = skipList.findRange(27, 50);
+    Assert.assertEquals(7, range.size());
+    Assert.assertEquals(35, range.get(0), 0);
+    Assert.assertEquals(50, range.get(6), 0);
+    System.out.println(range);
   }
 
   @Test
@@ -236,6 +246,16 @@ public class SkipListTest {
     range = skipList.findRange(200, 300);
     System.out.println(range);
     Assert.assertEquals(0, range.size());
+
+    range = skipList.findRange(26, 30);
+    System.out.println(range);
+    Assert.assertEquals(0, range.size());
+
+    range = skipList.findRange(27, 50);
+    Assert.assertEquals(7, range.size());
+    Assert.assertEquals(35, range.get(0), 0);
+    Assert.assertEquals(50, range.get(6), 0);
+    System.out.println(range);
   }
 
 }

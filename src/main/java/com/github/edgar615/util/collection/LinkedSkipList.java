@@ -170,16 +170,16 @@ public class LinkedSkipList<K extends Comparable<K>, V> implements SkipList<K, V
   @Override
   public List<V> findRange(K start, K end) {
     List<V> list = new ArrayList<>();
-    Node floor = searchFloor(start);
-    Node current;
-    if (floor != null && floor.key != null && floor.key.compareTo(start) >= 0) {
-      current = floor;
-    } else {
-      current = floor.next;
+    Node current = searchFloor(start);
+    if (current == null) {
+      return new ArrayList<>();
     }
-    list.add(current.value);
+    if (current.key != null) {
+      list.add(current.value);
+    }
+
     while (current != null) {
-      if (current.next != null && current.next.key.compareTo(end) <= 0) {
+      if (current.next != null  && current.next.key != null && current.next.key.compareTo(end) <= 0) {
         list.add(current.next.value);
         current = current.next;
       } else {
@@ -203,7 +203,7 @@ public class LinkedSkipList<K extends Comparable<K>, V> implements SkipList<K, V
         current = current.down;
         continue;
         // 如果找到相同的key，但是不是最后一级，继续下降直接返回（数据永远存在最后一级）
-      } else if (current.next.key.equals(key) && current.level > 0) {
+      } else if (current.next != null && current.next.key.equals(key) && current.level > 0) {
         current = current.next.down;
         continue;
       }

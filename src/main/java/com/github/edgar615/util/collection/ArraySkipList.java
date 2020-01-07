@@ -14,6 +14,7 @@
 
 package com.github.edgar615.util.collection;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -126,32 +127,33 @@ public class ArraySkipList<K extends Comparable<K>, V> implements SkipList<K, V>
       level = ++levelCount;
     }
     Node<K, V> newNode = new Node(key, value, level);
-    // 从最大层开始
+    // 辅助数组，存放所有要调整的节点
+    Node<K, V> update[] = new Node[level];
+    for (int i = 0; i < level; ++i) {
+      update[i] = head;
+    }
+
     Node<K, V> p = head;
-    // 从最大层开始查找，找到前一节点
-    boolean existed = false;
-    V oldValue = null;
-    for (int i = levelCount - 1; i >= 0; i --) {
-      // 在每层里找到最接近的节点，每层的节点并不一定相同
+    // 在每层里找到最接近的节点，放入辅助数组
+    for (int i = level - 1; i >= 0; --i) {
       while (p.next[i] != null && p.next[i].key.compareTo(key) < 0) {
-        // 这里就是每层最接近指定key的节点
         p = p.next[i];
       }
-      if (level > i) {
-        if (p.next[i] == null) {
-          // 最后一个节点，直接加到里面
-          p.next[i] = newNode;
-        } else if (p.next[i].key.equals(key)) {
-          existed = true;
-          oldValue = p.next[i].value;
-          p.next[i].value = value;
-        } else {
-          Node next = p.next[i];
-          p.next[i] = newNode;
-          newNode.next[i] = next;
-        }
-      }
+      update[i] = p;
+    }
 
+    boolean existed = false;
+    V oldValue = null;
+    // 调整
+    for (int i = 0; i < level; ++i) {
+      newNode.next[i] = update[i].next[i];
+      if (update[i].next[i] != null && update[i].next[i].key.equals(key)) {
+        oldValue = update[i].next[i].value;
+        existed = true;
+        update[i].next[i].value = value;
+      } else {
+        update[i].next[i] = newNode;
+      }
     }
     if (!existed) {
       size ++;
@@ -165,8 +167,9 @@ public class ArraySkipList<K extends Comparable<K>, V> implements SkipList<K, V>
     Node[] d = c;
     int maxLevel = c.length;
     for (int i = maxLevel - 1; i >= 0; i--) {
+      System.out.print(i + ":");
       do {
-        System.out.print((d[i] != null ? d[i].key : null) + ":" + i + "-------");
+        System.out.print((d[i] != null ? d[i].key : null) + "---");
       } while (d[i] != null && (d = d[i].next)[i] != null);
       System.out.println();
       d = c;
@@ -192,19 +195,27 @@ public class ArraySkipList<K extends Comparable<K>, V> implements SkipList<K, V>
 
   @Override
   public V remove(K key) {
-    // 从最大层开始
-    V oldValue = null;
+    Node<K, V>[] update = new Node[levelCount];
     Node<K, V> p = head;
-    for (int i = levelCount - 1; i >= 0; i --) {
-      // 在每层里找到最接近的节点，每层的节点并不一定相同
+    for (int i = levelCount - 1; i >= 0; --i) {
       while (p.next[i] != null && p.next[i].key.compareTo(key) < 0) {
-        // 这里就是每层最接近指定key的节点
         p = p.next[i];
       }
-      if (p.next[i] != null && p.next[i].key.equals(key)) {
-        oldValue = p.next[i].value;
-        p.next[i] = p.next[i].next[i];
+      update[i] = p;
+    }
+
+    V oldValue = null;
+    if (p.next[0] != null && p.next[0].key.equals(key)) {
+      for (int i = levelCount - 1; i >= 0; --i) {
+        if (update[i].next[i] != null && update[i].next[i].key.equals(key)) {
+          oldValue = update[i].next[i].value;
+          update[i].next[i] = update[i].next[i].next[i];
+        }
       }
+    }
+
+    while (levelCount>1&&head.next[levelCount]==null){
+      levelCount--;
     }
     if (oldValue != null) {
       size --;
@@ -219,7 +230,19 @@ public class ArraySkipList<K extends Comparable<K>, V> implements SkipList<K, V>
 
   @Override
   public List<V> findRange(K start, K end) {
-    return null;
+    Node<K, V> p = head;
+    for (int i = levelCount - 1; i >= 0; --i) {
+      while (p.next[i] != null && p.next[i].key.compareTo(start) < 0) {
+        p = p.next[i];
+      }
+    }
+    List<V> list = new ArrayList<>();
+    while (p.next[0] != null && p.next[0].key.compareTo(end) <= 0) {
+      list.add(p.next[0].value);
+      p = p.next[0];
+    }
+
+    return list;
   }
 
   private int randomLevel() {

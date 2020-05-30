@@ -14,21 +14,49 @@
 
 package com.github.edgar615.util.net;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.*;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * 网络工具类
+ *
+ *
+ 127.xxx.xxx.xxx 属于"loopback" 地址，即只能你自己的本机可见，就是本机地址，比较常见的有127.0.0.1；
+ 192.168.xxx.xxx 属于private 私有地址(site local address)，属于本地组织内部访问，只能在本地局域网可见。
+ 同样10.xxx.xxx.xxx、从172.16.xxx.xxx 到 172.31.xxx.xxx都是私有地址，也是属于组织内部访问；
+ 169.254.xxx.xxx 属于连接本地地址（link local IP），在单独网段可用
+ 从224.xxx.xxx.xxx 到 239.xxx.xxx.xxx 属于组播地址
+ 比较特殊的255.255.255.255 属于广播地址
+ 除此之外的地址就是点对点的可用的公开IPv4地址
+
  */
 public class NetUtils {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(NetUtils.class);
 
   private NetUtils() {
     throw new AssertionError("Not instantiable: " + NetUtils.class);
   }
+
+
+  public static String getIpV4(String interfaceName) {
+    try {
+      List<InetAddress> ipList = getInetAddress(interfaceName);
+      if (ipList.isEmpty()) {
+        return null;
+      }
+      return ipList.get(0).toString().replaceAll("^/+", "");
+    } catch (Exception e) {
+      LOGGER.warn("Utils get IP warn", e);
+    }
+    return null;
+  }
+
 
   /**
    * 获取本机的一个IPV4地址
@@ -37,13 +65,13 @@ public class NetUtils {
    */
   public static String getIpv4() {
     try {
-      InetAddress lanIp = getInetAddress();
+      InetAddress lanIp = getFirstInetAddress();
       if (lanIp == null) {
         return null;
       }
       return lanIp.toString().replaceAll("^/+", "");
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.warn("Utils get IP warn", e);
     }
     return null;
   }
@@ -55,7 +83,7 @@ public class NetUtils {
    */
   public static String getMac() {
     try {
-      InetAddress lanIp = getInetAddress();
+      InetAddress lanIp = getFirstInetAddress();
       if (lanIp == null) {
         return null;
       }
@@ -67,21 +95,53 @@ public class NetUtils {
 
   }
 
+  public static List<InetAddress> getInetAddress() throws SocketException {
+    List<InetAddress> ipList = new ArrayList<>(5);
+    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+    while (interfaces.hasMoreElements()) {
+      NetworkInterface ni = interfaces.nextElement();
+      Enumeration<InetAddress> allAddress = ni.getInetAddresses();
+      while (allAddress.hasMoreElements()) {
+        InetAddress address = allAddress.nextElement();
+        if (!address.isLoopbackAddress() && !(address instanceof Inet6Address)) {
+          // skip the loopback addr
+          // skip the IPv6 addr
+          ipList.add(address);
+        }
+      }
+    }
+    return ipList;
+  }
+
+  public static List<InetAddress> getInetAddress(String interfaceName) throws SocketException {
+    List<InetAddress> ipList = new ArrayList<>(5);
+    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+    while (interfaces.hasMoreElements()) {
+      NetworkInterface ni = interfaces.nextElement();
+      if (!ni.getDisplayName().equals(interfaceName)) {
+        continue;
+      }
+      Enumeration<InetAddress> allAddress = ni.getInetAddresses();
+      while (allAddress.hasMoreElements()) {
+        InetAddress address = allAddress.nextElement();
+        if (!address.isLoopbackAddress() && !(address instanceof Inet6Address)) {
+          // skip the loopback addr
+          // skip the IPv6 addr
+          ipList.add(address);
+        }
+      }
+    }
+    return ipList;
+  }
+
   /**
    * 返回第一个有效IP
    */
-  private static InetAddress getInetAddress() throws SocketException, UnknownHostException {
-    Enumeration<NetworkInterface> net = NetworkInterface.getNetworkInterfaces();
-    while (net.hasMoreElements()) {
-      NetworkInterface element = net.nextElement();
-      Enumeration<InetAddress> addresses = element.getInetAddresses();
-      while (addresses.hasMoreElements()) {
-        InetAddress ip = addresses.nextElement();
-        if (ip instanceof Inet4Address) {
-          if (ip.isSiteLocalAddress()) {
-            return InetAddress.getByName(ip.getHostAddress());
-          }
-        }
+  public static InetAddress getFirstInetAddress() throws SocketException, UnknownHostException {
+    List<InetAddress> ipList = getInetAddress();
+    for (InetAddress address : ipList) {
+      if (address.isSiteLocalAddress()) {
+        return InetAddress.getByName(address.getHostAddress());
       }
     }
     return null;
@@ -93,7 +153,7 @@ public class NetUtils {
    * @param ip ip地址
    * @return mac
    */
-  private static String getMac(InetAddress ip) {
+  public static String getMac(InetAddress ip) {
     String address = null;
     try {
       NetworkInterface network = NetworkInterface.getByInetAddress(ip);

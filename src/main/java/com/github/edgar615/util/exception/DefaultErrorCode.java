@@ -1,3 +1,17 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.github.edgar615.util.exception;
 
 /**
@@ -179,18 +193,26 @@ public enum DefaultErrorCode implements ErrorCode {
   NOT_YOUR_RESOURCE(1032, "Not your resources"),
 
   /**
+   * 资源已被占用
+   */
+  RESOURCE_OCCUPIED(1033, "Resources occupied"),
+
+  /**
    * 事件超时.
    */
+  @Deprecated
   EVENTBUS_TIMOUT(1101, "Eventbus: Timeout"),
 
   /**
    * 事件被拒绝.
    */
+  @Deprecated
   EVENTBUS_REJECTED(1102, "Eventbus: Rejected"),
 
   /**
    * 未定义事件.
    */
+  @Deprecated
   EVENTBUS_NO_HANDLERS(1103, "Eventbus: Undefined Event");
 
   /**
